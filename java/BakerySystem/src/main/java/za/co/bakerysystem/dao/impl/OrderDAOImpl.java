@@ -2,7 +2,6 @@ package za.co.bakerysystem.dao.impl;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -599,39 +598,34 @@ public class OrderDAOImpl implements OrderDAO {
             }
         }
     }
-    
+
     //------------------------------------------------------------------------------------------------
     //------------------------------------------------------------------------------------------------
     //------------------------------------------------------------------------------------------------
-    
     public static void main(String[] args) {
         OrderDAOImpl orderDAO = new OrderDAOImpl();
 
 //        // Test createOrder
-//        Order orderToCreate = new Order();
-//        orderToCreate.setCustomerID(1);
-//        orderToCreate.setDatePlaced(LocalDateTime.now());
-//        orderToCreate.setPickupTime(LocalDateTime.now().plusHours(2));
-//        orderToCreate.setFulfilled(0);
-//        orderToCreate.setComment("Test Order");
-//        orderToCreate.setAmount(50.0);
-//        orderToCreate.setStatus("Pending");
-
-//        boolean createOrderResult = orderDAO.createOrder(orderToCreate);
-//        System.out.println("Create Order Result: " + createOrderResult);
-
+        Order orderToCreate = new Order();
+        orderToCreate.setCustomerID(1);
+        orderToCreate.setDatePlaced(LocalDateTime.now());
+        orderToCreate.setPickupTime(LocalDateTime.now().plusHours(2));
+        orderToCreate.setFulfilled(0);
+        orderToCreate.setComment("Test Order");
+        orderToCreate.setAmount(50.0);
+        orderToCreate.setStatus("Pending");
+        boolean createOrderResult = orderDAO.createOrder(orderToCreate);
+        System.out.println("Create Order Result: " + createOrderResult);
         // Test updateOrder
 //        Order orderToUpdate = orderDAO.getOrders().get(0); // Assuming there's an order in the database
 //        orderToUpdate.setComment("Updated Comment");
 //
 //        boolean updateOrderResult = orderDAO.updateOrder(orderToUpdate);
 //        System.out.println("Update Order Result: " + updateOrderResult);
-
         // Test fulfillOrder
 //        int orderIdToFulfill = orderDAO.getOrders().get(0).getID(); // Assuming there's an order in the database
 //        boolean fulfillOrderResult = orderDAO.fulfillOrder(orderIdToFulfill, true);
 //        System.out.println("Fulfill Order Result: " + fulfillOrderResult);
-
         // Test createOrderDetail
 //        OrderDetails orderDetails = new OrderDetails();
 //        //orderDetails.setOrderID(orderIdToFulfill);
@@ -644,34 +638,27 @@ public class OrderDAOImpl implements OrderDAO {
 //
 //        boolean createOrderDetailResult = orderDAO.createOrderDetail(orderDetails);
 //        System.out.println("Create Order Detail Result: " + createOrderDetailResult);
-
         // Test getOrders
 //        List<Order> allOrders = orderDAO.getOrders();
 //        System.out.println("All Orders: " + allOrders);
-
         // Test getLastedOrders
 //        List<Order> lastedOrders = orderDAO.getLastedOrders();
 //        System.out.println("Lasted Orders: " + lastedOrders);
-
         // Test getOrdersCurrent
 //        int currentOrdersQuantity = orderDAO.getOrdersCurrent();
 //        System.out.println("Current Orders Quantity: " + currentOrdersQuantity);
-
         // Test getTotalOrdersQuantity
 //        int totalOrdersQuantity = orderDAO.getTotalOrdersQuantity();
 //        System.out.println("Total Orders Quantity: " + totalOrdersQuantity);
-
 //        // Test getOrdersByRange
 //        List<Order> ordersInRange = orderDAO.getOrdersByRange("2024-01-01", "2025-12-31", "1");
 //        System.out.println("Orders in Range: " + ordersInRange);
-
         // Test getOrder
 //        Order fetchedOrder = orderDAO.getOrder(1);
 //        System.out.println("Fetched Order: " + fetchedOrder);
-
         // Test getOrderPayment
-        List<Payment> orderPayments = orderDAO.getOrderPayment(1);
-        System.out.println("Order Payments: " + orderPayments);
+//        List<Payment> orderPayments = orderDAO.getOrderPayment(1);
+//        System.out.println("Order Payments: " + orderPayments);
 
 //        // Test getOrderProduct
 //        List<Product> orderProducts = orderDAO.getOrderProduct(orderIdToFetch);

@@ -48,7 +48,7 @@ public class IngredientController {
     }
     
     @DELETE
-    @Path("/delete/{ingredientId}")
+    @Path("/delete_ingredient/{ingredientId}")
     public Response deleteIngredient(@PathParam("ingredientId") int ingredientId) {
         if (ingredientDAO.deleteIngredient(ingredientId)) {
             return Response.ok("Ingredient deleted successfully").build();
