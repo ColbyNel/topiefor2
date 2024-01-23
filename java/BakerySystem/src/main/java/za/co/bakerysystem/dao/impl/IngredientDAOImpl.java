@@ -246,17 +246,14 @@ public class IngredientDAOImpl implements IngredientDAO {
 //        listOfIngredientByKeyWord.forEach(product1 -> {
 //            System.out.println(product1);
 //        });
-       
-        
         //Test for getIngredients
 //         List<Ingredient> listOfIngredient = ingredientDAO.getIngredients();
 //
 //        listOfIngredient.forEach(product1 -> {
 //            System.out.println(product1);
 //        });
-        
         //Test for getIngredientQuantity() 
-        System.out.println("Number of ingredients are: "+ingredientDAO.getIngredientQuantity());
+        System.out.println("Number of ingredients are: " + ingredientDAO.getIngredientQuantity());
 
     }
 }
