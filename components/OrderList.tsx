@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+
+
 const orderlist = () => {
   return (
     <div className="bg-white flex min-h-screen flex-1 flex-col px-6 py-12 lg:px-8">
@@ -32,27 +34,14 @@ const orderlist = () => {
               >
                 956487854
               </th>
-
-              <td className="px-6 py-4">0123456789</td>
+              <Link href={`/admin/tools/customermgmt/9876543`}>
+              <td className="px-6 py-4">9876543</td>
+              </Link>
               <td className="px-6 py-4">R195</td>
               <td className="px-6 py-4">18 January 2024</td>
               <td className="px-6 py-4">Delivered</td>
             </tr>
-
-            <tr className=" item-hover odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-              <Link href="/admin/tools/customermgmt/customer">
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 hover:to-blue-500 whitespace-nowrap dark:text-white"
-                >
-                  84568679
-                </th>
-              </Link>
-              <td className="px-6 py-4">0123456789</td>
-              <td className="px-6 py-4">R59</td>
-              <td className="px-6 py-4">21 January 2024</td>
-              <td className="px-6 py-4">Placed</td>
-            </tr>
+            
           </tbody>
         </table>
       </div>
