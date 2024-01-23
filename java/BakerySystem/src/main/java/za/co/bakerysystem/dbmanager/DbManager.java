@@ -13,7 +13,7 @@ public class DbManager {
     private DbManager() {
         String url = "jdbc:mysql://localhost:3306/bakery?useSSL=false";
         String user = "root";
-        String password = "";
+        String password = "root";
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(url, user, password);

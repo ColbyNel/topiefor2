@@ -11,6 +11,8 @@ public interface CustomerDAO {
 
     boolean createCustomer(Customer customer);
 
+    Customer login(String emailAddress, String password);
+
     boolean updateCustomer(Customer customer, int customerID);
 
     List<Customer> getCustomers();

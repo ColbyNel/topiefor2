@@ -34,13 +34,12 @@ public class CustomerDAOImpl implements CustomerDAO {
         connection = db.getConnection();
 
         try {
-            ps = connection.prepareStatement(
-                    "INSERT INTO Customer (CustomerName, customerIDNo, phoneNumber, joinDate, addressOne, addressTwo, city, zip, comment,email, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            ps = connection.prepareStatement("INSERT INTO Customer (CustomerName, customerIDNo, phoneNumber, joinDate, addressOne, addressTwo, city, zip, comment,email, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, customer.getCustomerName());
             ps.setString(2, customer.getCustomerIDNo());
             ps.setString(3, customer.getPhoneNumber());
-            ps.setObject(4, customer.getJoinDate());
+            ps.setObject(4, customer.getJoinDate().now());
             ps.setString(5, customer.getAddressOne());
             ps.setString(6, customer.getAddressTwo());
             ps.setString(7, customer.getCity());
@@ -72,24 +71,42 @@ public class CustomerDAOImpl implements CustomerDAO {
     }
 
     @Override
+    public Customer login(String email, String password) {
+        db = DbManager.getInstance();
+        String sql = "SELECT * FROM customer WHERE email = ? AND password = ?";
+        try {
+            ps = connection.prepareStatement(sql);
+            ps.setString(1, email);
+            ps.setString(2, password);
+
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return extractCustomerFromResultSet(rs);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+        return null;
+    }
+
+    @Override
     public boolean updateCustomer(Customer customer, int customerID) {
         db = DbManager.getInstance();
         connection = db.getConnection();
 
         try {
-            ps = connection.prepareStatement("UPDATE Customer SET customerName=?, customerIDNo=?, phoneNumber=?, joinDate=?, addressOne=?, addressTwo=?, city=?, zip=?, comment=? ,email=? ,password=? WHERE ID=?");
+            ps = connection.prepareStatement("UPDATE Customer SET customerName=?, customerIDNo=?, phoneNumber=?, addressOne=?, addressTwo=?, city=?, zip=?, comment=? ,email=? ,password=? WHERE ID=?");
             ps.setString(1, customer.getCustomerName());
             ps.setString(2, customer.getCustomerIDNo());
             ps.setString(3, customer.getPhoneNumber());
-            ps.setObject(4, customer.getJoinDate());
-            ps.setString(5, customer.getAddressOne());
-            ps.setString(6, customer.getAddressTwo());
-            ps.setString(7, customer.getCity());
-            ps.setString(8, customer.getZip());
-            ps.setString(9, customer.getComment());
-            ps.setInt(12, customerID);
-            ps.setString(10, customer.getEmail());
-            ps.setString(11, customer.getPassword());
+            ps.setString(4, customer.getAddressOne());
+            ps.setString(5, customer.getAddressTwo());
+            ps.setString(6, customer.getCity());
+            ps.setString(7, customer.getZip());
+            ps.setString(8, customer.getComment());
+            ps.setString(9, customer.getEmail());
+            ps.setString(10, customer.getPassword());
+            ps.setInt(11, customerID);
 
             int affectedRows = ps.executeUpdate();
 
@@ -370,11 +387,12 @@ public class CustomerDAOImpl implements CustomerDAO {
         newCustomer.setZip("12345");
         newCustomer.setComment("A new customer");
         newCustomer.setEmail("john@example.com");
-        newCustomer.setPassword("password");
+        newCustomer.setPassword("password34");
 
-     //   Adding customer
-         customerDAO.createCustomer(newCustomer);
-         
+        //   Adding customer
+        //customerDAO.createCustomer(newCustomer);
+        //Test for login    
+//        System.out.println(customerDAO.login("john@example.com", "password34"));
         //update customer
 //        if (customerDAO.updateCustomer(newCustomer,2)) {
 //            System.out.println("Success");
@@ -404,9 +422,9 @@ public class CustomerDAOImpl implements CustomerDAO {
 //        System.out.println("Number of customers: " + customersQuantity);
 //
 //        // Test getCustomersByKeyWord method
-        String keyword = "Pretoria";
-        List<Customer> customersByKeyword = customerDAO.getCustomersByKeyWord(keyword);
-        System.out.println("Customers with keyword '" + keyword + "': " + customersByKeyword);
+//        String keyword = "Pretoria";
+//        List<Customer> customersByKeyword = customerDAO.getCustomersByKeyWord(keyword);
+//        System.out.println("Customers with keyword '" + keyword + "': " + customersByKeyword);
 //
 //        // Test getCustomer method
 //        int customerIdToRetrieve = 2;

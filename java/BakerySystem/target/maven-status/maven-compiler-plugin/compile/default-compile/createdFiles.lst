@@ -1,3 +1,4 @@
+za\co\bakerysystem\controller\CustomerController.class
 za\co\bakerysystem\dao\PaymentDAO.class
 za\co\bakerysystem\dao\impl\ProductDAOImpl.class
 za\co\bakerysystem\model\SalesReportDetails.class
@@ -20,6 +21,7 @@ za\co\bakerysystem\dao\impl\PaymentDAOImpl.class
 za\co\bakerysystem\dao\impl\SalesReportDAOImpl.class
 za\co\bakerysystem\model\Payment.class
 za\co\bakerysystem\model\Product.class
+za\co\bakerysystem\restapi\MyRestApp.class
 za\co\bakerysystem\dao\ProductDAO.class
 za\co\bakerysystem\dao\SalesReportDAO.class
 za\co\bakerysystem\model\RecipeIngredient.class
