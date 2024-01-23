@@ -18,11 +18,8 @@ public class DbManager {
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(url, user, password);
             System.out.println("Got a connection");
-        } catch (SQLException se) {
-            se.printStackTrace();
-            System.err.println("Could not connect: " + se.getMessage());
-        } catch (ClassNotFoundException se) {
-            se.printStackTrace();
+        } catch (SQLException | ClassNotFoundException se) {
+            System.out.println("Error: "+se.getMessage());
             System.err.println("Could not connect: " + se.getMessage());
         }
 

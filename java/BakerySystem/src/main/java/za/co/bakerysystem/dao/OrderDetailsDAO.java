@@ -6,14 +6,14 @@ import za.co.bakerysystem.model.OrderDetails;
 
 public interface OrderDetailsDAO {
 
-    void save(OrderDetails orderDetails);
+    boolean save(OrderDetails orderDetails);
 
     OrderDetails findById(int orderId, int productId);
 
     List<OrderDetails> findAll();
 
-    void update(OrderDetails orderDetails);
+    boolean update(OrderDetails orderDetails);
 
-    void delete(int orderId, int productId);
+    boolean delete(int orderId, int productId);
 }
 

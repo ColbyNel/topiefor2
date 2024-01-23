@@ -2,7 +2,6 @@ package za.co.bakerysystem.dao.impl;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -54,18 +53,18 @@ public class OrderDAOImpl implements OrderDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (ps != null) {
-                    ps.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+        } //finally {
+//            try {
+//                if (ps != null) {
+//                    ps.close();
+//                }
+//                if (connection != null) {
+//                    connection.close();
+//                }
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//        }
         return false;
     }
 
@@ -218,21 +217,21 @@ public class OrderDAOImpl implements OrderDAO {
         } catch (SQLException e) {
             System.out.println("Error getting orders: " + e.getMessage());
             e.printStackTrace();
-//        } finally {
-//            try {
-//                if (rs != null) {
-//                    rs.close();
-//                }
-//                if (ps != null) {
-//                    ps.close();
-//                }
-//                if (connection != null) {
-//                    connection.close();
-//                }
-//            } catch (SQLException e) {
-//                System.out.println("Error closing resources: " + e.getMessage());
-//                e.printStackTrace();
-//            }
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Error closing resources: " + e.getMessage());
+                e.printStackTrace();
+            }
         }
         return orders;
     }
@@ -377,7 +376,7 @@ public class OrderDAOImpl implements OrderDAO {
 
             while (rs.next()) {
                 Order order = new Order();
-                order.setID(rs.getInt("ID"));
+                order.setID(rs.getInt("order_id"));
                 order.setCustomerID(rs.getInt("Customer_ID"));
                 Timestamp timestamp = rs.getTimestamp("DatePlaced");
                 if (timestamp != null) {
@@ -480,8 +479,8 @@ public class OrderDAOImpl implements OrderDAO {
 
             while (rs.next()) {
                 Payment payment = new Payment();
-                payment.setPaymentTypeID(rs.getInt("Payment_Type_ID"));
-                payment.setOrderID(rs.getInt("order_ID"));
+                payment.setPaymentTypeID(rs.getInt("payment_type_id"));
+                payment.setOrderID(orderID);
                 payment.setAmount(rs.getDouble("Amount"));
                 payments.add(payment);
             }
@@ -520,12 +519,16 @@ public class OrderDAOImpl implements OrderDAO {
 
             while (rs.next()) {
                 Product product = new Product();
-                product.setID(rs.getInt("ID"));
-                product.setName(rs.getString("ProductName"));
+                product.setID(rs.getInt("product_id"));
+                product.setName(rs.getString("Name"));
                 product.setPrice(rs.getDouble("Price"));
                 product.setFoodCost(rs.getDouble("FoodCost"));
                 product.setTimeCost(rs.getInt("TimeCost"));
                 product.setComment(rs.getString("Comment"));
+                product.setDescription(rs.getString("Description"));
+                product.setNutrientInformation(rs.getString("NutrientInformation"));
+                product.setWarnings(rs.getString("Warnings"));
+                product.setCategoryID(rs.getInt("CategoryID"));
                 products.add(product);
             }
         } catch (SQLException e) {
@@ -554,7 +557,7 @@ public class OrderDAOImpl implements OrderDAO {
         connection = db.getConnection();
 
         try {
-            String query = "DELETE * FROM `Order` WHERE ID = ?";
+            String query = "DELETE FROM `Order` WHERE ID = ?";
             ps = connection.prepareStatement(query);
             ps.setInt(1, orderID);
             ps.executeUpdate();
@@ -580,7 +583,7 @@ public class OrderDAOImpl implements OrderDAO {
         connection = db.getConnection();
 
         try {
-            String query = "DELETE * FROM Order_Details WHERE order_id = ?";
+            String query = "DELETE FROM Order_Details WHERE order_id = ?";
             ps = connection.prepareStatement(query);
             ps.setInt(1, orderID);
             ps.executeUpdate();
@@ -605,9 +608,9 @@ public class OrderDAOImpl implements OrderDAO {
     //------------------------------------------------------------------------------------------------
     
     public static void main(String[] args) {
-        OrderDAOImpl orderDAO = new OrderDAOImpl();
-
-//        // Test createOrder
+//        OrderDAOImpl orderDAO = new OrderDAOImpl();
+//
+////        // Test createOrder
 //        Order orderToCreate = new Order();
 //        orderToCreate.setCustomerID(1);
 //        orderToCreate.setDatePlaced(LocalDateTime.now());
@@ -616,9 +619,9 @@ public class OrderDAOImpl implements OrderDAO {
 //        orderToCreate.setComment("Test Order");
 //        orderToCreate.setAmount(50.0);
 //        orderToCreate.setStatus("Pending");
-
+//
 //        boolean createOrderResult = orderDAO.createOrder(orderToCreate);
-//        System.out.println("Create Order Result: " + createOrderResult);
+//       System.out.println("Create Order Result: " + createOrderResult);
 
         // Test updateOrder
 //        Order orderToUpdate = orderDAO.getOrders().get(0); // Assuming there's an order in the database
@@ -670,21 +673,19 @@ public class OrderDAOImpl implements OrderDAO {
 //        System.out.println("Fetched Order: " + fetchedOrder);
 
         // Test getOrderPayment
-        List<Payment> orderPayments = orderDAO.getOrderPayment(1);
-        System.out.println("Order Payments: " + orderPayments);
+//        List<Payment> orderPayments = orderDAO.getOrderPayment(1);
+//        System.out.println("Order Payments: " + orderPayments);
 
-//        // Test getOrderProduct
-//        List<Product> orderProducts = orderDAO.getOrderProduct(orderIdToFetch);
+        // Test getOrderProduct
+//        List<Product> orderProducts = orderDAO.getOrderProduct(1);
 //        System.out.println("Order Products: " + orderProducts);
-//
-//        // Test deleteOrder
-//        int orderIdToDelete = orderDAO.getOrders().get(0).getID(); // Assuming there's an order in the database
-//        orderDAO.deleteOrder(orderIdToDelete);
+
+        // Test deleteOrder
+//        orderDAO.deleteOrder(1);
 //        System.out.println("Order Deleted");
-//
-//        // Test deleteOrderDetail
-//        int orderDetailIdToDelete = orderDetails.getOrderID(); // Assuming there's an order detail in the database
-//        orderDAO.deleteOrderDetail(orderDetailIdToDelete);
+
+        // Test deleteOrderDetail
+//        orderDAO.deleteOrderDetail(1);
 //        System.out.println("Order Detail Deleted");
     }
 
