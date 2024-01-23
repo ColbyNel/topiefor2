@@ -1,3 +1,4 @@
+za\co\bakerysystem\model\ShoppingCart.class
 za\co\bakerysystem\dao\PaymentDAO.class
 za\co\bakerysystem\dao\impl\ProductDAOImpl.class
 za\co\bakerysystem\model\SalesReportDetails.class
@@ -21,6 +22,8 @@ za\co\bakerysystem\dao\impl\SalesReportDAOImpl.class
 za\co\bakerysystem\model\Payment.class
 za\co\bakerysystem\model\Product.class
 za\co\bakerysystem\dao\ProductDAO.class
+za\co\bakerysystem\dao\impl\ShoppingCartDAOImpl.class
+za\co\bakerysystem\dao\ShoppingCartDAO.class
 za\co\bakerysystem\dao\SalesReportDAO.class
 za\co\bakerysystem\model\RecipeIngredient.class
 za\co\bakerysystem\dao\impl\RecipeDAOImpl.class

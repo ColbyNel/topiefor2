@@ -15,10 +15,6 @@ public class IngredientDAOImpl implements IngredientDAO {
     private PreparedStatement ps;
     private ResultSet rs;
 
-    private static final String JDBC_URL = "your_jdbc_url";
-    private static final String USERNAME = "your_username";
-    private static final String PASSWORD = "your_password";
-
     public IngredientDAOImpl() {
         db = DbManager.getInstance();
         this.connection = db.getConnection();

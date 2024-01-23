@@ -15,7 +15,6 @@ import za.co.bakerysystem.model.Product;
 
 public class ProductDAOImpl implements ProductDAO {
 
-    // You need to provide the database connection details here
     private Connection connection;
     private static DbManager db;
     private PreparedStatement ps;
@@ -395,14 +394,14 @@ public class ProductDAOImpl implements ProductDAO {
     public static void main(String[] args) {
         ProductDAO productDAO = new ProductDAOImpl();
         Product product = new Product(3, "Black Cake", 54.99, 8.50, 3, "Delicious cake baked by our own chefs.", "High in chocolate", "fibre and calcium", "none", 1);
-        //test for add product
-        //        if (productDAO.createProduct(product)) {
-        //            System.out.println("Success");
-        //
-        //        } else {
-        //            System.out.println("Failed");
-        //
-        //        }
+       // test for add product
+//                if (productDAO.createProduct(product)) {
+//                    System.out.println("Success");
+//        
+//                } else {
+//                    System.out.println("Failed");
+//        
+//                }
 
         //test for update product
         //        if (productDAO.updateProduct(product)) {
