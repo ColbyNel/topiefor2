@@ -118,7 +118,9 @@ public class ProductDAOImpl implements ProductDAO {
 
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
-        } //finally {
+        }
+
+         //finally {
 //            closeConnection(connection);
 //        }
 
@@ -152,7 +154,9 @@ public class ProductDAOImpl implements ProductDAO {
 
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
-        } //finally {
+        }
+        
+         //finally {
 //            closeConnection(connection);
 //        }
         return orderQuantity;
@@ -231,7 +235,8 @@ public class ProductDAOImpl implements ProductDAO {
 
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
-        } //finally {
+        }
+        //finally {
             //closeConnection(connection);
         //}
         return product;
@@ -281,17 +286,24 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
-    public void deleteProduct(int productID) {
+    public boolean deleteProduct(int productID) {
+        boolean retVal = false;
         db = DbManager.getInstance();
         connection = db.getConnection();
         try {
             ps = connection.prepareStatement("DELETE FROM Product WHERE productID = ?");
             ps.setInt(1, productID);
-            ps.executeUpdate();
+            retVal = ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
-        }// finally {
+        } finally {
+            closeConnection(connection);
+        }
+
+        return retVal;
+
+        // finally {
           //  closeConnection(connection);
         //}
     }
@@ -314,16 +326,21 @@ public class ProductDAOImpl implements ProductDAO {
                 product.setFoodCost(rs.getDouble("FoodCost"));
                 product.setTimeCost(rs.getInt("TimeCost"));
                 product.setComment(rs.getString("Comment"));
-                product.setComment(rs.getString("warnings"));
+                product.setWarnings(rs.getString("warnings"));
+                product.setCategoryID(rs.getInt("categoryID"));
                 product.setNutrientInformation(rs.getString("nutrientinformation"));
                 product.setDescription(rs.getString("description"));
-                product.setCategoryID(rs.getInt("categoryid"));
                 products.add(product);
             }
+            return products;
 
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
-        } //finally {
+        } finally {
+            closeConnection(connection);
+        }
+
+         //finally {
             //closeConnection(connection);
        // }
         return products;
@@ -396,6 +413,16 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     public static void main(String[] args) {
+        ProductDAO productDAO = new ProductDAOImpl();
+        Product product = new Product("Yellow Cake", 54.99, 8.50, 3, "Delicious cake baked by our own chefs.", "High in chocolate", "fibre and calcium", "none", 1);
+        // test for add product
+        if (productDAO.createProduct(product)) {
+            System.out.println("Success");
+
+        } else {
+            System.out.println("Failed");
+
+        }
        // ProductDAO productDAO = new ProductDAOImpl();
        // Product product = new Product(3, "Black Cake", 54.99, 8.50, 3, "Delicious cake baked by our own chefs.", "High in chocolate", "fibre and calcium", "none", 1);
        // test for add product
@@ -408,25 +435,22 @@ public class ProductDAOImpl implements ProductDAO {
 //                }
 
         //test for update product
-        //        if (productDAO.updateProduct(product)) {
-        //            System.out.println("Successfully updated ");
-        //
-        //        } else {
-        //            System.out.println("Failed");
-        //
-        //        }
+//        if (productDAO.updateProduct(product)) {
+//            System.out.println("Successfully updated ");
+//
+//        } else {
+//            System.out.println("Failed");
+//
+//        }
         //Test for getProduct 
-        //System.out.println(productDAO.getProduct(3));
-        
+//        System.out.println(productDAO.getProduct(6));
         //Test for getProductQuantity
 //        System.out.println(productDAO.getProductQuantity());
         //Test for getProductsByKeyWord
 //        List<Product> listOfProductByKeyWord = productDAO.getProductsByKeyWord("Black");
-        
 //        listOfProductByKeyWord.forEach(product1 -> {
 //            System.out.println(product1);
 //        });
 //        
-
     }
 }

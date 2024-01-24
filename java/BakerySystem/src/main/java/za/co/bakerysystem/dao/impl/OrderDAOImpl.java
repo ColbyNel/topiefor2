@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import za.co.bakerysystem.dao.OrderDAO;
@@ -36,8 +37,8 @@ public class OrderDAOImpl implements OrderDAO {
 
             // Set parameters
             ps.setInt(1, order.getCustomerID());
-            ps.setString(2, order.getDatePlaced().toString());
-            ps.setString(3, order.getPickupTime().toString());
+            ps.setObject(2, order.getDatePlaced().now());
+            ps.setObject(3, order.getPickupTime().now().plusDays(5));
             ps.setInt(4, order.getFulfilled());
             ps.setString(5, order.getComment());
             ps.setDouble(6, order.getAmount());
@@ -73,18 +74,17 @@ public class OrderDAOImpl implements OrderDAO {
         connection = db.getConnection();
 
         try {
-            ps = connection.prepareStatement(
-                    "UPDATE `Order` SET Customer_ID=?, DatePlaced=?, PickupTime=?, Fulfilled=?, Comment=?, Amount=?, status=? WHERE ID=?");
+            ps = connection.prepareStatement("UPDATE `Order` SET Customer_ID=?, Fulfilled=?, Comment=?, Amount=?, status=? WHERE ID=?");
 
-            // Set parameters
+            // Set parameters 
             ps.setInt(1, order.getCustomerID());
-            ps.setString(2, order.getDatePlaced().toString());
-            ps.setString(3, order.getPickupTime().toString());
-            ps.setInt(4, order.getFulfilled());
-            ps.setString(5, order.getComment());
-            ps.setDouble(6, order.getAmount());
-            ps.setString(7, order.getStatus());
-            ps.setInt(8, order.getID());
+//            ps.setString(2, order.getDatePlaced().toString());
+//            ps.setString(3, order.getPickupTime().toString());
+            ps.setInt(2, order.getFulfilled());
+            ps.setString(3, order.getComment());
+            ps.setDouble(4, order.getAmount());
+            ps.setString(5, order.getStatus());
+            ps.setInt(6, order.getID());
 
             int affectedRows = ps.executeUpdate();
 
@@ -93,19 +93,8 @@ public class OrderDAOImpl implements OrderDAO {
         } catch (SQLException e) {
             System.out.println("Error updating order: " + e.getMessage());
             System.out.println("Error: " + e.getMessage());
-        } finally {
-            try {
-                if (ps != null) {
-                    ps.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                System.out.println("Error closing resources: " + e.getMessage());
-                System.out.println("Error: " + e.getMessage());
-            }
         }
+        
         return false;
     }
 
@@ -445,22 +434,7 @@ public class OrderDAOImpl implements OrderDAO {
             }
         } catch (SQLException e) {
             System.out.println("Error getting order: " + e.getMessage());
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (callableStatement != null) {
-                    callableStatement.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                System.out.println("Error closing resources: " + e.getMessage());
-                System.out.println("Error: " + e.getMessage());
-            }
-        }
+        } 
         return order;
     }
 
@@ -607,29 +581,30 @@ public class OrderDAOImpl implements OrderDAO {
     //------------------------------------------------------------------------------------------------
     //------------------------------------------------------------------------------------------------
     public static void main(String[] args) {
-//        OrderDAOImpl orderDAO = new OrderDAOImpl();
+        OrderDAOImpl orderDAO = new OrderDAOImpl();
 //
 ////        // Test createOrder
-//        Order orderToCreate = new Order();
-//        orderToCreate.setCustomerID(1);
+        Order orderToCreate = new Order();
+        orderToCreate.setCustomerID(1);
 //        orderToCreate.setDatePlaced(LocalDateTime.now());
 //        orderToCreate.setPickupTime(LocalDateTime.now().plusHours(3));
-//        orderToCreate.setFulfilled(0);
-//        orderToCreate.setComment("Test Order");
-//        orderToCreate.setAmount(80.0);
-//        orderToCreate.setStatus("Pending");
-
+        orderToCreate.setFulfilled(0);
+        orderToCreate.setComment("Get Order");
+        orderToCreate.setAmount(90.0);
+        orderToCreate.setStatus("Delivered");
+        orderToCreate.setID(2);
 //
+////
 //        boolean createOrderResult = orderDAO.createOrder(orderToCreate);
-//       System.out.println("Create Order Result: " + createOrderResult);
+//        System.out.println("Create Order Result: " + createOrderResult);
 //        boolean createOrderResult = orderDAO.createOrder(orderToCreate);
 //        System.out.println("Create Order Result: " + createOrderResult);
         // Test updateOrder
 //        Order orderToUpdate = orderDAO.getOrders().get(0); // Assuming there's an order in the database
-//        orderToUpdate.setComment("Updated Comment");
-//
-//        boolean updateOrderResult = orderDAO.updateOrder(orderToUpdate);
-//        System.out.println("Update Order Result: " + updateOrderResult);
+//        orderToUpdate.setComment("Get Comment");
+
+        boolean updateOrderResult = orderDAO.updateOrder(orderToCreate);
+        System.out.println("Update Order Result: " + updateOrderResult);
         // Test fulfillOrder
 //        int orderIdToFulfill = orderDAO.getOrders().get(0).getID(); // Assuming there's an order in the database
 //        boolean fulfillOrderResult = orderDAO.fulfillOrder(orderIdToFulfill, true);

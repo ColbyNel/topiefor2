@@ -32,5 +32,5 @@ public interface ProductDAO {
 
     List<String> getRecipe(int productID);
 
-    void deleteProduct(int productID);
+    boolean deleteProduct(int productID);
 }
