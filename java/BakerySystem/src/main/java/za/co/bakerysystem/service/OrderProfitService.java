@@ -1,11 +1,11 @@
-
-package za.co.bakerysystem.dao;
+package za.co.bakerysystem.service;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-public interface OrderProfitDAO {
+public interface OrderProfitService {
+
     List<Map<String, Object>> fetchOrderProfit();
 
     List<Map<String, Object>> fetchOrderProfitLastMonth();
