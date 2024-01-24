@@ -49,34 +49,41 @@ public class OrderProfitDAOImpl implements OrderProfitDAO {
     private List<Map<String, Object>> executeQuery(String query, Object... params) {
         List<Map<String, Object>> resultList = new ArrayList<>();
 
-//        try (Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
-//                PreparedStatement statement = connection.prepareStatement(query)) {
-//
-//            setParameters(statement, params);
-//
-//            try (ResultSet resultSet = statement.executeQuery()) {
-//                ResultSetMetaData metaData = resultSet.getMetaData();
-//                int columnCount = metaData.getColumnCount();
-//
-//                while (resultSet.next()) {
-//                    Map<String, Object> row = new HashMap<>();
-//                    for (int i = 1; i <= columnCount; i++) {
-//                        String columnName = metaData.getColumnName(i);
-//                        Object value = resultSet.getObject(i);
-//                        row.put(columnName, value);
-//                    }
-//                    resultList.add(row);
-//                }
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
         try {
             connection = db.getConnection();
             ps = connection.prepareStatement(query);
-            setParameters(ps, params);
-            rs = ps.executeQuery();
 
+            setParameters(ps, params);
+
+            rs = ps.executeQuery();
+            ResultSetMetaData metaData = rs.getMetaData();
+            int columnCount = metaData.getColumnCount();
+
+            while (rs.next()) {
+                Map<String, Object> row = new HashMap<>();
+                for (int i = 1; i <= columnCount; i++) {
+                    String columnName = metaData.getColumnName(i);
+                    Object value = rs.getObject(i);
+                    row.put(columnName, value);
+                }
+                resultList.add(row);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } //finally {
+           // closeResultSet(rs);
+           // closePreparedStatement(ps);
+           // closeConnection(connection);
+        //}
+
+        try {
+            connection = db.getConnection();
+            ps = connection.prepareStatement(query);
+
+            setParameters(ps, params);
+
+            rs = ps.executeQuery();
             ResultSetMetaData metaData = rs.getMetaData();
             int columnCount = metaData.getColumnCount();
 
@@ -92,11 +99,11 @@ public class OrderProfitDAOImpl implements OrderProfitDAO {
 
         } catch (SQLException e) {
             handleSQLException(e);
-        } finally {
-            closeResultSet(rs);
-            closePreparedStatement(ps);
-            closeConnection(connection);
-        }
+        }// finally {
+           // closeResultSet(rs);
+           // closePreparedStatement(ps);
+            //closeConnection(connection);
+        //}
 
         return resultList;
     }
@@ -138,6 +145,54 @@ public class OrderProfitDAOImpl implements OrderProfitDAO {
             }
         } catch (SQLException e) {
             handleSQLException(e);
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------
+    public static void main(String[] args) {
+        OrderProfitDAO orderProfitDAO = new OrderProfitDAOImpl();
+
+        // Test fetchOrderProfit
+//        System.out.println("Order Profit:");
+//        List<Map<String, Object>> orderProfitList = orderProfitDAO.fetchOrderProfit();
+//        printResult(orderProfitList);
+
+//        // Test fetchOrderProfitLastMonth
+//        System.out.println("\nOrder Profit Last Month:");
+//        List<Map<String, Object>> orderProfitLastMonthList = orderProfitDAO.fetchOrderProfitLastMonth();
+//        printResult(orderProfitLastMonthList);
+
+//        // Test fetchSaleProfit
+//        System.out.println("\nSale Profit:");
+//        List<Map<String, Object>> saleProfitList = orderProfitDAO.fetchSaleProfit();
+//        printResult(saleProfitList);
+
+//        // Test fetchSaleProfitLastMonth
+//        System.out.println("\nSale Profit Last Month:");
+//        List<Map<String, Object>> saleProfitLastMonthList = orderProfitDAO.fetchSaleProfitLastMonth();
+//        printResult(saleProfitLastMonthList);
+
+        // Test fetchOrderProfitInRange
+//        System.out.println("\nOrder Profit in Range:");
+        LocalDate startDate = LocalDate.of(2022, 1, 1);
+        LocalDate endDate = LocalDate.of(2025, 12, 31);
+//        List<Map<String, Object>> orderProfitInRangeList = orderProfitDAO.fetchOrderProfitInRange(startDate, endDate);
+//        printResult(orderProfitInRangeList);
+
+        // Test fetchSaleProfitInRange
+        System.out.println("\nSale Profit in Range:");
+        List<Map<String, Object>> saleProfitInRangeList = orderProfitDAO.fetchSaleProfitInRange(startDate, endDate);
+        printResult(saleProfitInRangeList);
+   }
+
+    private static void printResult(List<Map<String, Object>> resultList) {
+        for (Map<String, Object> row : resultList) {
+            for (Map.Entry<String, Object> entry : row.entrySet()) {
+                System.out.println(entry.getKey() + ": " + entry.getValue());
+            }
+            System.out.println("----------");
         }
     }
 
