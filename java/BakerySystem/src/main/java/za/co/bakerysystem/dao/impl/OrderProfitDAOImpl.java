@@ -49,6 +49,7 @@ public class OrderProfitDAOImpl implements OrderProfitDAO {
     private List<Map<String, Object>> executeQuery(String query, Object... params) {
         List<Map<String, Object>> resultList = new ArrayList<>();
 
+<<<<<<< HEAD
 //        try (Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
 //                PreparedStatement statement = connection.prepareStatement(query)) {
 //
@@ -71,13 +72,76 @@ public class OrderProfitDAOImpl implements OrderProfitDAO {
 //        } catch (SQLException e) {
 //            e.printStackTrace();
 //        }
+=======
+        try {
+            connection = db.getConnection();
+            ps = connection.prepareStatement(query);
+            setParameters(ps, params);
+            rs = ps.executeQuery();
+
+            ResultSetMetaData metaData = rs.getMetaData();
+            int columnCount = metaData.getColumnCount();
+
+            while (rs.next()) {
+                Map<String, Object> row = new HashMap<>();
+                for (int i = 1; i <= columnCount; i++) {
+                    String columnName = metaData.getColumnName(i);
+                    Object value = rs.getObject(i);
+                    row.put(columnName, value);
+                }
+                resultList.add(row);
+            }
+
+        } catch (SQLException e) {
+            handleSQLException(e);
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(ps);
+            closeConnection(connection);
+        }
+>>>>>>> 875c981d71fc1931ef1471c5eea08f3f2891e706
 
         return resultList;
     }
 
-    private void setParameters(PreparedStatement statement, Object... params) throws SQLException {
-        for (int i = 0; i < params.length; i++) {
-            statement.setObject(i + 1, params[i]);
+    private void closePreparedStatement(PreparedStatement ps) {
+        try {
+            if (ps != null && !ps.isClosed()) {
+                ps.close();
+            }
+        } catch (SQLException e) {
+            handleSQLException(e);
         }
     }
+
+    private void closeResultSet(ResultSet rs) {
+        try {
+            if (rs != null && !rs.isClosed()) {
+                rs.close();
+            }
+        } catch (SQLException e) {
+            handleSQLException(e);
+        }
+    }
+
+    private void setParameters(PreparedStatement ps, Object... params) throws SQLException {
+        for (int i = 0; i < params.length; i++) {
+            ps.setObject(i + 1, params[i]);
+        }
+    }
+
+    private void handleSQLException(SQLException e) {
+        e.printStackTrace();
+    }
+
+    private void closeConnection(Connection connection) {
+        try {
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            handleSQLException(e);
+        }
+    }
+
 }

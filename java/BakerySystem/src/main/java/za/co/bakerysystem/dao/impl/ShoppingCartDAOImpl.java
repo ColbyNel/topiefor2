@@ -241,13 +241,13 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
 
         try {
             connection = db.getConnection();
-            String query = "SELECT COUNT(DISTINCT productID) AS totalQuantity FROM ShoppingCartProduct WHERE cartID = ?";
+            String query = "SELECT COUNT(DISTINCT productID) AS Quantity FROM ShoppingCartProduct WHERE cartID = ?";
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, cartID);
             resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                totalQuantity = resultSet.getInt("totalQuantity");
+                totalQuantity = resultSet.getInt("Quantity");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -308,7 +308,7 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
         double foodcost = resultSet.getDouble("foodcost");
         String description = resultSet.getString("description");
         String warnings = resultSet.getString("warnings");
-        String nutrientInfo = resultSet.getString("nutrientInfo");
+        String nutrientInfo = resultSet.getString("nutrientInfoRMATION");
         int timecost = resultSet.getInt("timecost");
         String comment = resultSet.getString("comment");
         double price = resultSet.getDouble("price");
@@ -326,22 +326,22 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
         ProductDAOImpl productDAO = new ProductDAOImpl();
 
         try {
-//            Product newProduct = new Product(9, 1, "Fresh Bread", "High-quality bread", "None", "Carbohydrates", 4.99);
-//            productDAO.addProduct(newProduct);
+            Product newProduct = new Product("Freshh", 4.99,6.7,2,"GOOD BREAD","HIGH IN carbo","fibre","none",2);
+            productDAO.createProduct(newProduct);
 
             // Get the newly added product from the database
-//            Product addedProduct = productDAO.searchProducts("Fresh Bread").get(0);
-//
-//            int totalQuantity = shoppingCartDAO.calculateTotalQuantity(18);
+            Product addedProduct = productDAO.getProductsByKeyWord("Freshh").get(0);
+
+            //int totalQuantity = shoppingCartDAO.calculateTotalQuantity(5);
 //           
 //            // Add the product to the shopping cart with the calculated total quantity
-//            shoppingCartDAO.addProductToCart(18, addedProduct, totalQuantity);
-//            18,cake,2
+           // shoppingCartDAO.addProductToCart(2,addedProduct, totalQuantity);
+            
             // Display the updated shopping cart
-            //ShoppingCart retrievedCart = shoppingCartDAO.getShoppingCartById(18);
-            //System.out.println("Shopping Cart after adding product: " + retrievedCart);
+//            ShoppingCart retrievedCart = shoppingCartDAO.getShoppingCartById(1);
+//            System.out.println("Shopping Cart after adding product: " + retrievedCart);
             //Display all products after adding to the cart
-            System.out.println("Products after adding to the cart: " + productDAO.getProducts());
+           // System.out.println("Products after adding to the cart: " + productDAO.getProducts());
         } catch (Exception e) {
             e.printStackTrace();
         }
