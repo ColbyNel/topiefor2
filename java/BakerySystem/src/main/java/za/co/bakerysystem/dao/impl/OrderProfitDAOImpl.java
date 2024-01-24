@@ -7,12 +7,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import za.co.bakerysystem.dbmanager.DbManager;
 
 public class OrderProfitDAOImpl implements OrderProfitDAO {
 
-    private static final String JDBC_URL = "jdbc:your_database_url";
-    private static final String USERNAME = "your_username";
-    private static final String PASSWORD = "your_password";
+    private Connection connection;
+    private static final DbManager db = DbManager.getInstance();
+    private PreparedStatement ps;
+    private ResultSet rs;
 
     @Override
     public List<Map<String, Object>> fetchOrderProfit() {

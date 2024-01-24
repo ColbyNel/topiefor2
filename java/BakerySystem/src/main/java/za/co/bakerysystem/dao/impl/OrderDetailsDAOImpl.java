@@ -192,12 +192,12 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
  //       System.out.println("All OrderDetails: " + orderDetailsDAO.findAll());
 
 //        // Test update method
-        newOrderDetails.setQuantity(10);
-        boolean updateSuccess = orderDetailsDAO.update(newOrderDetails);
-        System.out.println("Update success: " + updateSuccess);
+//        newOrderDetails.setQuantity(10);
+//        boolean updateSuccess = orderDetailsDAO.update(newOrderDetails);
+//        System.out.println("Update success: " + updateSuccess);
 
 //        // Test delete method
-//        boolean deleteSuccess = orderDetailsDAO.delete(1, 101);
+//        boolean deleteSuccess = orderDetailsDAO.delete(2, 2);
 //        System.out.println("Delete success: " + deleteSuccess);
     }
 
