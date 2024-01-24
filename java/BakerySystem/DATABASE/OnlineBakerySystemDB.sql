@@ -24,7 +24,7 @@ USE `bakery`;
 DROP TABLE IF EXISTS `category`;
 CREATE TABLE IF NOT EXISTS `category` (
   `CategoryID` int NOT NULL AUTO_INCREMENT,
-  `CategoryName` varchar(50) DEFAULT NULL,
+  `Description` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   PRIMARY KEY (`CategoryID`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -96,12 +96,15 @@ DELIMITER ;
 -- Dumping structure for procedure bakery.fetch_all_sales_in_range
 DROP PROCEDURE IF EXISTS `fetch_all_sales_in_range`;
 DELIMITER //
-CREATE PROCEDURE `fetch_all_sales_in_range`(IN startDate DATE, IN endDate DATE)
+CREATE PROCEDURE `fetch_all_sales_in_range`(
+	IN `startDate` DATE,
+	IN `endDate` DATE
+)
 BEGIN
 		SELECT *
 		FROM Sales_Report sp
-        WHERE sp.Date >= startDate AND sp.Date <= endDate 
-        ORDER BY sp.Date DESC;
+        WHERE sp.DatePlaced >= startDate AND sp.DatePlaced <= endDate 
+        ORDER BY sp.DatePlaced DESC;
 END//
 DELIMITER ;
 
@@ -303,11 +306,17 @@ DELIMITER ;
 -- Dumping structure for procedure bakery.fetch_products_keyword
 DROP PROCEDURE IF EXISTS `fetch_products_keyword`;
 DELIMITER //
-CREATE PROCEDURE `fetch_products_keyword`(IN keyWord VARCHAR(52))
+CREATE PROCEDURE `fetch_products_keyword`(
+	IN `keyWord` VARCHAR(52)
+)
 BEGIN
-		SELECT *
+        SELECT *
         FROM Product p
-        WHERE p.Name LIKE CONCAT('%', keyWord, '%') 
+        WHERE p.Name LIKE CONCAT('%', keyWord, '%')
+          OR p.Price LIKE CONCAT('%',keyWord,'%')
+          OR p.Description LIKE CONCAT('%',keyWord,'%')
+          OR p.NutrientInformation LIKE CONCAT('%',keyWord,'%')
+          OR p.CategoryID LIKE CONCAT('%',keyWord,'%')
         OR p.Comment LIKE CONCAT('%',keyWord,'%');
 END//
 DELIMITER ;
@@ -434,11 +443,14 @@ DELIMITER ;
 -- Dumping structure for procedure bakery.fetch_sales_in_range
 DROP PROCEDURE IF EXISTS `fetch_sales_in_range`;
 DELIMITER //
-CREATE PROCEDURE `fetch_sales_in_range`(IN startDate DATE, IN endDate DATE)
+CREATE PROCEDURE `fetch_sales_in_range`(
+	IN `startDate` DATE,
+	IN `endDate` DATE
+)
 BEGIN
         SELECT 
             s.ID as report_id, 
-            s.Date,
+            s.DatePlaced,
             s.Comment,
             s.Hours, 
             sum(QuantitySold * ( PriceAtSale - FoodCostAtSale) - QuantityTrashed * FoodCostAtSale) as profit, 
@@ -447,8 +459,8 @@ BEGIN
 		JOIN Sales_Report_Details spd  ON Sales_Report_ID = s.ID
 		JOIN Product p ON product_id = p.ID
         WHERE DatePlaced >= startDate AND DatePlaced <= endDate
-		GROUP BY report_id, Date
-		ORDER BY Date DESC;
+		GROUP BY report_id, DatePlaced
+		ORDER BY DatePlaced DESC;
 END//
 DELIMITER ;
 
@@ -575,30 +587,48 @@ DELIMITER ;
 -- Dumping structure for procedure bakery.fetch_single_order_details
 DROP PROCEDURE IF EXISTS `fetch_single_order_details`;
 DELIMITER //
-CREATE PROCEDURE `fetch_single_order_details`(IN id INT)
+CREATE PROCEDURE `fetch_single_order_details`(
+	IN `id` INT
+)
 BEGIN
     SELECT
-        product_id, Name, PriceAtSale, Quantity, od.Comment , (PriceAtSale * Quantity) AS Total
+        od.product_id,
+        p.Name,
+        p.Price,
+        od.Quantity,
+        od.Comment,
+        p.ID AS product_id,
+        p.FoodCost,
+        p.TimeCost,
+        p.Comment ,
+        p.Description,
+        p.NutrientInformation,
+        p.Warnings,
+        p.CategoryID
     FROM Order_Details od
     JOIN `Order` o ON o.ID = od.order_id
     JOIN Product p ON p.ID = od.product_id
-    WHERE order_id = id
-    ORDER BY Name;
+    WHERE o.ID = order_id
+    ORDER BY p.Name;
 END//
 DELIMITER ;
 
 -- Dumping structure for procedure bakery.fetch_single_order_payments
 DROP PROCEDURE IF EXISTS `fetch_single_order_payments`;
 DELIMITER //
-CREATE PROCEDURE `fetch_single_order_payments`(IN id INT)
+CREATE PROCEDURE `fetch_single_order_payments`(
+	IN `id` INT
+)
 BEGIN
     SELECT
-        pt.ID,Type, pm.Amount
+        pt.Payment_Type_ID AS payment_type_id,
+        pt.Type,
+        pm.Amount
     FROM Payment pm
     JOIN `Order` o ON o.ID = pm.order_id
-    JOIN Payment_Type pt ON pt.ID = pm.Payment_Type_ID
-    WHERE order_id = id
-    ORDER BY Type;
+    JOIN Payment_Type pt ON pt.Payment_Type_ID = pm.Payment_Type_ID
+    WHERE o.ID = order_id
+    ORDER BY pt.Type;
 END//
 DELIMITER ;
 
@@ -629,11 +659,13 @@ DELIMITER ;
 -- Dumping structure for procedure bakery.fetch_single_sale
 DROP PROCEDURE IF EXISTS `fetch_single_sale`;
 DELIMITER //
-CREATE PROCEDURE `fetch_single_sale`(IN id INT)
+CREATE PROCEDURE `fetch_single_sale`(
+	IN `id` INT
+)
 BEGIN
      SELECT 
             s.ID as report_id, 
-            s.Date,
+            s.DatePlaced,
             s.Comment,
             s.Hours, 
             sum(QuantitySold * ( PriceAtSale - FoodCostAtSale) - QuantityTrashed * FoodCostAtSale) as profit, 
@@ -643,31 +675,37 @@ BEGIN
 		JOIN Sales_Report_Details spd  ON Sales_Report_ID = s.ID
 		JOIN Product p ON product_id = p.ID
         WHERE s.ID = id
-		GROUP BY report_id, Date
-		ORDER BY Date DESC;
+		GROUP BY report_id, DatePlaced
+		ORDER BY DatePlaced DESC;
 END//
 DELIMITER ;
 
 -- Dumping structure for procedure bakery.fetch_single_sale_details
 DROP PROCEDURE IF EXISTS `fetch_single_sale_details`;
 DELIMITER //
-CREATE PROCEDURE `fetch_single_sale_details`(IN id INT)
+CREATE PROCEDURE `fetch_single_sale_details`(
+	IN `id` INT
+)
 BEGIN
-    SELECT  spd.product_id, 
-            Name, 
-            PriceAtSale, 
-            StartQuantity, 
-            QuantitySold, 
-            QuantityTrashed, 
-            FoodCostAtSale,
-            QuantitySold * ( PriceAtSale - FoodCostAtSale) - QuantityTrashed * FoodCostAtSale as profit,
-            QuantitySold * PriceAtSale as revenue,
-            QuantityTrashed * FoodCostAtSale as lost
-    FROM Sales_Report_Details spd
-    JOIN Sales_Report s ON s.ID = spd.Sales_Report_ID
-    JOIN Product p ON p.ID = spd.product_id
-    WHERE Sales_Report_ID = id
-    ORDER BY QuantitySold DESC;
+    SELECT
+        spd.product_id,
+        p.Name,
+        spd.PriceAtSale,
+        spd.StartQuantity,
+        spd.QuantitySold,
+        spd.QuantityTrashed,
+        spd.FoodCostAtSale,
+        spd.QuantitySold * (spd.PriceAtSale - spd.FoodCostAtSale) - spd.QuantityTrashed * spd.FoodCostAtSale AS profit,
+        spd.QuantitySold * spd.PriceAtSale AS revenue,
+        spd.QuantityTrashed * spd.FoodCostAtSale AS lost
+    FROM
+        Sales_Report_Details spd
+        JOIN Sales_Report s ON s.ID = spd.Sales_Report_ID
+        JOIN Product p ON p.ID = spd.product_id
+    WHERE
+        s.ID = id
+    ORDER BY
+        spd.QuantitySold DESC;
 END//
 DELIMITER ;
 
@@ -679,7 +717,7 @@ CREATE TABLE IF NOT EXISTS `ingredient` (
   `PricePerKG` decimal(8,2) DEFAULT NULL,
   `Note` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Data exporting was unselected.
 
@@ -697,7 +735,7 @@ CREATE TABLE IF NOT EXISTS `order` (
   PRIMARY KEY (`ID`),
   KEY `Customer_ID` (`Customer_ID`),
   CONSTRAINT `order_ibfk_1` FOREIGN KEY (`Customer_ID`) REFERENCES `customer` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Data exporting was unselected.
 
@@ -713,7 +751,7 @@ CREATE TABLE IF NOT EXISTS `order_details` (
   PRIMARY KEY (`order_id`,`product_id`),
   KEY `product_id` (`product_id`),
   CONSTRAINT `order_details_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `order` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `order_details_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `order_details_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`productID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Data exporting was unselected.
@@ -723,7 +761,7 @@ DROP TABLE IF EXISTS `payment`;
 CREATE TABLE IF NOT EXISTS `payment` (
   `order_id` int unsigned NOT NULL,
   `Payment_Type_ID` int unsigned NOT NULL,
-  `Amount` decimal(8,2) NOT NULL,
+  `Amount` double NOT NULL DEFAULT (0),
   PRIMARY KEY (`order_id`,`Payment_Type_ID`),
   KEY `Payment_Type_ID` (`Payment_Type_ID`),
   CONSTRAINT `payment_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `order` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -738,14 +776,14 @@ CREATE TABLE IF NOT EXISTS `payment_type` (
   `Payment_Type_ID` int unsigned NOT NULL AUTO_INCREMENT,
   `Type` varchar(16) NOT NULL,
   PRIMARY KEY (`Payment_Type_ID`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Data exporting was unselected.
 
 -- Dumping structure for table bakery.product
 DROP TABLE IF EXISTS `product`;
 CREATE TABLE IF NOT EXISTS `product` (
-  `ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `productID` int unsigned NOT NULL AUTO_INCREMENT,
   `Name` varchar(30) NOT NULL,
   `Price` decimal(6,2) NOT NULL,
   `FoodCost` decimal(6,2) DEFAULT NULL,
@@ -755,10 +793,10 @@ CREATE TABLE IF NOT EXISTS `product` (
   `NutrientInformation` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `Warnings` varchar(50) DEFAULT NULL,
   `CategoryID` int DEFAULT NULL,
-  PRIMARY KEY (`ID`),
+  PRIMARY KEY (`productID`) USING BTREE,
   KEY `fk_Product_Category` (`CategoryID`),
   CONSTRAINT `fk_Product_Category` FOREIGN KEY (`CategoryID`) REFERENCES `category` (`CategoryID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Data exporting was unselected.
 
@@ -768,7 +806,7 @@ CREATE TABLE IF NOT EXISTS `recipe` (
   `product_id` int unsigned NOT NULL,
   `Comment` varchar(10000) DEFAULT NULL,
   PRIMARY KEY (`product_id`),
-  CONSTRAINT `recipe_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `recipe_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`productID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Data exporting was unselected.
@@ -791,12 +829,12 @@ CREATE TABLE IF NOT EXISTS `recipe_ingredient` (
 DROP TABLE IF EXISTS `sales_report`;
 CREATE TABLE IF NOT EXISTS `sales_report` (
   `ID` int unsigned NOT NULL AUTO_INCREMENT,
-  `Date` date NOT NULL,
+  `DatePlaced` date NOT NULL,
   `Hours` int DEFAULT NULL,
   `Comment` varchar(8048) DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `Date` (`Date`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE KEY `Date` (`DatePlaced`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Data exporting was unselected.
 
@@ -808,12 +846,15 @@ CREATE TABLE IF NOT EXISTS `sales_report_details` (
   `StartQuantity` int NOT NULL,
   `QuantitySold` int NOT NULL,
   `QuantityTrashed` int NOT NULL,
-  `PriceAtSale` decimal(6,2) NOT NULL,
-  `FoodCostAtSale` decimal(6,2) NOT NULL,
+  `PriceAtSale` double NOT NULL DEFAULT (0),
+  `FoodCostAtSale` double NOT NULL DEFAULT (0),
+  `profit` double DEFAULT NULL,
+  `revenue` double DEFAULT NULL,
+  `lost` double DEFAULT NULL,
   PRIMARY KEY (`Sales_Report_ID`,`product_id`),
   KEY `product_id` (`product_id`),
   CONSTRAINT `sales_report_details_ibfk_1` FOREIGN KEY (`Sales_Report_ID`) REFERENCES `sales_report` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `sales_report_details_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `sales_report_details_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`productID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Data exporting was unselected.
@@ -822,7 +863,7 @@ CREATE TABLE IF NOT EXISTS `sales_report_details` (
 DROP TABLE IF EXISTS `shoppingcart`;
 CREATE TABLE IF NOT EXISTS `shoppingcart` (
   `cartID` int unsigned NOT NULL AUTO_INCREMENT,
-  `totalAmount` decimal(10,2) DEFAULT NULL,
+  `totalAmount` double DEFAULT NULL,
   PRIMARY KEY (`cartID`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -837,7 +878,7 @@ CREATE TABLE IF NOT EXISTS `shoppingcartproduct` (
   PRIMARY KEY (`cartID`,`productID`) USING BTREE,
   KEY `fk_shoppingcartproduct_product` (`productID`) USING BTREE,
   CONSTRAINT `fk_shoppingcartproduct_cart` FOREIGN KEY (`cartID`) REFERENCES `shoppingcart` (`cartID`),
-  CONSTRAINT `fk_shoppingcartproduct_product` FOREIGN KEY (`productID`) REFERENCES `product` (`ID`)
+  CONSTRAINT `fk_shoppingcartproduct_product` FOREIGN KEY (`productID`) REFERENCES `product` (`productID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Data exporting was unselected.
