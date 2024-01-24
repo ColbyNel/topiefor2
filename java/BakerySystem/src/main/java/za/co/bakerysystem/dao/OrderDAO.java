@@ -32,7 +32,7 @@ public interface OrderDAO {
 
     List<Product> getOrderProduct(int orderID);
 
-    void deleteOrder(int orderID);
+    boolean deleteOrder(int orderID);
 
     void deleteOrderDetail(int orderID);
 

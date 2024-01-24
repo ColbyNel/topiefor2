@@ -93,7 +93,7 @@ public class OrderDAOImpl implements OrderDAO {
             System.out.println("Error updating order: " + e.getMessage());
             System.out.println("Error: " + e.getMessage());
         }
-        
+
         return false;
     }
 
@@ -433,7 +433,7 @@ public class OrderDAOImpl implements OrderDAO {
             }
         } catch (SQLException e) {
             System.out.println("Error getting order: " + e.getMessage());
-        } 
+        }
         return order;
     }
 
@@ -525,7 +525,8 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     @Override
-    public void deleteOrder(int orderID) {
+    public boolean deleteOrder(int orderID) {
+        boolean retVal = false;
         db = DbManager.getInstance();
         connection = db.getConnection();
 
@@ -533,21 +534,12 @@ public class OrderDAOImpl implements OrderDAO {
             String query = "DELETE FROM `Order` WHERE ID = ?";
             ps = connection.prepareStatement(query);
             ps.setInt(1, orderID);
-            ps.executeUpdate();
+            retVal = ps.executeUpdate() > 0;
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
-        } finally {
-            try {
-                if (ps != null) {
-                    ps.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                System.out.println("Error: " + e.getMessage());
-            }
+
         }
+        return retVal;
     }
 
     @Override
@@ -583,15 +575,15 @@ public class OrderDAOImpl implements OrderDAO {
         OrderDAOImpl orderDAO = new OrderDAOImpl();
 //
 ////        // Test createOrder
-        Order orderToCreate = new Order();
-        orderToCreate.setCustomerID(1);
+//        Order orderToCreate = new Order();
+//        orderToCreate.setCustomerID(1);
 //        orderToCreate.setDatePlaced(LocalDateTime.now());
 //        orderToCreate.setPickupTime(LocalDateTime.now().plusHours(3));
-        orderToCreate.setFulfilled(0);
-        orderToCreate.setComment("Get Order");
-        orderToCreate.setAmount(90.0);
-        orderToCreate.setStatus("Delivered");
-        orderToCreate.setID(2);
+//        orderToCreate.setFulfilled(0);
+//        orderToCreate.setComment("Get Order");
+//        orderToCreate.setAmount(90.0);
+//        orderToCreate.setStatus("Delivered");
+//        orderToCreate.setID(2);
 //
 ////
 //        boolean createOrderResult = orderDAO.createOrder(orderToCreate);
@@ -602,24 +594,24 @@ public class OrderDAOImpl implements OrderDAO {
 //        Order orderToUpdate = orderDAO.getOrders().get(0); // Assuming there's an order in the database
 //        orderToUpdate.setComment("Get Comment");
 
-        boolean updateOrderResult = orderDAO.updateOrder(orderToCreate);
-        System.out.println("Update Order Result: " + updateOrderResult);
+//        boolean updateOrderResult = orderDAO.updateOrder(orderToCreate);
+//        System.out.println("Update Order Result: " + updateOrderResult);
         // Test fulfillOrder
 //        int orderIdToFulfill = orderDAO.getOrders().get(0).getID(); // Assuming there's an order in the database
 //        boolean fulfillOrderResult = orderDAO.fulfillOrder(orderIdToFulfill, true);
 //        System.out.println("Fulfill Order Result: " + fulfillOrderResult);
         // Test createOrderDetail
-//        OrderDetails orderDetails = new OrderDetails();
-//        //orderDetails.setOrderID(orderIdToFulfill);
-//        orderDetails.setOrderID(1);
-//        orderDetails.setProductID(2); // Assuming there's a product in the database
-//        orderDetails.setPriceAtSale(20.0);
-//        orderDetails.setFoodCostAtSale(15.0);
-//        orderDetails.setQuantity(2);
-//        orderDetails.setComment("Test Order Detail");
+        OrderDetails orderDetails = new OrderDetails();
+        //orderDetails.setOrderID(orderIdToFulfill);
+        orderDetails.setOrderID(3);
+        orderDetails.setProductID(2); // Assuming there's a product in the database
+        orderDetails.setPriceAtSale(20.0);
+        orderDetails.setFoodCostAtSale(15.0);
+        orderDetails.setQuantity(2);
+        orderDetails.setComment("Test Order Detail");
 //
-//        boolean createOrderDetailResult = orderDAO.createOrderDetail(orderDetails);
-//        System.out.println("Create Order Detail Result: " + createOrderDetailResult);
+        boolean createOrderDetailResult = orderDAO.createOrderDetail(orderDetails);
+        System.out.println("Create Order Detail Result: " + createOrderDetailResult);
         // Test getOrders
 //        List<Order> allOrders = orderDAO.getOrders();
 //        System.out.println("All Orders: " + allOrders);
@@ -648,8 +640,8 @@ public class OrderDAOImpl implements OrderDAO {
 //        orderDAO.deleteOrder(1);
 //        System.out.println("Order Deleted");
         // Test deleteOrderDetail
-//        orderDAO.deleteOrderDetail(1);
-//        System.out.println("Order Detail Deleted");
+        orderDAO.deleteOrderDetail(1);
+        System.out.println("Order Detail Deleted");
     }
 
 }
