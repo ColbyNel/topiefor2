@@ -2,6 +2,7 @@ C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\model\Ingredient.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\dao\impl\IngredientDAOImpl.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\dao\IngredientDAO.java
+C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\controller\ProductController.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\dao\impl\OrderProfitDAOImpl.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\controller\IngredientController.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\dao\RecipeDAO.java
@@ -34,6 +35,7 @@ C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\model\Order.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\dao\PaymentDAO.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\controller\CategoryController.java
+C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\controller\OrderController.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\dao\impl\OrderDAOImpl.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\model\RecipeIngredient.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\dao\SalesReportDetailsDAO.java
