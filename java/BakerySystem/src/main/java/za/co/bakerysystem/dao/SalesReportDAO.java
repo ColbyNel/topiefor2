@@ -3,12 +3,13 @@ package za.co.bakerysystem.dao;
 import java.time.LocalDate;
 import java.util.List;
 import za.co.bakerysystem.model.SalesReport;
+import za.co.bakerysystem.model.SalesReportDetails;
 
 public interface SalesReportDAO {
 
-    int createSale(SalesReport salesReport);
+    boolean createSale(SalesReport salesReport);
 
-    void updateSale(SalesReport salesReport);
+    boolean updateSale(SalesReport salesReport);
 
     List<SalesReport> getSales(LocalDate startDate, LocalDate endDate);
 
@@ -22,9 +23,9 @@ public interface SalesReportDAO {
 
     SalesReport getSaleNoProfit(int saleID);
 
-    List<SalesReport> getSalesDetails(int saleID);
+    List<SalesReportDetails> getSalesDetails(int saleID);
 
-    void deleteSalesDetail(int reportID);
+    boolean deleteSalesDetail(int reportID);
 
-    void deleteSales(List<Integer> salesIDs);
+    boolean deleteSales(int salesID);
 }

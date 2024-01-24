@@ -2,9 +2,9 @@ package za.co.bakerysystem.dao;
 
 public interface RecipeDAO {
 
-    void createRecipe(int productID, String comment);
+    boolean createRecipe(int productID, String comment);
 
-    void createRecipeIngredient(int recipeID, int ingredientID, int grams);
+    boolean createRecipeIngredient(int recipeID, int ingredientID, int grams);
 
-    void deleteRecipeDetail(int recipeID);
+    boolean deleteRecipeDetail(int recipeID);
 }

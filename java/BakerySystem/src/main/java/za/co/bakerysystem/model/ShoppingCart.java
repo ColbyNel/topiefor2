@@ -1,4 +1,3 @@
-
 package za.co.bakerysystem.model;
 
 import java.util.ArrayList;
@@ -12,6 +11,11 @@ public class ShoppingCart {
 
     public ShoppingCart(int cardID, List<Product> products, double totalAmount) {
         this.cardID = cardID;
+        this.products = products;
+        this.totalAmount = totalAmount;
+    }
+
+    public ShoppingCart(List<Product> products, double totalAmount) {
         this.products = products;
         this.totalAmount = totalAmount;
     }

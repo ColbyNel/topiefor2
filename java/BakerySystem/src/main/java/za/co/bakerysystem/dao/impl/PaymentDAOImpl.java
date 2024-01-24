@@ -1,71 +1,79 @@
-
 package za.co.bakerysystem.dao.impl;
 
-
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import za.co.bakerysystem.dao.PaymentDAO;
+import za.co.bakerysystem.dbmanager.DbManager;
 import za.co.bakerysystem.model.Payment;
 import za.co.bakerysystem.model.PaymentType;
 
 public class PaymentDAOImpl implements PaymentDAO {
 
-    // You need to provide the database connection details here
-    private static final String JDBC_URL = "your_jdbc_url";
-    private static final String USERNAME = "your_username";
-    private static final String PASSWORD = "your_password";
+    private Connection connection;
+    private static final DbManager db = DbManager.getInstance();
+    private PreparedStatement ps;
+    private ResultSet rs;
 
     @Override
-    public void createPayment(Payment payment) {
-        try (Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
-             PreparedStatement statement = connection.prepareStatement(
-                     "INSERT INTO Payment(order_id, Payment_Type_ID, Amount) VALUES (?, ?, ?)")) {
+    public boolean createPayment(Payment payment) {
+        connection = db.getConnection();
 
-            statement.setInt(1, payment.getOrderID());
-            statement.setInt(2, payment.getPaymentTypeID());
-            statement.setDouble(3, payment.getAmount());
+        try {
+            String query = "INSERT INTO Payment(order_id, Payment_Type_ID, Amount) VALUES (?, ?, ?)";
+            ps = connection.prepareStatement(query);
 
-            statement.executeUpdate();
+            ps.setInt(1, payment.getOrderID());
+            ps.setInt(2, payment.getPaymentTypeID());
+            ps.setDouble(3, payment.getAmount());
+
+            int affectedRows = ps.executeUpdate();
+            return affectedRows > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
     @Override
-    public void deletePayment(int orderID) {
-        try (Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
-             PreparedStatement statement = connection.prepareStatement(
-                     "DELETE FROM Payment WHERE order_id = ?")) {
+    public boolean deletePayment(int orderID) {
+        connection = db.getConnection();
 
-            statement.setInt(1, orderID);
-            statement.executeUpdate();
+        try {
+            String query = "DELETE FROM Payment WHERE order_id = ?";
+            ps = connection.prepareStatement(query);
+
+            ps.setInt(1, orderID);
+
+            int affectedRows = ps.executeUpdate();
+            return affectedRows > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
     @Override
     public List<Payment> getOrderPayments(int orderID) {
         List<Payment> payments = new ArrayList<>();
-        try (Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
-             PreparedStatement statement = connection.prepareStatement(
-                     "SELECT * FROM Payment WHERE order_id = ?")) {
+        connection = db.getConnection();
 
-            statement.setInt(1, orderID);
+        try {
+            String query = "SELECT * FROM Payment WHERE order_id = ?";
+            ps = connection.prepareStatement(query);
 
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    Payment payment = new Payment();
-                    payment.setOrderID(resultSet.getInt("order_id"));
-                    payment.setPaymentTypeID(resultSet.getInt("Payment_Type_ID"));
-                    payment.setAmount(resultSet.getDouble("Amount"));
-                    payments.add(payment);
-                }
+            ps.setInt(1, orderID);
+
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Payment payment = new Payment();
+                payment.setOrderID(rs.getInt("order_id"));
+                payment.setPaymentTypeID(rs.getInt("Payment_Type_ID"));
+                payment.setAmount(rs.getDouble("Amount"));
+                payments.add(payment);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -76,14 +84,17 @@ public class PaymentDAOImpl implements PaymentDAO {
     @Override
     public List<PaymentType> getPaymentTypes() {
         List<PaymentType> paymentTypes = new ArrayList<>();
-        try (Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM Payment_Type");
-             ResultSet resultSet = statement.executeQuery()) {
+        connection = db.getConnection();
 
-            while (resultSet.next()) {
+        try {
+            String query = "SELECT * FROM Payment_Type";
+            ps = connection.prepareStatement(query);
+
+            rs = ps.executeQuery();
+            while (rs.next()) {
                 PaymentType paymentType = new PaymentType();
-                paymentType.setID(resultSet.getInt("ID"));
-                paymentType.setType(resultSet.getString("Type"));
+                paymentType.setID(rs.getInt("Payment_Type_ID"));
+                paymentType.setType(rs.getString("Type"));
                 paymentTypes.add(paymentType);
             }
         } catch (SQLException e) {
@@ -91,5 +102,34 @@ public class PaymentDAOImpl implements PaymentDAO {
         }
         return paymentTypes;
     }
-}
+    
+    //-------------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------
+    
+    public static void main(String[] args) {
+        PaymentDAO paymentDAO = new PaymentDAOImpl();
 
+//        // Test createPayment method
+//        Payment newPayment = new Payment();
+//        newPayment.setOrderID(2); // Set the orderID to an existing order ID in your database
+//        newPayment.setPaymentTypeID(1); // Set the paymentTypeID to an existing payment type ID in your database
+//        newPayment.setAmount(50.0);
+//
+//        boolean createPaymentSuccess = paymentDAO.createPayment(newPayment);
+//        System.out.println("Create Payment success: " + createPaymentSuccess);
+
+        // Test getOrderPayments method
+//        List<Payment> orderPayments = paymentDAO.getOrderPayments(2); // Replace 1 with an existing order ID in your database
+//        System.out.println("Order Payments: " + orderPayments);
+
+//        // Test deletePayment method
+//        boolean deletePaymentSuccess = paymentDAO.deletePayment(2); // Replace 1 with an existing order ID in your database
+//        System.out.println("Delete Payment success: " + deletePaymentSuccess);
+//
+//        // Test getPaymentTypes method
+//        List<PaymentType> paymentTypes = paymentDAO.getPaymentTypes();
+//        System.out.println("Payment Types: " + paymentTypes);
+    }
+
+}

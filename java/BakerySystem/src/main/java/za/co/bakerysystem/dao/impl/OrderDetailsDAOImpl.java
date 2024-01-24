@@ -173,7 +173,7 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
         OrderDetailsDAO orderDetailsDAO = new OrderDetailsDAOImpl();
 
 //        // Test save method
-        OrderDetails newOrderDetails = new OrderDetails();
+//        OrderDetails newOrderDetails = new OrderDetails();
 //        newOrderDetails.setOrderID(2);
 //        newOrderDetails.setProductID(2);
 //        newOrderDetails.setQuantity(5);

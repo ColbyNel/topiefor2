@@ -3,41 +3,93 @@ package za.co.bakerysystem.dao.impl;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import za.co.bakerysystem.dao.RecipeIngredientDAO;
+import za.co.bakerysystem.dbmanager.DbManager;
 
 public class RecipeIngredientDAOImpl implements RecipeIngredientDAO {
 
-    private static final String JDBC_URL = "your_jdbc_url";
-    private static final String USERNAME = "your_username";
-    private static final String PASSWORD = "your_password";
+    private Connection connection;
+    private static final DbManager db = DbManager.getInstance();
+    private PreparedStatement ps;
+    private ResultSet rs;
 
     @Override
-    public void createRecipeIngredient(int recipeID, int ingredientID, int grams) {
-        try (Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
-                PreparedStatement statement = connection.prepareStatement("INSERT INTO Recipe_Ingredient VALUES(?,?,?)")) {
+    public boolean createRecipeIngredient(int recipeID, int ingredientID, int grams) {
+        connection = db.getConnection();
 
-            statement.setInt(1, recipeID);
-            statement.setInt(2, ingredientID);
-            statement.setInt(3, grams);
+        try {
+            ps = connection.prepareStatement("INSERT INTO Recipe_Ingredient VALUES(?,?,?)");
 
-            statement.executeUpdate();
+            ps.setInt(1, recipeID);
+            ps.setInt(2, ingredientID);
+            ps.setInt(3, grams);
+
+            int affectedRows = ps.executeUpdate();
+            return affectedRows > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
+        } finally {
+            // Close resources in the finally block
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
-    public void deleteRecipeIngredient(int recipeID, int ingredientID) {
-        try (Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
-                PreparedStatement statement = connection.prepareStatement("DELETE FROM Recipe_Ingredient WHERE Recipe_ID = ? AND Ingredient_ID = ?")) {
+    public boolean deleteRecipeIngredient(int recipeID, int ingredientID) {
+        boolean deletionSuccessful = false;
+        connection = db.getConnection();
 
-            statement.setInt(1, recipeID);
-            statement.setInt(2, ingredientID);
+        try {
+            ps = connection.prepareStatement("DELETE FROM Recipe_Ingredient WHERE Recipe_ID = ? AND Ingredient_ID = ?");
+            ps.setInt(1, recipeID);
+            ps.setInt(2, ingredientID);
 
-            statement.executeUpdate();
+            int affectedRows = ps.executeUpdate();
+            deletionSuccessful = affectedRows > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            // Close resources in the finally block
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
+
+        return deletionSuccessful;
     }
+
+    //-------------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------
+    
+    public static void main(String[] args) {
+      
+        // Test createRecipeIngredient method
+//        RecipeIngredientDAO recipeIngredientDAO = new RecipeIngredientDAOImpl();
+//        recipeIngredientDAO.createRecipeIngredient(2, 2, 200);
+
+//        // Test deleteRecipeIngredient method
+//        boolean deletionResult = recipeIngredientDAO.deleteRecipeIngredient(2, 2);
+//        System.out.println("Deletion Result: " + deletionResult);
+    }
+    
 }

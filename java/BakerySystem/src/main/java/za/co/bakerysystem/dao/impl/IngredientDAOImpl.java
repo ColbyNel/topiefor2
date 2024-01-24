@@ -217,13 +217,13 @@ public class IngredientDAOImpl implements IngredientDAO {
     }
 
     public static void main(String[] args) {
-        Ingredient ingredient = new Ingredient("Flour", 97.0, "Raising flour for baking cakes");
-        Ingredient ingredient1 = new Ingredient(1, "Baking powder", 17.0, "Baking powder for cake");
-
-        IngredientDAO ingredientDAO = new IngredientDAOImpl();
-
-        //test for add ingredient
-//                if (ingredientDAO.createIngredient(ingredient)) {
+//        Ingredient ingredient = new Ingredient("Flour", 97.0, "Raising flour for baking cakes");
+//        Ingredient ingredient1 = new Ingredient(1, "Baking powder", 17.0, "Baking powder for cake");
+//
+//        IngredientDAO ingredientDAO = new IngredientDAOImpl();
+//
+//        //test for add ingredient
+//                if (ingredientDAO.createIngredient(ingredient1)) {
 //                    System.out.println("Success");
 //        
 //                } else {
@@ -253,7 +253,7 @@ public class IngredientDAOImpl implements IngredientDAO {
 //            System.out.println(product1);
 //        });
         //Test for getIngredientQuantity() 
-        System.out.println("Number of ingredients are: " + ingredientDAO.getIngredientQuantity());
+       // System.out.println("Number of ingredients are: " + ingredientDAO.getIngredientQuantity());
 
     }
 }

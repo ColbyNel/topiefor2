@@ -6,13 +6,13 @@ import za.co.bakerysystem.model.PaymentType;
 
 public interface PaymentTypeDAO {
 
-    void save(PaymentType paymentType);
+    boolean save(PaymentType paymentType);
 
     PaymentType findById(int id);
 
     List<PaymentType> findAll();
 
-    void update(PaymentType paymentType);
+    boolean update(PaymentType paymentType);
 
-    void delete(int id);
+    boolean delete(int id);
 }
