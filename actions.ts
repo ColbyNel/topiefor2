@@ -68,9 +68,9 @@ export const getAllCustomers = async () => {
   /*GET ALL ITEMS IN A CATEGORY BY ID FROM DB*/
 }
 
-export const getAllItemsFromCategory = async (categoryId) => {
+export const getAllItemsFromCategory = async (categoryId:number) => {
   const req = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/items/all_items_by_category/${categoryId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/products/get_product_category/${categoryId}`,
     {
       method: "GET",
       headers: {
