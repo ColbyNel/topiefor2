@@ -466,7 +466,7 @@ public class OrderDAOImpl implements OrderDAO {
 //        boolean fulfillOrderResult = orderDAO.fulfillOrder(orderIdToFulfill, true);
 //        System.out.println("Fulfill Order Result: " + fulfillOrderResult);
         // Test createOrderDetail
-<<<<<<< HEAD
+
         OrderDetails orderDetails = new OrderDetails();
 //        orderDetails.setOrderID(orderIdToFulfill);
         orderDetails.setOrderID(4);
@@ -476,7 +476,7 @@ public class OrderDAOImpl implements OrderDAO {
         orderDetails.setQuantity(2);
         orderDetails.setComment("Test Order Detail");
 //
-=======
+
 //        OrderDetails orderDetails = new OrderDetails();
 //        //orderDetails.setOrderID(orderIdToFulfill);
 //        orderDetails.setOrderID(3);
@@ -486,7 +486,7 @@ public class OrderDAOImpl implements OrderDAO {
 //        orderDetails.setQuantity(2);
 //        orderDetails.setComment("Test Order Detail");
 ////
->>>>>>> b934bfd7278b2d4aa6b5afa7f877f4261f89418b
+
 //        boolean createOrderDetailResult = orderDAO.createOrderDetail(orderDetails);
 //        System.out.println("Create Order Detail Result: " + createOrderDetailResult);
         // Test getOrders

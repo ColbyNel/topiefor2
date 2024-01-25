@@ -166,21 +166,21 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
 
 //        // Test save method
         OrderDetails newOrderDetails = new OrderDetails();
-<<<<<<< HEAD
+
         newOrderDetails.setOrderID(6);
         newOrderDetails.setProductID(2);
         newOrderDetails.setQuantity(5);
         newOrderDetails.setComment("Order Comment");
         newOrderDetails.setPriceAtSale(10.99);
         newOrderDetails.setFoodCostAtSale(5.99);
-=======
+
 //        newOrderDetails.setOrderID(2);
 //        newOrderDetails.setProductID(2);
 //        newOrderDetails.setQuantity(5);
 //        newOrderDetails.setComment("Test Comment");
 //        newOrderDetails.setPriceAtSale(10.99);
 //        newOrderDetails.setFoodCostAtSale(5.99);
->>>>>>> b934bfd7278b2d4aa6b5afa7f877f4261f89418b
+
 //
         boolean saveSuccess = orderDetailsDAO.save(newOrderDetails);
         System.out.println("Save success: " + saveSuccess);
@@ -189,13 +189,13 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
 //        System.out.println("Found OrderDetails: " + foundOrderDetails);
 //
 //        // Test findAll method
-<<<<<<< HEAD
+
         //       System.out.println("All OrderDetails: " + orderDetailsDAO.findAll());
 //        // Test update method
 //        newOrderDetails.setQuantity(3);
 //        boolean updateSuccess = orderDetailsDAO.update(newOrderDetails);
 //        System.out.println("Update success: " + updateSuccess);
-=======
+
  //       System.out.println("All OrderDetails: " + orderDetailsDAO.findAll());
 
         // Test update method
@@ -203,7 +203,7 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
         boolean updateSuccess = orderDetailsDAO.update(newOrderDetails);
         System.out.println("Update success: " + updateSuccess);
 
->>>>>>> b934bfd7278b2d4aa6b5afa7f877f4261f89418b
+
 //        // Test delete method
 //        boolean deleteSuccess = orderDetailsDAO.delete(6, 2);
 //        System.out.println("Delete success: " + deleteSuccess);
