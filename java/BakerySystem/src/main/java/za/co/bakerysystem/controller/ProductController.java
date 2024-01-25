@@ -70,7 +70,7 @@ public class ProductController {
             return Response.status(Response.Status.NOT_FOUND).entity("Product not found").build();
         }
     }
-    
+
     @GET
     @Path("/keyword/{keyword}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -83,8 +83,21 @@ public class ProductController {
             return Response.status(Response.Status.NOT_FOUND).entity("No products found").build();
         }
     }
-    
-     @GET
+
+    @GET
+    @Path("/get_product_catergory/{categoryID}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllProductByCategory(@PathParam("categoryID") int categoryID) {
+        List<Product> allProducts = productDAO.getAllProductByCategory(categoryID);
+
+        if (allProducts != null && !allProducts.isEmpty()) {
+            return Response.ok(allProducts).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("No products found").build();
+        }
+    }
+
+    @GET
     @Path("/total_products")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCustomerQuantity() {

@@ -17,14 +17,12 @@ public class RecipeServiceImpl implements RecipeService {
         return recipeDAO.createRecipe(productID, comment);
     }
 
-    @Override
-    public boolean createRecipeIngredient(int recipeID, int ingredientID, int grams) {
-        return recipeDAO.createRecipeIngredient(recipeID, ingredientID, grams);
-    }
-
+   
     @Override
     public boolean deleteRecipeDetail(int recipeID) {
         return recipeDAO.deleteRecipeDetail(recipeID);
     }
+
+
 
 }
