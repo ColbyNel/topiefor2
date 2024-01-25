@@ -43,37 +43,6 @@ public class RecipeDAOImpl implements RecipeDAO {
     }
 
     @Override
-    public boolean createRecipeIngredient(int recipeID, int ingredientID, int grams) {
-        connection = db.getConnection();
-
-        try {
-            ps = connection.prepareStatement("INSERT INTO Recipe_Ingredient VALUES(?,?,?)");
-
-            ps.setInt(1, recipeID);
-            ps.setInt(2, ingredientID);
-            ps.setInt(3, grams);
-
-            int affectedRows = ps.executeUpdate();
-            return affectedRows > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            // Close resources in the finally block
-            try {
-                if (ps != null) {
-                    ps.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @Override
     public boolean deleteRecipeDetail(int recipeID) {
         connection = db.getConnection();
 
@@ -101,22 +70,19 @@ public class RecipeDAOImpl implements RecipeDAO {
             }
         }
     }
-    
+
     //-----------------------------------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------
-    
     public static void main(String[] args) {
         RecipeDAO recipeDAO = new RecipeDAOImpl();
 
         // Test createRecipe
 //        boolean createRecipeSuccess = recipeDAO.createRecipe(2, "Test Recipe"); // make sure productid exists
 //        System.out.println("Create Recipe success: " + createRecipeSuccess);
-
         // Test createRecipeIngredient
 //        boolean createRecipeIngredientSuccess = recipeDAO.createRecipeIngredient(2, 2, 100);
 //        System.out.println("Create Recipe Ingredient success: " + createRecipeIngredientSuccess);
-
 //        // Test deleteRecipeDetail
 //        boolean deleteRecipeDetailSuccess = recipeDAO.deleteRecipeDetail(1);
 //        System.out.println("Delete Recipe Detail success: " + deleteRecipeDetailSuccess);

@@ -120,10 +120,9 @@ public class ProductDAOImpl implements ProductDAO {
             System.out.println("Error: " + e.getMessage());
         }
 
-         //finally {
+        //finally {
 //            closeConnection(connection);
 //        }
-
         return products;
     }
 
@@ -155,8 +154,8 @@ public class ProductDAOImpl implements ProductDAO {
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
-        
-         //finally {
+
+        //finally {
 //            closeConnection(connection);
 //        }
         return orderQuantity;
@@ -181,7 +180,7 @@ public class ProductDAOImpl implements ProductDAO {
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         } //finally {
-           // closeConnection(connection);
+        // closeConnection(connection);
         //}
         return orders;
     }
@@ -205,8 +204,8 @@ public class ProductDAOImpl implements ProductDAO {
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         } //finally {
-           // closeConnection(connection);
-       // }
+        // closeConnection(connection);
+        // }
         return topCustomers;
     }
 
@@ -237,7 +236,7 @@ public class ProductDAOImpl implements ProductDAO {
             System.out.println("Error: " + e.getMessage());
         }
         //finally {
-            //closeConnection(connection);
+        //closeConnection(connection);
         //}
         return product;
     }
@@ -258,7 +257,7 @@ public class ProductDAOImpl implements ProductDAO {
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }// finally {
-           // closeConnection(connection);
+        // closeConnection(connection);
         //}
         return productQuantity;
     }
@@ -280,7 +279,7 @@ public class ProductDAOImpl implements ProductDAO {
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         } //finally {
-            //closeConnection(connection);
+        //closeConnection(connection);
         //}
         return recipe;
     }
@@ -304,7 +303,7 @@ public class ProductDAOImpl implements ProductDAO {
         return retVal;
 
         // finally {
-          //  closeConnection(connection);
+        //  closeConnection(connection);
         //}
     }
 
@@ -340,9 +339,42 @@ public class ProductDAOImpl implements ProductDAO {
             closeConnection(connection);
         }
 
-         //finally {
-            //closeConnection(connection);
-       // }
+        //finally {
+        //closeConnection(connection);
+        // }
+        return products;
+    }
+
+    @Override
+    public List<Product> getAllProductByCategory(int categoryID) {
+        List<Product> products = new ArrayList<>();
+        db = DbManager.getInstance();
+        connection = db.getConnection();
+        try {
+            ps = connection.prepareStatement("CALL GetProductsByCategory(?)");
+            ps.setInt(1, categoryID);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Product product = new Product();
+                product.setID(rs.getInt("productID"));
+                product.setName(rs.getString("Name"));
+                product.setPrice(rs.getDouble("Price"));
+                product.setFoodCost(rs.getDouble("FoodCost"));
+                product.setTimeCost(rs.getInt("TimeCost"));
+                product.setComment(rs.getString("Comment"));
+                product.setWarnings(rs.getString("warnings"));
+                product.setCategoryID(rs.getInt("categoryID"));
+                product.setNutrientInformation(rs.getString("nutrientinformation"));
+                product.setDescription(rs.getString("description"));
+                products.add(product);
+            }
+            return products;
+
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
         return products;
     }
 
@@ -363,8 +395,8 @@ public class ProductDAOImpl implements ProductDAO {
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         } //finally {
-            //closeConnection(connection);
-       // }
+        //closeConnection(connection);
+        // }
         return orderQuantity;
     }
 
@@ -385,10 +417,10 @@ public class ProductDAOImpl implements ProductDAO {
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         } //finally {
-            //closeResultSet(rs);
-           // closeStatement(ps);
-            //closeConnection(connection);
-       // }
+        //closeResultSet(rs);
+        // closeStatement(ps);
+        //closeConnection(connection);
+        // }
         return saleQuantity;
     }
 
@@ -416,16 +448,16 @@ public class ProductDAOImpl implements ProductDAO {
         ProductDAO productDAO = new ProductDAOImpl();
         Product product = new Product("Yellow Cake", 54.99, 8.50, 3, "Delicious cake baked by our own chefs.", "High in chocolate", "fibre and calcium", "none", 1);
         // test for add product
-        if (productDAO.createProduct(product)) {
-            System.out.println("Success");
-
-        } else {
-            System.out.println("Failed");
-
-        }
-       // ProductDAO productDAO = new ProductDAOImpl();
-       // Product product = new Product(3, "Black Cake", 54.99, 8.50, 3, "Delicious cake baked by our own chefs.", "High in chocolate", "fibre and calcium", "none", 1);
-       // test for add product
+//        if (productDAO.createProduct(product)) {
+//            System.out.println("Success");
+//
+//        } else {
+//            System.out.println("Failed");
+//
+//        }
+        // ProductDAO productDAO = new ProductDAOImpl();
+        // Product product = new Product(3, "Black Cake", 54.99, 8.50, 3, "Delicious cake baked by our own chefs.", "High in chocolate", "fibre and calcium", "none", 1);
+        // test for add product
 //                if (productDAO.createProduct(product)) {
 //                    System.out.println("Success");
 //        
@@ -446,11 +478,13 @@ public class ProductDAOImpl implements ProductDAO {
 //        System.out.println(productDAO.getProduct(6));
         //Test for getProductQuantity
 //        System.out.println(productDAO.getProductQuantity());
+
         //Test for getProductsByKeyWord
-//        List<Product> listOfProductByKeyWord = productDAO.getProductsByKeyWord("Black");
-//        listOfProductByKeyWord.forEach(product1 -> {
-//            System.out.println(product1);
-//        });
+        List<Product> listOfProductByCategory = productDAO.getAllProductByCategory(1);
+        listOfProductByCategory.forEach(product1 -> {
+            System.out.println(product1);
+        });
 //        
     }
+
 }
