@@ -327,6 +327,25 @@ public class CustomerDAOImpl implements CustomerDAO {
             return false;
         }
     }
+    
+     @Override
+    public Customer getCustomerByEmail(String email) {
+          db = DbManager.getInstance();
+        connection = db.getConnection();
+        try {
+            ps = connection.prepareCall("CALL fetch_customer_email(?)");
+            ps.setString(1, email);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return extractCustomerFromResultSet(rs);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+
+        return null;
+        
+    }
 
     private Customer extractCustomerFromResultSet(ResultSet rs) throws SQLException {
         Customer customer = new Customer();
@@ -430,6 +449,10 @@ public class CustomerDAOImpl implements CustomerDAO {
 //        int customerIdToRetrieve = 2;
 //        Customer retrievedCustomer = customerDAO.getCustomer(customerIdToRetrieve);
 //        System.out.println("Retrieved customer by ID " + customerIdToRetrieve + ": " + retrievedCustomer);
+
+          //Test getCustomerByEmail
+        Customer retrievedCustomer = customerDAO.getCustomerByEmail("john@example.com");
+        System.out.println("Retrieved customer by ID " + ": " + retrievedCustomer);
 //
 //        // Test getFavoriteProducts method
 //        List<Product> favoriteProducts = customerDAO.getFavoriteProducts(customerIdToRetrieve);
@@ -459,5 +482,6 @@ public class CustomerDAOImpl implements CustomerDAO {
 //customerDAO.deleteCustomers(customerIdsToDelete);
 //System.out.println("Customers deleted successfully.");
     }
+
 
 }

@@ -37,10 +37,8 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
             // Check if the insertion was successful
             return affectedRows > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Error: "+ e.getMessage());
             return false;
-        } finally {
-            closeResources();
         }
     }
 
@@ -54,7 +52,7 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
                 connection.close();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Error: "+ e.getMessage());
         }
     }
 
@@ -76,9 +74,7 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
                 orderDetails = extractOrderDetails(rs);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            closeResources();
+            System.out.println("Error: "+ e.getMessage());
         }
         return orderDetails;
     }
@@ -99,9 +95,7 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
                 orderDetailsList.add(orderDetails);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            closeResources();
+            System.out.println("Error: "+ e.getMessage());
         }
         return orderDetailsList;
     }
@@ -114,22 +108,21 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
             String query = "UPDATE Order_details SET quantity = ?, comment = ?, priceAtSale = ?, foodCostAtSale = ? WHERE order_Id = ? AND product_Id = ?";
             ps = connection.prepareStatement(query);
 
-            ps.setInt(5, orderDetails.getQuantity());
-            ps.setString(6, orderDetails.getComment());
+            ps.setInt(1, orderDetails.getQuantity());
+            ps.setString(2, orderDetails.getComment());
             ps.setDouble(3, orderDetails.getPriceAtSale());
             ps.setDouble(4, orderDetails.getFoodCostAtSale());
-            ps.setInt(1, orderDetails.getOrderID());
-            ps.setInt(2, orderDetails.getProductID());
+            ps.setInt(5, orderDetails.getOrderID());
+            ps.setInt(6, orderDetails.getProductID());
 
             int affectedRows = ps.executeUpdate();
 
             return affectedRows > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            closeResources();
+            System.out.println("Error: "+ e.getMessage());
+
         }
+        return false;
     }
 
     @Override
@@ -148,11 +141,10 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
             // Check if the deletion was successful
             return affectedRows > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            closeResources();
+            System.out.println("Error: "+ e.getMessage());
         }
+        return false;
+
     }
 
     private OrderDetails extractOrderDetails(ResultSet resultSet) throws SQLException {
@@ -173,31 +165,28 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
         OrderDetailsDAO orderDetailsDAO = new OrderDetailsDAOImpl();
 
 //        // Test save method
-//        OrderDetails newOrderDetails = new OrderDetails();
-//        newOrderDetails.setOrderID(2);
-//        newOrderDetails.setProductID(2);
-//        newOrderDetails.setQuantity(5);
-//        newOrderDetails.setComment("Test Comment");
-//        newOrderDetails.setPriceAtSale(10.99);
-//        newOrderDetails.setFoodCostAtSale(5.99);
+        OrderDetails newOrderDetails = new OrderDetails();
+        newOrderDetails.setOrderID(6);
+        newOrderDetails.setProductID(2);
+        newOrderDetails.setQuantity(5);
+        newOrderDetails.setComment("Order Comment");
+        newOrderDetails.setPriceAtSale(10.99);
+        newOrderDetails.setFoodCostAtSale(5.99);
 //
-//        boolean saveSuccess = orderDetailsDAO.save(newOrderDetails);
-//        System.out.println("Save success: " + saveSuccess);
-
+        boolean saveSuccess = orderDetailsDAO.save(newOrderDetails);
+        System.out.println("Save success: " + saveSuccess);
 //        // Test findById method
-//        OrderDetails foundOrderDetails = orderDetailsDAO.findById(2, 2);
+//        OrderDetails foundOrderDetails = orderDetailsDAO.findById(6, 2);
 //        System.out.println("Found OrderDetails: " + foundOrderDetails);
 //
 //        // Test findAll method
- //       System.out.println("All OrderDetails: " + orderDetailsDAO.findAll());
-
+        //       System.out.println("All OrderDetails: " + orderDetailsDAO.findAll());
 //        // Test update method
-//        newOrderDetails.setQuantity(10);
+//        newOrderDetails.setQuantity(3);
 //        boolean updateSuccess = orderDetailsDAO.update(newOrderDetails);
 //        System.out.println("Update success: " + updateSuccess);
-
 //        // Test delete method
-//        boolean deleteSuccess = orderDetailsDAO.delete(2, 2);
+//        boolean deleteSuccess = orderDetailsDAO.delete(6, 2);
 //        System.out.println("Delete success: " + deleteSuccess);
     }
 

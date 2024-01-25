@@ -136,4 +136,16 @@ public class CustomerController {
         }
     }
 
+    @GET
+    @Path("/get_by_email/{email}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCustomerByEmail(@PathParam("email") String email) {
+        Customer customer = customerDAO.getCustomerByEmail(email);
+        if (customer != null) {
+            return Response.ok(customer).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("Customer not found for the provided email").build();
+        }
+    }
+
 }

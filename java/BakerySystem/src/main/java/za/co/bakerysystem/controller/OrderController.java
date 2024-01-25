@@ -8,6 +8,8 @@ import za.co.bakerysystem.dao.OrderDAO;
 import za.co.bakerysystem.dao.impl.OrderDAOImpl;
 import za.co.bakerysystem.model.Order;
 import za.co.bakerysystem.model.OrderDetails;
+import za.co.bakerysystem.model.Payment;
+import za.co.bakerysystem.model.Product;
 
 @Path("/orders")
 public class OrderController {
@@ -96,6 +98,90 @@ public class OrderController {
         } else {
             return Response.status(Response.Status.NOT_FOUND).entity("No orders found").build();
         }
+    }
+    
+     @GET
+    @Path("/lasted_orders")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getLastedOrders() {
+        List<Order> lastedOrders = orderDAO.getLastedOrders();
+
+        if (lastedOrders != null && !lastedOrders.isEmpty()) {
+            return Response.ok(lastedOrders).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("No lasted orders found").build();
+        }
+    }
+
+    @GET
+    @Path("/current_orders")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOrdersCurrent() {
+        int currentOrders = orderDAO.getOrdersCurrent();
+
+        return Response.ok(currentOrders).build();
+    }
+
+    @GET
+    @Path("/orders_by_range")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOrdersByRange(
+            @QueryParam("startDate") String startDate,
+            @QueryParam("endDate") String endDate,
+            @QueryParam("keyWord") String keyWord) {
+        List<Order> ordersByRange = orderDAO.getOrdersByRange(startDate, endDate, keyWord);
+
+        if (ordersByRange != null && !ordersByRange.isEmpty()) {
+            return Response.ok(ordersByRange).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("No orders found for the specified range").build();
+        }
+    }
+
+    @GET
+    @Path("/order/{orderId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOrder(@PathParam("orderId") int orderId) {
+        Order order = orderDAO.getOrder(orderId);
+
+        if (order != null) {
+            return Response.ok(order).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("Order not found").build();
+        }
+    }
+
+    @GET
+    @Path("/order_payment/{orderId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOrderPayment(@PathParam("orderId") int orderId) {
+        List<Payment> orderPayments = orderDAO.getOrderPayment(orderId);
+
+        if (orderPayments != null && !orderPayments.isEmpty()) {
+            return Response.ok(orderPayments).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("No payment information found for the order").build();
+        }
+    }
+
+    @GET
+    @Path("/order_product/{orderId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOrderProduct(@PathParam("orderId") int orderId) {
+        List<Product> orderProducts = orderDAO.getOrderProduct(orderId);
+
+        if (orderProducts != null && !orderProducts.isEmpty()) {
+            return Response.ok(orderProducts).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("No product information found for the order").build();
+        }
+    }
+
+    @DELETE
+    @Path("/delete_order_detail/{orderId}")
+    public Response deleteOrderDetail(@PathParam("orderId") int orderId) {
+        orderDAO.deleteOrderDetail(orderId);
+        return Response.ok("Order detail deleted successfully").build();
     }
 
 }

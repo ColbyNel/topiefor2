@@ -25,6 +25,8 @@ public interface CustomerDAO {
 
     List<Product> getFavoriteProducts(int customerID);
 
+    Customer getCustomerByEmail(String email);
+
     int getCustomerPoints(int customerID);
 
     List<Order> getCustomerOrders(int customerID);
