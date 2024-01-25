@@ -215,7 +215,7 @@ public class ProductDAOImpl implements ProductDAO {
         db = DbManager.getInstance();
         connection = db.getConnection();
         try {
-            PreparedStatement ps = connection.prepareStatement("CALL fetch_single_product(?)");
+            ps = connection.prepareStatement("CALL fetch_single_product(?)");
             ps.setInt(1, productID);
             rs = ps.executeQuery();
 

@@ -6,6 +6,7 @@ import za.co.bakerysystem.model.PaymentType;
 import za.co.bakerysystem.service.PaymentService;
 
 import java.util.List;
+import za.co.bakerysystem.dao.impl.PaymentDAOImpl;
 
 public class PaymentServiceImpl implements PaymentService {
 
@@ -33,5 +34,30 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public List<PaymentType> getPaymentTypes() {
         return paymentDAO.getPaymentTypes();
+    }
+    
+    //----------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------
+    
+     public static void main(String[] args) {
+        PaymentDAO paymentDAO = new PaymentDAOImpl();
+        PaymentServiceImpl paymentService = new PaymentServiceImpl(paymentDAO);
+
+        // Test createPayment
+//        Payment payment = new Payment();
+//        payment.setOrderID(2);
+//        payment.setAmount(55.0);
+//        payment.setPaymentTypeID(3); // Assuming 3 is a valid payment type ID
+//        boolean paymentCreated = paymentService.createPayment(payment);
+//        System.out.println("Creating Payment: " + paymentCreated);
+
+        // Test getOrderPayments
+//        List<Payment> orderPayments = paymentService.getOrderPayments(2); // Assuming 2 is a valid order ID
+//        System.out.println("Order Payments: " + orderPayments);
+
+        // Test getPaymentTypes
+        List<PaymentType> paymentTypes = paymentService.getPaymentTypes();
+        System.out.println("Payment Types: " + paymentTypes);
     }
 }

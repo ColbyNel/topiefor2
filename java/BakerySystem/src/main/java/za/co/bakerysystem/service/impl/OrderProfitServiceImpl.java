@@ -55,29 +55,40 @@ public class OrderProfitServiceImpl implements OrderProfitService {
         OrderProfitService orderProfitService = new OrderProfitServiceImpl(orderProfitDAO);
 
         // Test fetchOrderProfit
-        List<Map<String, Object>> orderProfitData = orderProfitService.fetchOrderProfit();
-        System.out.println("Order Profit Data: " + orderProfitData);
+//        List<Map<String, Object>> orderProfitData = orderProfitService.fetchOrderProfit();
+//        printResult(orderProfitData);
 
-        // Test fetchOrderProfitLastMonth
-        List<Map<String, Object>> orderProfitLastMonthData = orderProfitService.fetchOrderProfitLastMonth();
-        System.out.println("Order Profit Last Month Data: " + orderProfitLastMonthData);
+//        // Test fetchOrderProfitLastMonth
+//        List<Map<String, Object>> orderProfitLastMonthData = orderProfitService.fetchOrderProfitLastMonth();
+//        System.out.println("Order Profit Last Month Data: " + orderProfitLastMonthData);
 
-        // Test fetchSaleProfit
-        List<Map<String, Object>> saleProfitData = orderProfitService.fetchSaleProfit();
-        System.out.println("Sale Profit Data: " + saleProfitData);
+//        // Test fetchSaleProfit
+//        List<Map<String, Object>> saleProfitData = orderProfitService.fetchSaleProfit();
+//        System.out.println("Sale Profit Data: " + saleProfitData);
 
-        // Test fetchSaleProfitLastMonth
-        List<Map<String, Object>> saleProfitLastMonthData = orderProfitService.fetchSaleProfitLastMonth();
-        System.out.println("Sale Profit Last Month Data: " + saleProfitLastMonthData);
+//        // Test fetchSaleProfitLastMonth
+//        List<Map<String, Object>> saleProfitLastMonthData = orderProfitService.fetchSaleProfitLastMonth();
+//        System.out.println("Sale Profit Last Month Data: " + saleProfitLastMonthData);
 
         // Test fetchOrderProfitInRange
         LocalDate startDate = LocalDate.of(2024, 1, 1);
-        LocalDate endDate = LocalDate.of(2024, 1, 31);
+        LocalDate endDate = LocalDate.of(2025, 1, 31);
         List<Map<String, Object>> orderProfitInRangeData = orderProfitService.fetchOrderProfitInRange(startDate, endDate);
         System.out.println("Order Profit In Range Data: " + orderProfitInRangeData);
 
-        // Test fetchSaleProfitInRange
-        List<Map<String, Object>> saleProfitInRangeData = orderProfitService.fetchSaleProfitInRange(startDate, endDate);
-        System.out.println("Sale Profit In Range Data: " + saleProfitInRangeData);
+//        // Test fetchSaleProfitInRange
+//        List<Map<String, Object>> saleProfitInRangeData = orderProfitService.fetchSaleProfitInRange(startDate, endDate);
+//        System.out.println("Sale Profit In Range Data: " + saleProfitInRangeData);
+
+
+    }
+      
+        private static void printResult(List<Map<String, Object>> resultList) {
+        for (Map<String, Object> row : resultList) {
+            for (Map.Entry<String, Object> entry : row.entrySet()) {
+                System.out.println(entry.getKey() + ": " + entry.getValue());
+            }
+            System.out.println("----------");
+        }
     }
 }

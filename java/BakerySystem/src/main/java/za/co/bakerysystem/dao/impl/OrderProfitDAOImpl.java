@@ -175,16 +175,16 @@ public class OrderProfitDAOImpl implements OrderProfitDAO {
 //        printResult(saleProfitLastMonthList);
 
         // Test fetchOrderProfitInRange
-//        System.out.println("\nOrder Profit in Range:");
+ //       System.out.println("\nOrder Profit in Range:");
         LocalDate startDate = LocalDate.of(2022, 1, 1);
         LocalDate endDate = LocalDate.of(2025, 12, 31);
 //        List<Map<String, Object>> orderProfitInRangeList = orderProfitDAO.fetchOrderProfitInRange(startDate, endDate);
 //        printResult(orderProfitInRangeList);
 
         // Test fetchSaleProfitInRange
-        System.out.println("\nSale Profit in Range:");
-        List<Map<String, Object>> saleProfitInRangeList = orderProfitDAO.fetchSaleProfitInRange(startDate, endDate);
-        printResult(saleProfitInRangeList);
+//        System.out.println("\nSale Profit in Range:");
+//        List<Map<String, Object>> saleProfitInRangeList = orderProfitDAO.fetchSaleProfitInRange(startDate, endDate);
+//        printResult(saleProfitInRangeList);
    }
 
     private static void printResult(List<Map<String, Object>> resultList) {

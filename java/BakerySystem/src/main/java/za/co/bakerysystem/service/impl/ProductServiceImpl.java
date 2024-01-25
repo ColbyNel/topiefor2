@@ -7,6 +7,7 @@ import za.co.bakerysystem.model.Product;
 import za.co.bakerysystem.service.ProductService;
 
 import java.util.List;
+import za.co.bakerysystem.dao.impl.ProductDAOImpl;
 
 public class ProductServiceImpl implements ProductService {
 
@@ -79,5 +80,44 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public boolean deleteProduct(int productID) {
         return productDAO.deleteProduct(productID);
+    }
+    
+    //--------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------------
+    
+    
+    public static void main(String[] args) {
+        ProductDAO productDAO = new ProductDAOImpl();
+        ProductServiceImpl productService = new ProductServiceImpl(productDAO);
+
+        // Test createProduct
+//        Product newProduct = new Product("Bread", 7.99, 2.0, 5, "Delicious bread", "High in fiber", "Nutrient info", "No warnings", 1);
+//        boolean productCreated = productService.createProduct(newProduct);
+//        System.out.println("Creating Product: " + productCreated);
+
+        // Test updateProduct
+//        int productIdToUpdate = 8; // Replace with a valid product ID
+//        Product productToUpdate = productService.getProduct(productIdToUpdate);
+//        if (productToUpdate != null) {
+//            productToUpdate.setName("Updated Bread");
+//            boolean productUpdated = productService.updateProduct(productToUpdate);
+//            System.out.println("Updating Product: " + productUpdated);
+//        } else {
+//            System.out.println("Product not found for updating.");
+//        }
+
+//        // Test getProducts
+//        List<Product> allProducts = productService.getProducts();
+//        System.out.println("All Products: " + allProducts);
+
+        // Test getProduct
+//        int productIdToGet = 6; // Replace with a valid product ID
+//        Product retrievedProduct = productService.getProduct(productIdToGet);
+//        System.out.println("Retrieved Product: " + retrievedProduct);
+
+//        // Test deleteProduct
+//        boolean productDeleted = productService.deleteProduct(productIdToGet);
+//        System.out.println("Deleting Product: " + productDeleted);
     }
 }

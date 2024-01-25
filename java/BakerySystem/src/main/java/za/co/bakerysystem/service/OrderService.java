@@ -16,7 +16,7 @@ public interface OrderService {
 
     boolean updateOrder(Order order);
 
-    boolean fulfillOrder(int orderID, boolean fullFilled);
+    boolean fulfillOrder(int orderID, int fullFilled);
 
     boolean createOrderDetail(OrderDetails orderDetails);
 

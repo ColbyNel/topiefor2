@@ -31,6 +31,7 @@ C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\model\ShoppingCart.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\service\PaymentTypeService.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\dao\PaymentDAO.java
+C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\controller\OrderDetailsController.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\model\RecipeIngredient.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\dao\impl\ProductDAOImpl.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\dao\impl\RecipeIngredientDAOImpl.java

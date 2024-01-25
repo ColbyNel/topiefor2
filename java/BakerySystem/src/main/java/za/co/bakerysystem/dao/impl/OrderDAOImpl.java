@@ -87,7 +87,7 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     @Override
-    public boolean fulfillOrder(int orderID, boolean fulfilled) {
+    public boolean fulfillOrder(int orderID, int fulfilled) {
         db = DbManager.getInstance();
         connection = db.getConnection();
 
@@ -95,7 +95,7 @@ public class OrderDAOImpl implements OrderDAO {
             ps = connection.prepareStatement("UPDATE `Order` SET Fulfilled=? WHERE ID=?");
 
             // Set parameters
-            ps.setBoolean(1, fulfilled);
+            ps.setInt(1, fulfilled);
             ps.setInt(2, orderID);
 
             int affectedRows = ps.executeUpdate();
@@ -371,9 +371,9 @@ public class OrderDAOImpl implements OrderDAO {
 
             while (rs.next()) {
                 Product product = new Product();
-                product.setID(rs.getInt("product_id"));
+                product.setID(rs.getInt("productid"));
                 product.setName(rs.getString("Name"));
-                product.setPrice(rs.getDouble("PriceAtSale"));
+                product.setPrice(rs.getDouble("Price"));
                 product.setFoodCost(rs.getDouble("FoodCost"));
                 product.setTimeCost(rs.getInt("TimeCost"));
                 product.setComment(rs.getString("Comment"));
@@ -511,8 +511,8 @@ public class OrderDAOImpl implements OrderDAO {
 //        List<Payment> orderPayments = orderDAO.getOrderPayment(1);
 //        System.out.println("Order Payments: " + orderPayments);
         // Test getOrderProduct
-//        List<Product> orderProducts = orderDAO.getOrderProduct(6);
-//        System.out.println("Order Products: " + orderProducts);
+        List<Product> orderProducts = orderDAO.getOrderProduct(6);
+        System.out.println("Order Products: " + orderProducts);
         // Test deleteOrder
 //        orderDAO.deleteOrder(1);
 //        System.out.println("Order Deleted");
