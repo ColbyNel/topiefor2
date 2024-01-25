@@ -6,6 +6,7 @@ import za.co.bakerysystem.service.OrderProfitService;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import za.co.bakerysystem.dao.impl.OrderProfitDAOImpl;
 
 public class OrderProfitServiceImpl implements OrderProfitService {
 
@@ -49,5 +50,34 @@ public class OrderProfitServiceImpl implements OrderProfitService {
     //----------------------------------------------------------------------------------------------------
     //----------------------------------------------------------------------------------------------------
     
-    
+      public static void main(String[] args) {
+        OrderProfitDAO orderProfitDAO = new OrderProfitDAOImpl();
+        OrderProfitService orderProfitService = new OrderProfitServiceImpl(orderProfitDAO);
+
+        // Test fetchOrderProfit
+        List<Map<String, Object>> orderProfitData = orderProfitService.fetchOrderProfit();
+        System.out.println("Order Profit Data: " + orderProfitData);
+
+        // Test fetchOrderProfitLastMonth
+        List<Map<String, Object>> orderProfitLastMonthData = orderProfitService.fetchOrderProfitLastMonth();
+        System.out.println("Order Profit Last Month Data: " + orderProfitLastMonthData);
+
+        // Test fetchSaleProfit
+        List<Map<String, Object>> saleProfitData = orderProfitService.fetchSaleProfit();
+        System.out.println("Sale Profit Data: " + saleProfitData);
+
+        // Test fetchSaleProfitLastMonth
+        List<Map<String, Object>> saleProfitLastMonthData = orderProfitService.fetchSaleProfitLastMonth();
+        System.out.println("Sale Profit Last Month Data: " + saleProfitLastMonthData);
+
+        // Test fetchOrderProfitInRange
+        LocalDate startDate = LocalDate.of(2024, 1, 1);
+        LocalDate endDate = LocalDate.of(2024, 1, 31);
+        List<Map<String, Object>> orderProfitInRangeData = orderProfitService.fetchOrderProfitInRange(startDate, endDate);
+        System.out.println("Order Profit In Range Data: " + orderProfitInRangeData);
+
+        // Test fetchSaleProfitInRange
+        List<Map<String, Object>> saleProfitInRangeData = orderProfitService.fetchSaleProfitInRange(startDate, endDate);
+        System.out.println("Sale Profit In Range Data: " + saleProfitInRangeData);
+    }
 }
