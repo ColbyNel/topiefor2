@@ -157,12 +157,13 @@ public class IngredientDAOImpl implements IngredientDAO {
     @Override
     public List<Product> getRelatedProducts(int ingredientID) {
         List<Product> ingredients = new ArrayList<>();
-        connection = db.getConnection();
+
+        connection = DbManager.getInstance().getConnection();
 
         try {
-            CallableStatement ps = connection.prepareCall("CALL fetch_ingredient_products(?)");
-            ps.setInt(1, ingredientID);
-            ResultSet rs = ps.executeQuery();
+            CallableStatement cs = connection.prepareCall("CALL fetch_ingredient_products(?)");
+            cs.setInt(1, ingredientID);
+            rs = cs.executeQuery();
 
             while (rs.next()) {
                 Product ingredient = extractProductFromResultSet(rs);
@@ -207,12 +208,11 @@ public class IngredientDAOImpl implements IngredientDAO {
 
     private Product extractProductFromResultSet(ResultSet rs) throws SQLException {
         Product ingredient = new Product();
-        ingredient.setID(rs.getInt("ID"));
+        ingredient.setID(rs.getInt("productID"));
         ingredient.setName(rs.getString("Name"));
         ingredient.setPrice(rs.getDouble("Price"));
         ingredient.setFoodCost(rs.getDouble("FoodCost"));
         ingredient.setTimeCost(rs.getInt("TimeCost"));
-        ingredient.setComment(rs.getString("Comment"));
         return ingredient;
     }
 
@@ -253,7 +253,7 @@ public class IngredientDAOImpl implements IngredientDAO {
 //            System.out.println(product1);
 //        });
         //Test for getIngredientQuantity() 
-       // System.out.println("Number of ingredients are: " + ingredientDAO.getIngredientQuantity());
+        // System.out.println("Number of ingredients are: " + ingredientDAO.getIngredientQuantity());
 
     }
 }

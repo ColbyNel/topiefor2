@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import za.co.bakerysystem.dao.OrderDAO;
@@ -467,6 +466,7 @@ public class OrderDAOImpl implements OrderDAO {
 //        boolean fulfillOrderResult = orderDAO.fulfillOrder(orderIdToFulfill, true);
 //        System.out.println("Fulfill Order Result: " + fulfillOrderResult);
         // Test createOrderDetail
+<<<<<<< HEAD
         OrderDetails orderDetails = new OrderDetails();
 //        orderDetails.setOrderID(orderIdToFulfill);
         orderDetails.setOrderID(4);
@@ -476,6 +476,17 @@ public class OrderDAOImpl implements OrderDAO {
         orderDetails.setQuantity(2);
         orderDetails.setComment("Test Order Detail");
 //
+=======
+//        OrderDetails orderDetails = new OrderDetails();
+//        //orderDetails.setOrderID(orderIdToFulfill);
+//        orderDetails.setOrderID(3);
+//        orderDetails.setProductID(2); // Assuming there's a product in the database
+//        orderDetails.setPriceAtSale(20.0);
+//        orderDetails.setFoodCostAtSale(15.0);
+//        orderDetails.setQuantity(2);
+//        orderDetails.setComment("Test Order Detail");
+////
+>>>>>>> b934bfd7278b2d4aa6b5afa7f877f4261f89418b
 //        boolean createOrderDetailResult = orderDAO.createOrderDetail(orderDetails);
 //        System.out.println("Create Order Detail Result: " + createOrderDetailResult);
         // Test getOrders
@@ -491,8 +502,8 @@ public class OrderDAOImpl implements OrderDAO {
 //        int totalOrdersQuantity = orderDAO.getTotalOrdersQuantity();
 //        System.out.println("Total Orders Quantity: " + totalOrdersQuantity);
 //        // Test getOrdersByRange
-        // List<Order> ordersInRange = orderDAO.getOrdersByRange("2024-01-01", "2025-12-31", "Sphe");
-        // System.out.println("Orders in Range: " + ordersInRange);
+//         List<Order> ordersInRange = orderDAO.getOrdersByRange("2024-01-01", "2025-12-31", "test");
+//         System.out.println("Orders in Range: " + ordersInRange);
         // Test getOrder
 //        Order fetchedOrder = orderDAO.getOrder(1);
 //        System.out.println("Fetched Order: " + fetchedOrder);

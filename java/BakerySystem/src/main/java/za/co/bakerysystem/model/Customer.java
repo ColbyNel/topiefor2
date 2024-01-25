@@ -46,6 +46,20 @@ public class Customer {
         this.password = password;
     }
 
+    public Customer(String customerName, String customerIDNo, String phoneNumber, String addressOne, String addressTwo, String city, String zip, String comment, String email, String password) {
+        this.customerName = customerName;
+        this.customerIDNo = customerIDNo;
+        this.phoneNumber = phoneNumber;
+        this.addressOne = addressOne;
+        this.addressTwo = addressTwo;
+        this.city = city;
+        this.zip = zip;
+        this.comment = comment;
+        this.email = email;
+        this.password = password;
+    }
+
+    
     public String getEmail() {
         return email;
     }
