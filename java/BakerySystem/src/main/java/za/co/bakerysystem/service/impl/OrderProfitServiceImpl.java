@@ -44,4 +44,10 @@ public class OrderProfitServiceImpl implements OrderProfitService {
     public List<Map<String, Object>> fetchSaleProfitInRange(LocalDate startDate, LocalDate endDate) {
         return orderProfitDAO.fetchSaleProfitInRange(startDate, endDate);
     }
+    
+    //----------------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------
+    
+    
 }
