@@ -2,7 +2,6 @@ package za.co.bakerysystem.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import za.co.bakerysystem.dao.RecipeDAO;
 import za.co.bakerysystem.dbmanager.DbManager;

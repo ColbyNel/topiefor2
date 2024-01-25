@@ -5,13 +5,13 @@ import za.co.bakerysystem.model.OrderDetails;
 
 public interface OrderDetailsService {
 
-    boolean save(OrderDetails orderDetails);
+    boolean saveOrderDetails(OrderDetails orderDetails);
 
-    OrderDetails findById(int orderId, int productId);
+    OrderDetails findOrderDetailsById(int orderId, int productId);
 
-    List<OrderDetails> findAll();
+    List<OrderDetails> findAllOrderDetails();
 
-    boolean update(OrderDetails orderDetails);
+    boolean updateOrderDetails(OrderDetails orderDetails);
 
-    boolean delete(int orderId, int productId);
+    boolean deleteOrderDetails(int orderId, int productId);
 }

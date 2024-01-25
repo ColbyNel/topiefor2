@@ -9,6 +9,7 @@ import za.co.bakerysystem.dao.CustomerDAO;
 import za.co.bakerysystem.dbmanager.DbManager;
 import za.co.bakerysystem.model.Customer;
 import za.co.bakerysystem.model.Order;
+import za.co.bakerysystem.model.PaymentType;
 import za.co.bakerysystem.model.Product;
 
 public class CustomerDAOImpl implements CustomerDAO {
@@ -229,13 +230,15 @@ public class CustomerDAOImpl implements CustomerDAO {
     public int getCustomerPoints(int customerID) {
         db = DbManager.getInstance();
         connection = db.getConnection();
-
+        int total = 0;
         try {
             ps = connection.prepareCall("CALL fetch_customer_points(?)");
             ps.setInt(1, customerID);
             rs = ps.executeQuery();
             if (rs.next()) {
-                return rs.getInt("points");
+                total = rs.getInt("total");
+            } else {
+                System.out.println("No points or information");
             }
 
         } catch (SQLException ex) {
@@ -243,7 +246,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 
         }
 
-        return 0;
+        return total;
     }
 
     @Override
@@ -290,9 +293,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 
     @Override
     public List<Order> getOrdersByRange(int fulfilled, LocalDate startDate, LocalDate endDate) {
-        db = DbManager.getInstance();
         List<Order> orders = new ArrayList<>();
-        connection = db.getConnection();
+        connection = DbManager.getInstance().getConnection();
         try {
             ps = connection.prepareCall("CALL fetch_select_orders_in_range(?, ?, ?)");
             ps.setInt(1, fulfilled);
@@ -350,22 +352,21 @@ public class CustomerDAOImpl implements CustomerDAO {
         Product product = new Product();
         product.setID(rs.getInt("ID"));
         product.setName(rs.getString("name"));
-        product.setPrice(rs.getDouble("price"));
-        product.setFoodCost(rs.getDouble("foodCost"));
-        product.setTimeCost(rs.getInt("timeCost"));
-        product.setComment(rs.getString("comment"));
+        product.setPrice(rs.getDouble("total")); //it is the total number of times the price was bought
+
         return product;
     }
 
     private Order extractOrderFromResultSet(ResultSet rs) throws SQLException {
         Order order = new Order();
-        order.setID(rs.getInt("ID"));
-        order.setCustomerID(rs.getInt("customerID"));
+        order.setID(rs.getInt("OrderID"));
+        order.setCustomerID(rs.getInt("customer_ID"));
         order.setDatePlaced(rs.getObject("datePlaced", LocalDateTime.class));
         order.setPickupTime(rs.getObject("pickupTime", LocalDateTime.class));
         order.setFulfilled(rs.getInt("fulfilled"));
         order.setComment(rs.getString("comment"));
         order.setAmount(rs.getDouble("amount"));
+        order.setStatus(rs.getString("status"));
         return order;
     }
 
@@ -431,28 +432,28 @@ public class CustomerDAOImpl implements CustomerDAO {
 //        Customer retrievedCustomer = customerDAO.getCustomer(customerIdToRetrieve);
 //        System.out.println("Retrieved customer by ID " + customerIdToRetrieve + ": " + retrievedCustomer);
 //
-//        // Test getFavoriteProducts method
-//        List<Product> favoriteProducts = customerDAO.getFavoriteProducts(customerIdToRetrieve);
-//        System.out.println("Favorite products for customer ID " + customerIdToRetrieve + ": " + favoriteProducts);
-//
-//        // Test getCustomerPoints method
-//        int customerPoints = customerDAO.getCustomerPoints(customerIdToRetrieve);
-//        System.out.println("Customer points for customer ID " + customerIdToRetrieve + ": " + customerPoints);
-//
-//        // Test getCustomerOrders method
-//        List<Order> customerOrders = customerDAO.getCustomerOrders(customerIdToRetrieve);
-//        System.out.println("Orders for customer ID " + customerIdToRetrieve + ": " + customerOrders);
-//
+        // Test getFavoriteProducts method
+//        List<Product> favoriteProducts = customerDAO.getFavoriteProducts(1);
+//        System.out.println("Favorite products for customer ID " + 1 + ": " + favoriteProducts);
+        // Test getCustomerPoints method
+//        int customerPoints = customerDAO.getCustomerPoints(1);
+//        System.out.println("Customer points for customer ID " + 1 + ": " + customerPoints);
+
+        // Test getCustomerOrders method
+//        List<Order> customerOrders = customerDAO.getCustomerOrders(4);
+//        System.out.println("Orders for customer ID " + 4 + ": " + customerOrders);
+
 //        // Test getNumOrders method
 //        int numOrders = customerDAO.getNumOrders(customerIdToRetrieve);
 //        System.out.println("Number of orders for customer ID " + customerIdToRetrieve + ": " + numOrders);
 //
-//        // Test getOrdersByRange method
-//        boolean fulfilled = true;
+        // Test getOrdersByRange method
+//        int fulfilled = 0;
 //        LocalDate startDate = LocalDate.now().minusMonths(1);
 //        LocalDate endDate = LocalDate.now();
 //        List<Order> ordersInRange = customerDAO.getOrdersByRange(fulfilled, startDate, endDate);
 //        System.out.println("Orders within the date range: " + ordersInRange);
+//        
         // Test deleteCustomers method
 //List<String> customerIdsToDelete = new ArrayList<>();
 //customerIdsToDelete.add(newCustomer.getID());

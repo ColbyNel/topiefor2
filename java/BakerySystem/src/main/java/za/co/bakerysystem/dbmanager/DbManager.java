@@ -19,7 +19,6 @@ public class DbManager {
             con = DriverManager.getConnection(url, user, password);
             System.out.println("Got a connection");
         } catch (SQLException | ClassNotFoundException se) {
-            System.out.println("Error: "+se.getMessage());
             System.err.println("Could not connect: " + se.getMessage());
         }
 

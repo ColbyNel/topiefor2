@@ -601,17 +601,17 @@ public class OrderDAOImpl implements OrderDAO {
 //        boolean fulfillOrderResult = orderDAO.fulfillOrder(orderIdToFulfill, true);
 //        System.out.println("Fulfill Order Result: " + fulfillOrderResult);
         // Test createOrderDetail
-        OrderDetails orderDetails = new OrderDetails();
-        //orderDetails.setOrderID(orderIdToFulfill);
-        orderDetails.setOrderID(3);
-        orderDetails.setProductID(2); // Assuming there's a product in the database
-        orderDetails.setPriceAtSale(20.0);
-        orderDetails.setFoodCostAtSale(15.0);
-        orderDetails.setQuantity(2);
-        orderDetails.setComment("Test Order Detail");
-//
-        boolean createOrderDetailResult = orderDAO.createOrderDetail(orderDetails);
-        System.out.println("Create Order Detail Result: " + createOrderDetailResult);
+//        OrderDetails orderDetails = new OrderDetails();
+//        //orderDetails.setOrderID(orderIdToFulfill);
+//        orderDetails.setOrderID(3);
+//        orderDetails.setProductID(2); // Assuming there's a product in the database
+//        orderDetails.setPriceAtSale(20.0);
+//        orderDetails.setFoodCostAtSale(15.0);
+//        orderDetails.setQuantity(2);
+//        orderDetails.setComment("Test Order Detail");
+////
+//        boolean createOrderDetailResult = orderDAO.createOrderDetail(orderDetails);
+//        System.out.println("Create Order Detail Result: " + createOrderDetailResult);
         // Test getOrders
 //        List<Order> allOrders = orderDAO.getOrders();
 //        System.out.println("All Orders: " + allOrders);
@@ -625,8 +625,8 @@ public class OrderDAOImpl implements OrderDAO {
 //        int totalOrdersQuantity = orderDAO.getTotalOrdersQuantity();
 //        System.out.println("Total Orders Quantity: " + totalOrdersQuantity);
 //        // Test getOrdersByRange
-        // List<Order> ordersInRange = orderDAO.getOrdersByRange("2024-01-01", "2025-12-31", "Sphe");
-        // System.out.println("Orders in Range: " + ordersInRange);
+//         List<Order> ordersInRange = orderDAO.getOrdersByRange("2024-01-01", "2025-12-31", "test");
+//         System.out.println("Orders in Range: " + ordersInRange);
         // Test getOrder
 //        Order fetchedOrder = orderDAO.getOrder(1);
 //        System.out.println("Fetched Order: " + fetchedOrder);

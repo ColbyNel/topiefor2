@@ -173,7 +173,7 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
         OrderDetailsDAO orderDetailsDAO = new OrderDetailsDAOImpl();
 
 //        // Test save method
-//        OrderDetails newOrderDetails = new OrderDetails();
+        OrderDetails newOrderDetails = new OrderDetails();
 //        newOrderDetails.setOrderID(2);
 //        newOrderDetails.setProductID(2);
 //        newOrderDetails.setQuantity(5);
@@ -191,10 +191,10 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
 //        // Test findAll method
  //       System.out.println("All OrderDetails: " + orderDetailsDAO.findAll());
 
-//        // Test update method
-//        newOrderDetails.setQuantity(10);
-//        boolean updateSuccess = orderDetailsDAO.update(newOrderDetails);
-//        System.out.println("Update success: " + updateSuccess);
+        // Test update method
+        newOrderDetails.setQuantity(10);
+        boolean updateSuccess = orderDetailsDAO.update(newOrderDetails);
+        System.out.println("Update success: " + updateSuccess);
 
 //        // Test delete method
 //        boolean deleteSuccess = orderDetailsDAO.delete(2, 2);
