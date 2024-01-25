@@ -13,7 +13,7 @@ public class RecipeController {
     private final RecipeDAO recipeDAO = new RecipeDAOImpl(); // Replace with your actual implementation
 
     @POST
-    @Path("/create")
+    @Path("/create_recipe")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createRecipe(Recipe recipe) {
         int productID = recipe.getProductID();
