@@ -32,7 +32,7 @@ public class SalesReportDAOImpl implements SalesReportDAO {
                     "INSERT INTO Sales_Report (DatePlaced, Hours, Comment) VALUES (?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
 
-            ps.setObject(1, salesReport.getDate());
+            ps.setObject(1, LocalDate.now());
             ps.setObject(2, salesReport.getHours());
             ps.setString(3, salesReport.getComment());
 
@@ -411,7 +411,6 @@ public class SalesReportDAOImpl implements SalesReportDAO {
 //        for (SalesReportDetails sale : salesDetails) {
 //            System.out.println(sale);
 //        }
-
 //        // Test deleteSalesDetail
 //        int reportIDToDelete = 1; // Replace with an existing Sales_Report_Details ID
 //        boolean deleteDetailResult = salesReportDAO.deleteSalesDetail(reportIDToDelete);

@@ -17,12 +17,41 @@ public class RecipeServiceImpl implements RecipeService {
         return recipeDAO.createRecipe(productID, comment);
     }
 
-   
     @Override
     public boolean deleteRecipeDetail(int recipeID) {
         return recipeDAO.deleteRecipeDetail(recipeID);
     }
+    
+    //-------------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------
+    
+    public static void main(String[] args) {
+        // Create an instance of RecipeServiceImpl
+//        RecipeService recipeService = new RecipeServiceImpl();
+//
+//        // Test createRecipe method
+//        int productID = 5;
+//        String comment = "Delicious recipe!";
+//
+//        boolean createResult = recipeService.createRecipe(productID, comment);
+//
+//        if (createResult) {
+//            System.out.println("Recipe created successfully!");
+//        } else {
+//            System.out.println("Failed to create Recipe.");
+//        }
 
-
+//        // Test deleteRecipeDetail method
+//        int recipeIDToDelete = 1;
+//
+//        boolean deleteResult = recipeService.deleteRecipeDetail(recipeIDToDelete);
+//
+//        if (deleteResult) {
+//            System.out.println("Recipe detail deleted successfully!");
+//        } else {
+//            System.out.println("Failed to delete Recipe detail.");
+//        }
+    }
 
 }

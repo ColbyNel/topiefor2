@@ -70,5 +70,52 @@ public class SalesReportServiceImpl implements SalesReportService {
     public boolean deleteSales(int saleID) {
         return salesReportDAO.deleteSales(saleID);
     }
+    
+    //-----------------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------
+    
+      public static void main(String[] args) {
+        SalesReportService salesReportService = new SalesReportServiceImpl();
+
+        // Test createSale method
+        SalesReport salesReportToCreate = new SalesReport(3,"yrtyt");
+        boolean createSaleResult = salesReportService.createSale(salesReportToCreate);
+
+        if (createSaleResult) {
+            System.out.println("Sale created successfully!");
+        } else {
+            System.out.println("Failed to create sale.");
+        }
+
+//        // Test getSales method
+//        LocalDate startDate = LocalDate.now().minusDays(30);
+//        LocalDate endDate = LocalDate.now();
+//        List<SalesReport> salesList = salesReportService.getSales(startDate, endDate);
+//
+//        System.out.println("Sales in the specified date range:");
+//        for (SalesReport sale : salesList) {
+//            System.out.println(sale); // Assuming toString is implemented in SalesReport class
+//        }
+//
+//        // Test getSalesDetails method
+//        int saleIDToFetchDetails = /* specify a sale ID */;
+//        List<SalesReportDetails> salesDetailsList = salesReportService.getSalesDetails(saleIDToFetchDetails);
+//
+//        System.out.println("Sales details for sale ID " + saleIDToFetchDetails + ":");
+//        for (SalesReportDetails details : salesDetailsList) {
+//            System.out.println(details); // Assuming toString is implemented in SalesReportDetails class
+//        }
+//
+//        // Test deleteSales method
+//        int saleIDToDelete = /* specify a sale ID to delete */;
+//        boolean deleteSaleResult = salesReportService.deleteSales(saleIDToDelete);
+//
+//        if (deleteSaleResult) {
+//            System.out.println("Sale deleted successfully!");
+//        } else {
+//            System.out.println("Failed to delete sale.");
+//        }
+    }
 
 }
