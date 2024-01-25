@@ -1,86 +1,100 @@
-import Link from "next/link";
+"use client";
+import { validateLogin } from "@/actions";
+import Failed from "@/components/login/Failed";
+import Successful from "@/components/login/Successful";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+
+interface MyFormData {
+  email: string;
+  password: string;
+}
 
 export default function Example() {
-    return (
-        <div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-            <img
-            className="absolute inset-0 -z-10 h-full w-full object-cover object-right md:object-center opacity-80 blur-md"
-            src="/macron.jpg"
-            alt="nothing"
-            />
-          <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-            <Link href="/">
-            <img
-              className="mx-auto h-10 w-auto"
-              src="/cake_FILL0_wght400_GRAD0_opsz24.png"
-              alt="Your Company"
-            />
-            </Link>
-            <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white">
-              Sign in to your account
-            </h2>
-          </div>
-  
-          <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form className="space-y-6" action="#" method="POST">
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium leading-6 text-white">
-                  Email address
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder="Email Address"
-                    autoComplete="email"
-                    required
-                    className="block w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-tertiary sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
-  
-              <div>
-                <div className="flex items-center justify-between">
-                  <label htmlFor="password" className="block text-sm font-medium leading-6 text-white">
-                    Password
-                  </label>
-                  <div className="text-sm">
-                    <a href="#" className="font-semibold text-green-950 hover:text-red-900">
-                      Forgot password?
-                    </a>
-                  </div>
-                </div>
-                <div className="mt-2">
-                  <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    placeholder="Password"
-                    autoComplete="current-password"
-                    required
-                    className="block w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-tertiary sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
-  
-              <div>
-                <button
-                  type="submit"
-                  className="flex w-full justify-center rounded-md bg-secondary px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                >
-                  Sign in
-                </button>
-              </div>
-            </form>
-  
-            <p className="mt-10 text-center text-sm text-white">
-              Not a member?{' '}
-              <a href="/register" className="font-semibold leading-6 text-tertiary hover:text-teal-950">
-                Sign Up
-              </a>
-            </p>
-          </div>
+  const [loginSuccess, setLoginSuccess] = useState(false);
+  const [formData, setFormData] = useState<MyFormData>({
+    email: "",
+    password: "",
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const response = await validateLogin(formData);
+      if (response == "Login successful!") {
+        setLoginSuccess(true);
+      } else {
+        console.log(response);
+      }
+    } catch (error) {
+      console.error("Error during login validation:");
+    }
+  };
+
+  return (
+    <div className="flex items-center justify-center h-screen">
+      <div className="rounded-lg border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+        <div className="border-b border-stroke rounded-t-lg bg-primary py-4 px-6.5 dark:border-strokedark">
+          <h3 className="font-medium text-white dark:text-white text-center">
+            Log In
+          </h3>
         </div>
-    )
-  }
+        <form onSubmit={handleSubmit} className="p-10">
+          <div className="mb-4.5 pb-6">
+            <label className="mb-2.5 block text-black dark:text-white">
+              Email
+            </label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              placeholder="Enter your email address"
+              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+            />
+          </div>
+
+          <div>
+            <label className="mb-2.5 block text-black dark:text-white">
+              Password
+            </label>
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleInputChange}
+              placeholder="Enter password"
+              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+            />
+          </div>
+
+          <div className="mt-5 mb-5.5 flex items-center justify-between pb-5">
+            <p className="">Not a member?</p>
+
+            <a href="/register" className="text-sm text-primary">
+              Sign Up
+            </a>
+          </div>
+
+          <button
+            type="submit"
+            className="button-hover flex w-full justify-center rounded bg-primary p-3 font-medium text-white"
+          >
+            Log In
+          </button>
+        </form>
+        {!loginSuccess && <Failed />}
+        {loginSuccess && <Successful />}
+      </div>
+    </div>
+  );
+}

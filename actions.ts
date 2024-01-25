@@ -2,18 +2,37 @@
 
 import { Interface } from "readline";
 
+
 interface Category {
   categoryId: number;
   description: string;
 }
 
+interface MyFormData {
+  email: string;
+  password: string;
+}
+interface RegisterFormData {
+  customerName: string;
+  customerIDNo: string;
+  phoneNumber: string;
+  addressOne: string;
+  addressTwo: string;
+  city: string;
+  zip: string;
+  email: string;
+  password: string;
+}
+
+
 {
   /*GET CUSTOMER BY ID FROM DB*/
 }
 
-export const getSingleCustomer = async (id: string) => {
+
+export const getSingleCustomer = async (customerId: string) => {
   const req = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/customers/get/${id}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/customers/get/${customerId}`,
     {
       method: "GET",
       headers: {
@@ -21,7 +40,7 @@ export const getSingleCustomer = async (id: string) => {
       },
       next: {
         revalidate: 60,
-        tags: ["customers" + id],
+        tags: ["customers" + customerId],
       },
     }
   );
@@ -42,7 +61,6 @@ export const getAllCustomers = async () => {
       tags: ["customers", "searchCustomers"],
     },
   });
-
   return await req.json();
 };
 
@@ -64,7 +82,6 @@ export const getAllItemsFromCategory = async (categoryId) => {
       },
     }
   );
-
   return await req.json();
 };
 
@@ -135,3 +152,70 @@ export const getAllCategories = async () => {
   );
   return await req.json();
 };
+
+export const getAllIngredients = async () => {
+  const req = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/ingredients/all_ingredients`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      next: {
+        revalidate: 10,
+        tags: ["ingredients", "allIngredients"],
+      },
+    }
+  )
+  return await req.json();
+}
+
+export const getAllProducts = async () => {
+  const req = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/products/all`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      next: {
+        revalidate: 10,
+        tags: ["ingredients", "allIngredients"],
+      },
+    }
+  )
+  return await req.json();
+}
+
+export const validateLogin = async (formData: MyFormData) => {
+  const req:Response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/customers/login`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData)
+    }
+  );
+
+  const responseData = await req;
+  return responseData.text();
+
+ 
+}
+
+export const signUp = async (formData: RegisterFormData ) => {
+  const req:Response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/customers/signup`,
+    {
+      method: "POST",
+      headers:{
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData)
+    }
+  );
+  const responseData = await req;
+  return responseData.text();
+}

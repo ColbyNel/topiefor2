@@ -1,6 +1,7 @@
 import { getAllCustomers } from "@/actions";
 import Link from "next/link";
 
+
 // const customer = await getSinlgeCustomer("9876543");
 // const name = customer?.name;
 // const id = customer?.customerIDNo;
@@ -36,37 +37,43 @@ const customerlist = () => {
                 Delivery Address
               </th>
               <th scope="col" className="px-6 py-3">
-                Title
+                Customer Since
               </th>
             </tr>
           </thead>
           <tbody>
             {allCustomers.map(
               ({
+                id,
                 customerIDNo,
-                name,
-                emailAddress,
-                telephoneNumber,
-                addressID,
-                title,
+                customerName,
+                phoneNumber,
+                addressOne,
+                addressTwo,
+                city,
+                zip,
+                email,
+                joinDate
+                
               }) => (
                 <tr
-                  key={customerIDNo}
+                  key={id}
                   className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                 >
+                  <Link href={`/admin/tools/customermgmt/${id}`}>
                   <th
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 hover:to-blue-500 whitespace-nowrap dark:text-white"
                   >
-                    {name}
+                    {customerName}
                   </th>
-                  <Link href={`/admin/tools/customermgmt/${customerIDNo}`}>
-                    <td className="px-6 py-4">{customerIDNo}</td>
                   </Link>
-                  <td className="px-6 py-4">{emailAddress}</td>
-                  <td className="px-6 py-4">{telephoneNumber}</td>
-                  <td className="px-6 py-4">{addressID}</td>
-                  <td className="px-6 py-4">{title}</td>
+                    <td className="px-6 py-4">{customerIDNo}</td>
+                  
+                  <td className="px-6 py-4">{email}</td>
+                  <td className="px-6 py-4">{phoneNumber}</td>
+                  <td className="px-6 py-4">{addressOne} {addressTwo}, {city}, {zip}</td>
+                  <td className="px-6 py-4">{joinDate?.dayOfMonth} {joinDate?.month} {joinDate?.year}</td>
                 </tr>
               )
             )}
