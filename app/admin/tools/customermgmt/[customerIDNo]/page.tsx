@@ -3,7 +3,7 @@ import { deleteCustomer, getSingleCustomer } from "@/actions";
 import AdminHead from "@/components/AdminHead";
 import AdminMenu from "@/components/AdminMenu";
 
-export default async function SinglePage({ params: { customerIDNo } }) {
+export default async function SinglePage({ params: { customerIDNo } }:any) {
 
   const customer = await getSingleCustomer(customerIDNo);
   const address:String = (customer?.addressOne || '') + ' ' + (customer?.addressTwo || '') + ', ' + (customer?.city || '') + ', ' + (customer?.zip || '')

@@ -1,21 +1,25 @@
-import { getAllCustomers } from "@/actions";
-import Link from "next/link";
+import { getAllProducts, getCategoryById } from "@/actions"
+import { Link } from "lucide-react";
 
+interface Category {
+    categoryId: number;
+    description: string;
+  }
 
-// const customer = await getSinlgeCustomer("9876543");
-// const name = customer?.name;
-// const id = customer?.customerIDNo;
-// const emailAddress = customer?.emailAddress;
+const allProducts = await getAllProducts();
 
-const allCustomers = await getAllCustomers();
+const category = async (categoryid:number) => {
+    const req:Category = getCategoryById(categoryid)
+    return req
+}
 
-const customerlist = () => {
-  return (
-    <div className="bg-white flex min-h-screen flex-1 flex-col px-6 py-12 lg:px-8">
+const productlist = () => {
+    return(
+        <div className="bg-white flex min-h-screen flex-1 flex-col px-6 py-12 lg:px-8">
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <div className="flex items-baseline justify-between border-b border-gray-200 pb-10 pt-24 ">
           <h1 className="text-4xl font-bold tracking-tight text-gray-900 pl-10 ">
-            All Customers
+            All Orders
           </h1>
         </div>
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -25,55 +29,50 @@ const customerlist = () => {
                 Name
               </th>
               <th scope="col" className="px-6 py-3">
-                ID Number
+                Price
               </th>
               <th scope="col" className="px-6 py-3">
-                Email
+                Description
               </th>
               <th scope="col" className="px-6 py-3">
-                Telephone No.
+                Warnings
               </th>
               <th scope="col" className="px-6 py-3">
-                Delivery Address
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Customer Since
+                Category
               </th>
             </tr>
           </thead>
           <tbody>
-            {allCustomers.map(
+            {allProducts.map(
               ({
-                id,
-                customerIDNo,
-                customerName,
-                phoneNumber,
-                addressOne,
-                addressTwo,
-                city,
-                zip,
-                email,
-                joinDate
+                name,
+                price,
+                description,
+                warnings,
+                nutrientInformation,
+                categoryID,
+                foodCost,
+                timeCost
                 
               }:any) => (
                 <tr
-                  key={id}
+                  key={name}
                   className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                 >
-                  <Link href={`/admin/tools/customermgmt/${id}`}>
+                  <Link href="">
                   <th
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 hover:to-blue-500 whitespace-nowrap dark:text-white"
                   >
-                    {customerName}
+                    {name}
                   </th>
                   </Link>
-                    <td className="px-6 py-4">{customerIDNo}</td>
+                    <td className="px-6 py-4">{price}</td>
                   
-                  <td className="px-6 py-4">{email}</td>
-                  <td className="px-6 py-4">{phoneNumber}</td>
-                  <td className="px-6 py-4">{addressOne} {addressTwo}, {city}, {zip}</td>
-                  <td className="px-6 py-4">{joinDate?.dayOfMonth} {joinDate?.month} {joinDate?.year}</td>
+                  <td className="px-6 py-4">{description}</td>
+                  <td className="px-6 py-4">{warnings}</td>
+                  <td className="px-6 py-4">{nutrientInformation}</td>
+                  <td className="px-6 py-4">{category(categoryID)}</td>
                 </tr>
               )
             )}
@@ -81,6 +80,6 @@ const customerlist = () => {
         </table>
       </div>
     </div>
-  );
-};
-export default customerlist;
+    )
+}
+export default productlist

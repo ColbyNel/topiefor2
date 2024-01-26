@@ -20,7 +20,7 @@ const admintools = () => {
           </p>
           <div id="buttons" className="flex flex-col items-center justify-center mt-10">
             <a
-              className=" my-2 inline-flex items-center gap-2 rounded border border-primary bg-primary px-8 py-3 text-white hover:bg-red-900 hover:text-white focus:outline-none  active:text-black"
+              className=" button-hover my-2 inline-flex items-center gap-2 rounded border border-primary bg-primary px-8 py-3 text-white hover:bg-red-900 hover:text-white focus:outline-none  active:text-black"
               href="/admin/tools/orders"
             >
               <span className="text-sm font-medium"> Orders </span>
@@ -41,7 +41,7 @@ const admintools = () => {
               </svg>
             </a>
             <a
-              className=" my-2 inline-flex items-center gap-2 rounded border border-primary bg-primary px-8 py-3 text-white hover:bg-red-900 hover:text-white focus:outline-none focus:ring active:text-black"
+              className="button-hover my-2 inline-flex items-center gap-2 rounded border border-primary bg-primary px-8 py-3 text-white hover:bg-red-900 hover:text-white focus:outline-none focus:ring active:text-black"
               href="/admin/tools/analytics"
             >
               <span className="text-sm font-medium"> Analytics </span>
@@ -62,7 +62,7 @@ const admintools = () => {
               </svg>
             </a>
             <a
-              className="my-2 inline-flex items-center gap-2 rounded border border-primary bg-primary px-8 py-3 text-white hover:bg-red-900 hover:text-white focus:outline-none focus:ring active:text-black"
+              className="button-hover  my-2 inline-flex items-center gap-2 rounded border border-primary bg-primary px-8 py-3 text-white hover:bg-red-900 hover:text-white focus:outline-none focus:ring active:text-black"
               href="/download"
             >
               <span className="text-sm font-medium"> Edit Products </span>
@@ -83,7 +83,7 @@ const admintools = () => {
               </svg>
             </a>
             <a
-              className="my-2 inline-flex items-center gap-2 rounded border border-primary bg-primary px-8 py-3 text-white hover:bg-red-900 hover:text-white focus:outline-none focus:ring active:text-black"
+              className="button-hover my-2 inline-flex items-center gap-2 rounded border border-primary bg-primary px-8 py-3 text-white hover:bg-red-900 hover:text-white focus:outline-none focus:ring active:text-black"
               href="/download"
             >
               <span className="text-sm font-medium"> Ingredients </span>
@@ -104,7 +104,7 @@ const admintools = () => {
               </svg>
             </a>
             <a
-              className="my-2 inline-flex items-center gap-2 rounded border border-primary bg-primary px-8 py-3 text-white hover:bg-red-900 hover:text-white focus:outline-none focus:ring active:text-black"
+              className="button-hover my-2 inline-flex items-center gap-2 rounded border border-primary bg-primary px-8 py-3 text-white hover:bg-red-900 hover:text-white focus:outline-none focus:ring active:text-black"
               href="/admin/tools/customermgmt"
             >
               <span className="text-sm font-medium"> Manage Customers </span>

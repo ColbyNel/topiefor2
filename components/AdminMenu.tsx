@@ -22,7 +22,7 @@ const AdminMenu = () => {
   
       <li>
         <a
-          href=""
+          href="/admin/tools/products"
           className="block rounded-lg px-6 py-3 text-sm font-medium text-gray-600 transition duration-300 ease-in-out transform hover:bg-gray-100 hover:text-gray-700 hover:scale-105"
         >
           Edit Products

@@ -1,29 +1,20 @@
-import {
-  getProductsByCategory,
-  getCategoryById,
-  getAllProducts,
-} from "@/actions";
+import { getAllProducts } from "@/actions";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import React from "react";
 
-export default async function SinglePage({ params: { categoryId } }:any) {
-  //   const category = await getCategoryById(categoryId);
-  console.log(categoryId);
-  const items = await getProductsByCategory(2);
-  const category = await getCategoryById(2);
-  console.log(items)
+const allProducts = async () => {
+    const allProducts = await getAllProducts();
+
   return (
     <>
       <Header />
-
       <div className="bg-white flex min-h-screen">
         <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
           <h2 className="text-8xl font-bold text-black text-center pb-32">
-            {category.description}
+            All Products
           </h2>
           <div className="grid grid-cols-3 gap-x-10 gap-y-10 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-            {items.map(({ id, name, price, comment,description }:any) => (
+            {allProducts.map(({ id, name, price, comment,description }:any) => (
               <a key={id} href={`/products/${id}`} className="item-hover border-black group">
                 <div className="aspect-square w-100 overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7 ">
                   <img
@@ -46,4 +37,5 @@ export default async function SinglePage({ params: { categoryId } }:any) {
       <Footer />
     </>
   );
-}
+};
+export default allProducts;

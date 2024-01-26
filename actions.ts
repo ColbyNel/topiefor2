@@ -171,7 +171,7 @@ export const getAllIngredients = async () => {
 
 export const getAllProducts = async () => {
   const req = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/products/all`,
+    `${process.env.NEXT_PUBLIC_API_URL}/products/all_products`,
     {
       method: "GET",
       headers: {
