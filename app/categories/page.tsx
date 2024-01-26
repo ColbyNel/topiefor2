@@ -17,7 +17,7 @@ const Categories = async () => {
 
             <div className="mt-6 flex flex-col items-center space-y-6">
               {categories.map(({ categoryId, description }) => (
-                <a href={`/categories/${categoryId}`} key={categoryId}>
+                <a key={categoryId} href={`/categories/${categoryId}`} >
                   <div className="item-hover group relative h-96 w-full overflow-hidden rounded-lg bg-white">
                     <div className="relative h-96 w-full overflow-hidden rounded-lg bg-white">
                       <div className="absolute inset-0 bg-black opacity-50 hover:opacity-0 transition duration-300 ease-in-out"></div>

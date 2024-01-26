@@ -68,22 +68,21 @@ export const getAllCustomers = async () => {
   /*GET ALL ITEMS IN A CATEGORY BY ID FROM DB*/
 }
 
-export const getAllItemsFromCategory = async (categoryId:number) => {
-  const req = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/products/get_product_category/${categoryId}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      next: {
-        revalidate: 60,
-        tags: ["customers", "searchCustomers"],
-      },
-    }
-  );
+export const getProductsByCategory = async (id:number) => {
+  const req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/get_product_catergory/${id}`,
+  {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    next: {
+      revalidate: 2,
+      tags: ["category", "productsbycategory"],
+    },
+  });
+  // console.log(req)
   return await req.json();
-};
+}
 
 export const getCategoryById = async (
   categoryId: number
@@ -106,9 +105,9 @@ export const getCategoryById = async (
   return data;
 };
 
-export const getItemById = async (itemId: any) => {
+export const getProductById = async (productId: any) => {
   const req = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/items/get_item/${itemId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/products/get_product/${productId}`,
     {
       method: "GET",
       headers: {
@@ -116,7 +115,7 @@ export const getItemById = async (itemId: any) => {
       },
       next: {
         revalidate: 60,
-        tags: ["items" + itemId],
+        tags: ["product" + productId],
       },
     }
   );
@@ -180,7 +179,7 @@ export const getAllProducts = async () => {
       },
       next: {
         revalidate: 10,
-        tags: ["ingredients", "allIngredients"],
+        tags: ["products", "allProducts"],
       },
     }
   )
