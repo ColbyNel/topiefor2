@@ -1,5 +1,8 @@
 package za.co.bakerysystem.dao.impl;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -9,7 +12,6 @@ import za.co.bakerysystem.dao.CustomerDAO;
 import za.co.bakerysystem.dbmanager.DbManager;
 import za.co.bakerysystem.model.Customer;
 import za.co.bakerysystem.model.Order;
-import za.co.bakerysystem.model.PaymentType;
 import za.co.bakerysystem.model.Product;
 
 public class CustomerDAOImpl implements CustomerDAO {
@@ -47,7 +49,14 @@ public class CustomerDAOImpl implements CustomerDAO {
             ps.setString(8, customer.getZip());
             ps.setString(9, customer.getComment());
             ps.setString(10, customer.getEmail());
-            ps.setString(11, customer.getPassword());
+
+            // Encrypt the password using SHA-256
+            String hashedPassword = hashPasswordSHA256(customer.getPassword());
+
+            // Set the encrypted password back to the customer object
+            customer.setPassword(hashedPassword);
+
+            ps.setString(11, hashedPassword);
 
             int affectedRows = ps.executeUpdate();
 
@@ -68,6 +77,28 @@ public class CustomerDAOImpl implements CustomerDAO {
         } catch (SQLException ex) {
             System.out.println("Error: " + ex.getMessage());
             return false; // Return false if an exception occurs during customer creation
+        }
+    }
+
+    private String hashPasswordSHA256(String password) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hashBytes = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+
+            StringBuilder hexString = new StringBuilder();
+            for (byte hashByte : hashBytes) {
+                String hex = Integer.toHexString(0xff & hashByte);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            // Handle the exception appropriately (e.g., log, throw a custom exception)
+            e.printStackTrace();
+            return null;
         }
     }
 
@@ -329,10 +360,10 @@ public class CustomerDAOImpl implements CustomerDAO {
             return false;
         }
     }
-    
-     @Override
+
+    @Override
     public Customer getCustomerByEmail(String email) {
-          db = DbManager.getInstance();
+        db = DbManager.getInstance();
         connection = db.getConnection();
         try {
             ps = connection.prepareCall("CALL fetch_customer_email(?)");
@@ -346,7 +377,7 @@ public class CustomerDAOImpl implements CustomerDAO {
         }
 
         return null;
-        
+
     }
 
     private Customer extractCustomerFromResultSet(ResultSet rs) throws SQLException {
@@ -451,7 +482,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 //        Customer retrievedCustomer = customerDAO.getCustomer(customerIdToRetrieve);
 //        System.out.println("Retrieved customer by ID " + customerIdToRetrieve + ": " + retrievedCustomer);
 
-          //Test getCustomerByEmail
+        //Test getCustomerByEmail
         Customer retrievedCustomer = customerDAO.getCustomerByEmail("john@example.com");
         System.out.println("Retrieved customer by ID " + ": " + retrievedCustomer);
 //
@@ -465,7 +496,6 @@ public class CustomerDAOImpl implements CustomerDAO {
         // Test getCustomerOrders method
 //        List<Order> customerOrders = customerDAO.getCustomerOrders(4);
 //        System.out.println("Orders for customer ID " + 4 + ": " + customerOrders);
-
 //        // Test getNumOrders method
 //        int numOrders = customerDAO.getNumOrders(customerIdToRetrieve);
 //        System.out.println("Number of orders for customer ID " + customerIdToRetrieve + ": " + numOrders);
@@ -483,6 +513,5 @@ public class CustomerDAOImpl implements CustomerDAO {
 //customerDAO.deleteCustomers(customerIdsToDelete);
 //System.out.println("Customers deleted successfully.");
     }
-
 
 }
