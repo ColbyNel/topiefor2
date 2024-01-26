@@ -79,36 +79,36 @@ public class SalesReportServiceImpl implements SalesReportService {
         SalesReportService salesReportService = new SalesReportServiceImpl();
 
         // Test createSale method
-        SalesReport salesReportToCreate = new SalesReport(3,"yrtyt");
-        boolean createSaleResult = salesReportService.createSale(salesReportToCreate);
+//        SalesReport salesReportToCreate = new SalesReport(3,"yrtyt");
+//        boolean createSaleResult = salesReportService.createSale(salesReportToCreate);
+//
+//        if (createSaleResult) {
+//            System.out.println("Sale created successfully!");
+//        } else {
+//            System.out.println("Failed to create sale.");
+//        }
 
-        if (createSaleResult) {
-            System.out.println("Sale created successfully!");
-        } else {
-            System.out.println("Failed to create sale.");
-        }
-
-//        // Test getSales method
+        // Test getSales method
 //        LocalDate startDate = LocalDate.now().minusDays(30);
 //        LocalDate endDate = LocalDate.now();
 //        List<SalesReport> salesList = salesReportService.getSales(startDate, endDate);
 //
 //        System.out.println("Sales in the specified date range:");
 //        for (SalesReport sale : salesList) {
-//            System.out.println(sale); // Assuming toString is implemented in SalesReport class
+//            System.out.println(sale);
 //        }
-//
-//        // Test getSalesDetails method
-//        int saleIDToFetchDetails = /* specify a sale ID */;
+
+        // Test getSalesDetails method
+//        int saleIDToFetchDetails = 1;
 //        List<SalesReportDetails> salesDetailsList = salesReportService.getSalesDetails(saleIDToFetchDetails);
 //
 //        System.out.println("Sales details for sale ID " + saleIDToFetchDetails + ":");
 //        for (SalesReportDetails details : salesDetailsList) {
-//            System.out.println(details); // Assuming toString is implemented in SalesReportDetails class
+//            System.out.println(details); 
 //        }
-//
+
 //        // Test deleteSales method
-//        int saleIDToDelete = /* specify a sale ID to delete */;
+//        int saleIDToDelete = 1;
 //        boolean deleteSaleResult = salesReportService.deleteSales(saleIDToDelete);
 //
 //        if (deleteSaleResult) {

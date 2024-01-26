@@ -39,7 +39,7 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
                 return extractShoppingCartFromResultSet(resultSet);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Error :"+e.getMessage());
         } finally {
             try {
                 if (resultSet != null) {
@@ -49,14 +49,14 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
                     preparedStatement.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                System.out.println("Error :"+e.getMessage());
             }
         }
         return null;
     }
 
     @Override
-    public void addProductToCart(int cartID, Product product, int quantity) {
+    public boolean addProductToCart(int cartID, Product product, int quantity) {
         PreparedStatement preparedStatement = null;
         db = DbManager.getInstance();
 
@@ -73,25 +73,21 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
             preparedStatement.setInt(1, cartID);
             preparedStatement.setInt(2, product.getID());
             preparedStatement.setInt(3, quantity);
-            preparedStatement.executeUpdate();
+            int rowsAffected = preparedStatement.executeUpdate();
 
             // After adding the product to the cart, update the cart total
             updateCartTotal(cartID);
+
+            // Return true if at least one row was affected (success), false otherwise
+            return rowsAffected > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Error :"+e.getMessage());
             System.err.println("SQL Exception: " + e.getMessage());
-        } finally {
-            try {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            return false;  // Operation failed
         }
     }
-// Helper method to check if the cartID exists in the shoppingcart table
 
+// Helper method to check if the cartID exists in the shoppingcart table
     private boolean isCartExists(int cartID) throws SQLException {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -112,23 +108,26 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
     }
 
 // Helper method to create a new shopping cart entry
-    private void createShoppingCart(int cartID) throws SQLException {
+    private boolean createShoppingCart(int cartID) {
         PreparedStatement preparedStatement = null;
         try {
             connection = db.getConnection();
             String createCartQuery = "INSERT INTO ShoppingCart (cartID, totalAmount) VALUES (?, 0)";
             preparedStatement = connection.prepareStatement(createCartQuery);
             preparedStatement.setInt(1, cartID);
-            preparedStatement.executeUpdate();
-        } finally {
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            // Return true if at least one row was affected (success), false otherwise
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.out.println("Error :"+e.getMessage());
+            System.err.println("SQL Exception: " + e.getMessage());
+            return false;  // Operation failed
         }
     }
 
     @Override
-    public void removeProductFromCart(int cartID, Product product) {
+    public boolean removeProductFromCart(int cartID, Product product) {
         PreparedStatement preparedStatement = null;
         db = DbManager.getInstance();
 
@@ -137,22 +136,19 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
             preparedStatement = connection.prepareStatement(REMOVE_ITEM_FROM_CART);
             preparedStatement.setInt(1, cartID);
             preparedStatement.setInt(2, product.getID());
-            preparedStatement.executeUpdate();
+            int rowsAffected = preparedStatement.executeUpdate();
+            updateCartTotal(cartID);//not sure
+
+            // Return true if at least one row was affected (success), false otherwise
+            return rowsAffected > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            System.out.println("Error :"+e.getMessage());
+            return false;  // Operation failed
         }
     }
 
     @Override
-    public void updateCartTotal(int cartID) {
+    public boolean updateCartTotal(int cartID) {
         PreparedStatement preparedStatement = null;
         db = DbManager.getInstance();
 
@@ -165,7 +161,7 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
             preparedStatement = connection.prepareStatement(updateQuery);
             preparedStatement.setInt(1, totalQuantity);
             preparedStatement.setInt(2, cartID);
-            preparedStatement.executeUpdate();
+            int quantityUpdateResult = preparedStatement.executeUpdate();
 
             // Calculate and update the total amount in the ShoppingCart table
             double totalAmount = calculateTotalAmount(cartID);
@@ -173,17 +169,13 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
             preparedStatement = connection.prepareStatement(updateTotalQuery);
             preparedStatement.setDouble(1, totalAmount);
             preparedStatement.setInt(2, cartID);
-            preparedStatement.executeUpdate();
+            int totalAmountUpdateResult = preparedStatement.executeUpdate();
+
+            // Return true if at least one of the updates was successful, false otherwise
+            return quantityUpdateResult > 0 || totalAmountUpdateResult > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            System.out.println("Error :"+e.getMessage());
+            return false;  // Operation failed
         }
     }
 
@@ -217,7 +209,7 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
                 products.add(product);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Error :"+e.getMessage());
         } finally {
             try {
                 if (resultSet != null) {
@@ -227,7 +219,7 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
                     preparedStatement.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                System.out.println("Error :"+e.getMessage());
             }
         }
         return products;
@@ -250,7 +242,7 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
                 totalQuantity = resultSet.getInt("Quantity");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Error :"+e.getMessage());
         } finally {
             try {
                 if (resultSet != null) {
@@ -260,7 +252,7 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
                     preparedStatement.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                System.out.println("Error :"+e.getMessage());
             }
         }
         return totalQuantity;
@@ -285,7 +277,7 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
                 totalAmount = resultSet.getDouble("totalAmount");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Error :"+e.getMessage());
         } finally {
             try {
                 if (resultSet != null) {
@@ -295,7 +287,7 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
                     preparedStatement.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                System.out.println("Error :"+e.getMessage());
             }
         }
         return totalAmount;
@@ -313,7 +305,7 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
         String comment = resultSet.getString("comment");
         double price = resultSet.getDouble("price");
 
-        return new Product(ID, name,price,foodcost,timecost,comment,description,nutrientInfo,warnings, categoryID);
+        return new Product(ID, name, price, foodcost, timecost, comment, description, nutrientInfo, warnings, categoryID);
     }
 
     public static void main(String[] args) {
@@ -326,7 +318,7 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
         ProductDAOImpl productDAO = new ProductDAOImpl();
 
         try {
-            Product newProduct = new Product("Freshh", 4.99,6.7,2,"GOOD BREAD","HIGH IN carbo","fibre","none",2);
+            Product newProduct = new Product("Freshh", 4.99, 6.7, 2, "GOOD BREAD", "HIGH IN carbo", "fibre", "none", 2);
             productDAO.createProduct(newProduct);
 
             // Get the newly added product from the database
@@ -335,15 +327,14 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
             //int totalQuantity = shoppingCartDAO.calculateTotalQuantity(5);
 //           
 //            // Add the product to the shopping cart with the calculated total quantity
-           // shoppingCartDAO.addProductToCart(2,addedProduct, totalQuantity);
-            
+            // shoppingCartDAO.addProductToCart(2,addedProduct, totalQuantity);
             // Display the updated shopping cart
 //            ShoppingCart retrievedCart = shoppingCartDAO.getShoppingCartById(1);
 //            System.out.println("Shopping Cart after adding product: " + retrievedCart);
             //Display all products after adding to the cart
-           // System.out.println("Products after adding to the cart: " + productDAO.getProducts());
+            // System.out.println("Products after adding to the cart: " + productDAO.getProducts());
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Error :"+e.getMessage());
         }
     }
 }

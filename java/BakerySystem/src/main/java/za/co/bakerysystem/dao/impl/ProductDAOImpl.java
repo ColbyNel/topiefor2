@@ -296,9 +296,9 @@ public class ProductDAOImpl implements ProductDAO {
 
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
-        } finally {
-            closeConnection(connection);
-        }
+        } //finally {
+            //closeConnection(connection);
+        //}
 
         return retVal;
 
@@ -335,9 +335,9 @@ public class ProductDAOImpl implements ProductDAO {
 
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
-        } finally {
-            closeConnection(connection);
-        }
+        } //finally {
+          //  closeConnection(connection);
+        //}
 
         //finally {
         //closeConnection(connection);

@@ -24,7 +24,7 @@ public class SalesReportDetailsDAOImpl implements SalesReportDetailsDAO {
 
         try {
             ps = connection.prepareStatement(
-                    "INSERT INTO Sales_Report_Details (Sales_Report_ID, product_id, StartQuantity, QuantitySold, QuantityTrashed, PriceAtSale, FoodCostAtSale) VALUES(?,?,?,?,?,?,?)");
+                    "INSERT INTO Sales_Report_Details (Sales_Report_ID, product_id, StartQuantity, QuantitySold, QuantityTrashed, PriceAtSale, FoodCostAtSale,profit,revenue,lost) VALUES(?,?,?,?,?,?,?,?,?,?)");
 
             ps.setInt(1, salesReportDetails.getSalesReportID());
             ps.setInt(2, salesReportDetails.getProductID());
@@ -33,6 +33,9 @@ public class SalesReportDetailsDAOImpl implements SalesReportDetailsDAO {
             ps.setInt(5, salesReportDetails.getQuantityTrashed());
             ps.setDouble(6, salesReportDetails.getPriceAtSale());
             ps.setDouble(7, salesReportDetails.getFoodCostAtSale());
+            ps.setDouble(8, salesReportDetails.getProfit());
+            ps.setDouble(9, salesReportDetails.getRevenue());
+            ps.setDouble(10, salesReportDetails.getLost());
 
             int affectedRows = ps.executeUpdate();
             creationSuccessful = affectedRows > 0;
