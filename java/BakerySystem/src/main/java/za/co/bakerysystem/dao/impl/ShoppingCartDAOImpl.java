@@ -10,18 +10,23 @@ import za.co.bakerysystem.model.ShoppingCart;
 
 public class ShoppingCartDAOImpl implements ShoppingCartDAO {
 
-    private Connection connection;
-    private static DbManager db;
+    public Connection connection;
+    public static DbManager db;
 
     public ShoppingCartDAOImpl(Connection connection) {
         this.connection = connection;
     }
+    
+     public ShoppingCartDAOImpl() {
+         db = DbManager.getInstance();
+        this.connection = db.getConnection();
+    }
 
     // SQL queries
-    private static final String SELECT_CART_BY_ID = "SELECT * FROM ShoppingCart WHERE cartID = ?";
-    private static final String ADD_ITEM_TO_CART = "INSERT INTO shoppingcartproduct (cartID, productID, quantity) VALUES (?, ?, ?)";
-    private static final String REMOVE_ITEM_FROM_CART = "DELETE FROM ShoppingCartProduct WHERE cartID = ? AND productID = ?";
-    private static final String UPDATE_CART_TOTAL = "UPDATE ShoppingCart SET totalAmount = ? WHERE cartID = ?";
+    public static final String SELECT_CART_BY_ID = "SELECT * FROM ShoppingCart WHERE cartID = ?";
+    public static final String ADD_ITEM_TO_CART = "INSERT INTO shoppingcartproduct (cartID, productID, quantity) VALUES (?, ?, ?)";
+    public static final String REMOVE_ITEM_FROM_CART = "DELETE FROM ShoppingCartProduct WHERE cartID = ? AND productID = ?";
+    public static final String UPDATE_CART_TOTAL = "UPDATE ShoppingCart SET totalAmount = ? WHERE cartID = ?";
 
     @Override
     public ShoppingCart getShoppingCartById(int cartID) {
@@ -188,7 +193,7 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
         return new ShoppingCart(cartID, products, totalAmount);
     }
 
-    private List<Product> getProductsForShoppingCart(int cartID) {
+    public List<Product> getProductsForShoppingCart(int cartID) {
         List<Product> products = new ArrayList<Product>();
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -210,22 +215,11 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
             }
         } catch (SQLException e) {
             System.out.println("Error :"+e.getMessage());
-        } finally {
-            try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-            } catch (SQLException e) {
-                System.out.println("Error :"+e.getMessage());
-            }
-        }
+        } 
         return products;
     }
 
-    private int calculateTotalQuantity(int cartID) {
+    public int calculateTotalQuantity(int cartID) {
         int totalQuantity = 0;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -243,22 +237,11 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
             }
         } catch (SQLException e) {
             System.out.println("Error :"+e.getMessage());
-        } finally {
-            try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-            } catch (SQLException e) {
-                System.out.println("Error :"+e.getMessage());
-            }
-        }
+        } 
         return totalQuantity;
     }
 
-    private double calculateTotalAmount(int cartID) {
+    public double calculateTotalAmount(int cartID) {
         double totalAmount = 0;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -278,22 +261,11 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
             }
         } catch (SQLException e) {
             System.out.println("Error :"+e.getMessage());
-        } finally {
-            try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-            } catch (SQLException e) {
-                System.out.println("Error :"+e.getMessage());
-            }
-        }
+        } 
         return totalAmount;
     }
 
-    private Product extractProductFromResultSet(ResultSet resultSet) throws SQLException {
+    public Product extractProductFromResultSet(ResultSet resultSet) throws SQLException {
         int ID = resultSet.getInt("productID");
         String name = resultSet.getString("name");
         int categoryID = resultSet.getInt("categoryID");
@@ -313,7 +285,7 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
         testShoppingCartMethods();
     }
 
-    private static void testShoppingCartMethods() {
+    public static void testShoppingCartMethods() {
         ShoppingCartDAOImpl shoppingCartDAO = new ShoppingCartDAOImpl(db.getConnection());
         ProductDAOImpl productDAO = new ProductDAOImpl();
 
