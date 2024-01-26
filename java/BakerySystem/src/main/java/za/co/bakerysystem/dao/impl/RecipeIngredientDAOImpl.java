@@ -28,21 +28,10 @@ public class RecipeIngredientDAOImpl implements RecipeIngredientDAO {
             int affectedRows = ps.executeUpdate();
             return affectedRows > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            // Close resources in the finally block
-            try {
-                if (ps != null) {
-                    ps.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            System.out.println("Error: "+ e.getMessage());
+
         }
+        return false;
     }
 
     @Override
@@ -58,37 +47,22 @@ public class RecipeIngredientDAOImpl implements RecipeIngredientDAO {
             int affectedRows = ps.executeUpdate();
             deletionSuccessful = affectedRows > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            // Close resources in the finally block
-            try {
-                if (ps != null) {
-                    ps.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            System.out.println("Error: "+ e.getMessage());
         }
-
         return deletionSuccessful;
     }
 
     //-------------------------------------------------------------------------------------------------
     //-------------------------------------------------------------------------------------------------
     //-------------------------------------------------------------------------------------------------
-    
     public static void main(String[] args) {
-      
+
         // Test createRecipeIngredient method
 //        RecipeIngredientDAO recipeIngredientDAO = new RecipeIngredientDAOImpl();
 //        recipeIngredientDAO.createRecipeIngredient(2, 2, 200);
-
 //        // Test deleteRecipeIngredient method
 //        boolean deletionResult = recipeIngredientDAO.deleteRecipeIngredient(2, 2);
 //        System.out.println("Deletion Result: " + deletionResult);
     }
-    
+
 }

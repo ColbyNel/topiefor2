@@ -33,7 +33,7 @@ public class PaymentDAOImpl implements PaymentDAO {
             int affectedRows = ps.executeUpdate();
             return affectedRows > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Error: "+ e.getMessage());
             return false;
         }
     }
@@ -51,7 +51,7 @@ public class PaymentDAOImpl implements PaymentDAO {
             int affectedRows = ps.executeUpdate();
             return affectedRows > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Error: "+ e.getMessage());
             return false;
         }
     }
@@ -76,7 +76,7 @@ public class PaymentDAOImpl implements PaymentDAO {
                 payments.add(payment);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Error: "+ e.getMessage());
         }
         return payments;
     }
@@ -98,7 +98,7 @@ public class PaymentDAOImpl implements PaymentDAO {
                 paymentTypes.add(paymentType);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Error: "+ e.getMessage());
         }
         return paymentTypes;
     }

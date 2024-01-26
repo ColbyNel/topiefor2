@@ -26,6 +26,7 @@ za\co\bakerysystem\service\impl\RecipeServiceImpl.class
 za\co\bakerysystem\restapi\MyRestApp.class
 za\co\bakerysystem\model\Category.class
 za\co\bakerysystem\dao\ProductDAO.class
+za\co\bakerysystem\controller\RecipeController.class
 za\co\bakerysystem\dao\impl\ShoppingCartDAOImpl.class
 za\co\bakerysystem\service\impl\RecipeIngredientServiceImpl.class
 za\co\bakerysystem\dao\ShoppingCartDAO.class
@@ -63,6 +64,7 @@ za\co\bakerysystem\dao\impl\CategoryDAOImpl.class
 za\co\bakerysystem\controller\IngredientController.class
 za\co\bakerysystem\dao\SalesReportDAO.class
 za\co\bakerysystem\model\RecipeIngredient.class
+za\co\bakerysystem\controller\RecipeIngredientController.class
 za\co\bakerysystem\controller\OrderController.class
 za\co\bakerysystem\model\Ingredient.class
 za\co\bakerysystem\model\SalesReport.class
