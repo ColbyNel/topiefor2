@@ -25,21 +25,10 @@ public class RecipeDAOImpl implements RecipeDAO {
             int affectedRows = ps.executeUpdate();
             return affectedRows > 0;
         } catch (SQLException e) {
-            System.out.println("Error: "+ e.getMessage());
-            return false;
-        } finally {
-            // Close resources in the finally block
-            try {
-                if (ps != null) {
-                    ps.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                System.out.println("Error: "+ e.getMessage());
-            }
+            System.out.println("Error: " + e.getMessage());
+            
         }
+        return false;
     }
 
     @Override
@@ -47,28 +36,16 @@ public class RecipeDAOImpl implements RecipeDAO {
         connection = db.getConnection();
 
         try {
-            ps = connection.prepareStatement("DELETE FROM Recipe WHERE Recipe_ID = ?");
+            ps = connection.prepareStatement("DELETE FROM Recipe WHERE product_id = ?");
 
             ps.setInt(1, recipeID);
 
             int affectedRows = ps.executeUpdate();
             return affectedRows > 0;
         } catch (SQLException e) {
-            System.out.println("Error: "+ e.getMessage());
+            System.out.println("Error: " + e.getMessage());
             return false;
-        } //finally {
-//            // Close resources in the finally block
-//            try {
-//                if (ps != null) {
-//                    ps.close();
-//                }
-//                if (connection != null) {
-//                    connection.close();
-//                }
-//            } catch (SQLException e) {
-//                System.out.println("Error: "+ e.getMessage());
-//            }
-//        }
+        }
     }
 
     //-----------------------------------------------------------------------------------------------
@@ -78,8 +55,8 @@ public class RecipeDAOImpl implements RecipeDAO {
         RecipeDAO recipeDAO = new RecipeDAOImpl();
 
         // Test createRecipe
-//        boolean createRecipeSuccess = recipeDAO.createRecipe(14, "Test Recipe"); // make sure productid exists
-//        System.out.println("Create Recipe success: " + createRecipeSuccess);
+        boolean createRecipeSuccess = recipeDAO.createRecipe(1, "Test Recipe"); // make sure productid exists
+        System.out.println("Create Recipe success: " + createRecipeSuccess);
         // Test createRecipeIngredient
 //        boolean createRecipeIngredientSuccess = recipeDAO.createRecipeIngredient(2, 2, 100);
 //        System.out.println("Create Recipe Ingredient success: " + createRecipeIngredientSuccess);

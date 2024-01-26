@@ -410,7 +410,7 @@ public class CustomerDAOImpl implements CustomerDAO {
         newCustomer.setPassword("password34");
 
         //   Adding customer
-//        customerDAO.createCustomer(newCustomer);
+        System.out.println(customerDAO.createCustomer(newCustomer));;
         //Test for login    
 //        System.out.println(customerDAO.login("john@example.com", "password34"));
         //update customer
