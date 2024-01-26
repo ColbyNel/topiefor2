@@ -193,6 +193,7 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
         return new ShoppingCart(cartID, products, totalAmount);
     }
 
+    @Override
     public List<Product> getProductsForShoppingCart(int cartID) {
         List<Product> products = new ArrayList<Product>();
         PreparedStatement preparedStatement = null;
@@ -219,6 +220,7 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
         return products;
     }
 
+    @Override
     public int calculateTotalQuantity(int cartID) {
         int totalQuantity = 0;
         PreparedStatement preparedStatement = null;
@@ -241,6 +243,7 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
         return totalQuantity;
     }
 
+    @Override
     public double calculateTotalAmount(int cartID) {
         double totalAmount = 0;
         PreparedStatement preparedStatement = null;
