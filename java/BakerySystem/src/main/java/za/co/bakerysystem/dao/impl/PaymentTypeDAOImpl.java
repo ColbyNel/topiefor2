@@ -31,20 +31,8 @@ public class PaymentTypeDAOImpl implements PaymentTypeDAO {
             return affectedRows > 0;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Error: " + e.getMessage());
             return false;
-        } finally {
-            // Close resources in the finally block
-            try {
-                if (ps != null) {
-                    ps.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -64,22 +52,7 @@ public class PaymentTypeDAOImpl implements PaymentTypeDAO {
                 paymentType.setType(rs.getString("Type"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            // Close resources in the finally block
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (ps != null) {
-                    ps.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            System.out.println("Error: " + e.getMessage());
         }
         return paymentType;
     }
@@ -100,22 +73,7 @@ public class PaymentTypeDAOImpl implements PaymentTypeDAO {
                 paymentTypes.add(paymentType);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            // Close resources in the finally block
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (ps != null) {
-                    ps.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            System.out.println("Error: " + e.getMessage());
         }
         return paymentTypes;
     }
@@ -134,21 +92,11 @@ public class PaymentTypeDAOImpl implements PaymentTypeDAO {
             return affectedRows > 0;
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            // Close resources in the finally block
-            try {
-                if (ps != null) {
-                    ps.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            System.out.println("Error: " + e.getMessage());
+
         }
+
+        return false;
     }
 
     @Override
@@ -164,21 +112,11 @@ public class PaymentTypeDAOImpl implements PaymentTypeDAO {
             return affectedRows > 0;
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            // Close resources in the finally block
-            try {
-                if (ps != null) {
-                    ps.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            System.out.println("Error: " + e.getMessage());
+
         }
+
+        return false;
     }
 
     //-------------------------------------------------------------------------------------------------
@@ -191,7 +129,7 @@ public class PaymentTypeDAOImpl implements PaymentTypeDAO {
         // Test the save method
 //        PaymentType newPaymentType = new PaymentType();
 //        newPaymentType.setType("Cashhhhhhhh");
-//
+////
 //        boolean saveSuccess = paymentTypeDAO.save(newPaymentType);
 //        System.out.println("Save success: " + saveSuccess);
 //        // Test the findAll method
@@ -207,7 +145,6 @@ public class PaymentTypeDAOImpl implements PaymentTypeDAO {
 //            boolean updateSuccess = paymentTypeDAO.update(foundPaymentType);
 //            System.out.println("Update success: " + updateSuccess);
 //        }
-
 //        // Test the delete method
 //        boolean deleteSuccess = paymentTypeDAO.delete(1); // Assuming ID 1 exists
 //        System.out.println("Delete success: " + deleteSuccess);

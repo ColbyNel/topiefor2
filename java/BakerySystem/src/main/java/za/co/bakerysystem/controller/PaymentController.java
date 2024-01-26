@@ -45,7 +45,7 @@ public class PaymentController {
     }
 
     @GET
-    @Path("/order-payments/{orderID}")
+    @Path("/order_payments/{orderID}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getOrderPayments(@PathParam("orderID") int orderID) {
         if (orderID <= 0) {
@@ -62,7 +62,7 @@ public class PaymentController {
     }
 
     @GET
-    @Path("/payment-types")
+    @Path("/payment_types")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPaymentTypes() {
         List<PaymentType> paymentTypes = paymentDAO.getPaymentTypes();

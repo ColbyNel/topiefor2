@@ -13,6 +13,7 @@ za\co\bakerysystem\dbmanager\DbManager.class
 za\co\bakerysystem\dao\impl\PaymentTypeDAOImpl.class
 za\co\bakerysystem\service\impl\PaymentTypeServiceImpl.class
 za\co\bakerysystem\service\RecipeIngredientService.class
+za\co\bakerysystem\controller\PaymentTypeController.class
 za\co\bakerysystem\service\impl\SalesReportServiceImpl.class
 za\co\bakerysystem\dao\RecipeIngredientDAO.class
 za\co\bakerysystem\service\impl\OrderProfitServiceImpl.class
@@ -25,6 +26,7 @@ za\co\bakerysystem\service\impl\CategoryServiceImpl.class
 za\co\bakerysystem\service\impl\RecipeServiceImpl.class
 za\co\bakerysystem\restapi\MyRestApp.class
 za\co\bakerysystem\model\Category.class
+za\co\bakerysystem\controller\ShoppingCartController.class
 za\co\bakerysystem\dao\ProductDAO.class
 za\co\bakerysystem\controller\RecipeController.class
 za\co\bakerysystem\dao\impl\ShoppingCartDAOImpl.class
@@ -73,6 +75,7 @@ za\co\bakerysystem\dao\OrderDAO.class
 za\co\bakerysystem\dao\impl\IngredientDAOImpl.class
 za\co\bakerysystem\model\OrderDetails.class
 za\co\bakerysystem\dao\CustomerDAO.class
+za\co\bakerysystem\controller\PaymentController.class
 za\co\bakerysystem\dao\impl\OrderDetailsDAOImpl.class
 za\co\bakerysystem\controller\ProductController.class
 za\co\bakerysystem\service\OrderService.class

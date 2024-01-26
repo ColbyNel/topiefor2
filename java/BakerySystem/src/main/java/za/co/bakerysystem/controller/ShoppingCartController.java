@@ -1,6 +1,6 @@
 package za.co.bakerysystem.controller;
 
-import javax.validation.Valid;
+import java.util.List;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -15,7 +15,7 @@ public class ShoppingCartController {
     private final ShoppingCartDAO shoppingCartDAO = new ShoppingCartDAOImpl(); // Replace with your actual implementation
 
     @GET
-    @Path("/{cartID}")
+    @Path("/get_shoppingcart/{cartID}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getShoppingCartById(@PathParam("cartID") int cartID) {
         if (cartID <= 0) {
@@ -84,5 +84,48 @@ public class ShoppingCartController {
         } else {
             return Response.status(Response.Status.NOT_FOUND).entity("Shopping cart not found").build();
         }
+    }
+
+    @GET
+    @Path("/products/{cartID}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getProductsForShoppingCart(@PathParam("cartID") int cartID) {
+        if (cartID <= 0) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Cart ID must be greater than 0").build();
+        }
+
+        List<Product> products = shoppingCartDAO.getProductsForShoppingCart(cartID);
+
+        if (products != null && !products.isEmpty()) {
+            return Response.ok(products).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("No products found for the specified cart").build();
+        }
+    }
+
+    @GET
+    @Path("/total_quantity/{cartID}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response calculateTotalQuantity(@PathParam("cartID") int cartID) {
+        if (cartID <= 0) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Cart ID must be greater than 0").build();
+        }
+
+        int totalQuantity = shoppingCartDAO.calculateTotalQuantity(cartID);
+
+        return Response.ok(totalQuantity).build();
+    }
+
+    @GET
+    @Path("/total_amount/{cartID}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response calculateTotalAmount(@PathParam("cartID") int cartID) {
+        if (cartID <= 0) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Cart ID must be greater than 0").build();
+        }
+
+        double totalAmount = shoppingCartDAO.calculateTotalAmount(cartID);
+
+        return Response.ok(totalAmount).build();
     }
 }
