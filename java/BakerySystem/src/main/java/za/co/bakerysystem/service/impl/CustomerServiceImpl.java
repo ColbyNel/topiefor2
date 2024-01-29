@@ -2,7 +2,6 @@ package za.co.bakerysystem.service.impl;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 import za.co.bakerysystem.dao.CustomerDAO;
 import za.co.bakerysystem.dao.impl.CustomerDAOImpl;
 import za.co.bakerysystem.model.Customer;
@@ -66,6 +65,11 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public List<Order> getCustomerOrders(int customerID) {
         return customerDAO.getCustomerOrders(customerID);
+    }
+
+    @Override
+    public Customer getCustomerByEmail(String email) {
+        return customerDAO.getCustomerByEmail(email);
     }
 
     @Override
@@ -144,4 +148,5 @@ public class CustomerServiceImpl implements CustomerService {
 //        boolean customerDeleted = customerService.deleteCustomer(customerIdToDelete);
 //        System.out.println("Customer deleted: " + customerDeleted);
     }
+
 }

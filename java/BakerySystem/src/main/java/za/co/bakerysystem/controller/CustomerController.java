@@ -55,7 +55,7 @@ public class CustomerController {
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response login(Customer customer) {
-        Customer loggedInCustomer = customerDAO.login(customer.getEmail(), customer.getPassword());
+        Customer loggedInCustomer = customerService.login(customer.getEmail(), customer.getPassword());
         if (loggedInCustomer != null) {
             return Response.ok("Login successful!").build();
         } else {
@@ -67,10 +67,10 @@ public class CustomerController {
     @Path("/get/{customerId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCustomersById(@PathParam("customerId") int customerId) {
-        //List<Customer> allCustomers = customerDAO.getAllCustomers();
+        //List<Customer> allCustomers = customerService.getAllCustomers();
 
-        if (customerDAO.getCustomer(customerId) != null) {
-            return Response.ok(customerDAO.getCustomer(customerId)).build();
+        if (customerService.getCustomer(customerId) != null) {
+            return Response.ok(customerService.getCustomer(customerId)).build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).entity("Customer not found").build();
         }
@@ -80,7 +80,7 @@ public class CustomerController {
     @Path("/update/{customerId}")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateCustomer(Customer updatedCustomer, @PathParam("customerId") int customerId) {
-        if (customerDAO.updateCustomer(updatedCustomer, customerId)) {
+        if (customerService.updateCustomer(updatedCustomer, customerId)) {
             return Response.ok("Customer updated successfully").build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).entity("Customer not found").build();
@@ -90,7 +90,7 @@ public class CustomerController {
     @DELETE
     @Path("/delete/{customerId}")
     public Response deleteCustomer(@PathParam("customerId") int customerId) {
-        if (customerDAO.deleteCustomer(customerId)) {
+        if (customerService.deleteCustomer(customerId)) {
             return Response.ok("Customer deleted successfully").build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).entity("Customer not found").build();
@@ -101,7 +101,7 @@ public class CustomerController {
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllCustomers() {
-        List<Customer> allCustomers = customerDAO.getCustomers();
+        List<Customer> allCustomers = customerService.getCustomers();
 
         if (allCustomers != null && !allCustomers.isEmpty()) {
             return Response.ok(allCustomers).build();
@@ -114,7 +114,7 @@ public class CustomerController {
     @Path("/customer_orders/{customerID}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCustomerOrder(@PathParam("customerID") int customerId) {
-        List<Order> allCustomerOrder = customerDAO.getCustomerOrders(customerId);
+        List<Order> allCustomerOrder = customerService.getCustomerOrders(customerId);
 
         if (allCustomerOrder != null && !allCustomerOrder.isEmpty()) {
             return Response.ok(allCustomerOrder).build();
@@ -127,7 +127,7 @@ public class CustomerController {
     @Path("/keyword/{keyword}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCustomersByKeyword(@PathParam("keyword") String keyword) {
-        List<Customer> allCustomers = customerDAO.getCustomersByKeyWord(keyword);
+        List<Customer> allCustomers = customerService.getCustomersByKeyWord(keyword);
 
         if (allCustomers != null && !allCustomers.isEmpty()) {
             return Response.ok(allCustomers).build();
@@ -140,7 +140,7 @@ public class CustomerController {
     @Path("/total_customer")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCustomerQuantity() {
-        int count = customerDAO.getCustomersQuantity();
+        int count = customerService.getCustomersQuantity();
 
         if (count > 0) {
             return Response.ok(count).build();
@@ -153,7 +153,7 @@ public class CustomerController {
     @Path("/order_number/{customerID}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNumOrders(@PathParam("customerID") int customerId) {
-        int count = customerDAO.getNumOrders(customerId);
+        int count = customerService.getNumOrders(customerId);
 
         if (count > 0) {
             return Response.ok(count).build();
@@ -166,7 +166,7 @@ public class CustomerController {
     @Path("/get_by_email/{email}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCustomerByEmail(@PathParam("email") String email) {
-        Customer customer = customerDAO.getCustomerByEmail(email);
+        Customer customer = customerService.getCustomerByEmail(email);
         if (customer != null) {
             return Response.ok(customer).build();
         } else {

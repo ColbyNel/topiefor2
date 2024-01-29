@@ -28,6 +28,8 @@ public interface CustomerService {
 
     List<Order> getCustomerOrders(int customerID);
 
+    Customer getCustomerByEmail(String email);
+
     int getNumOrders(int customerID);
 
     List<Order> getOrdersByRange(int fulfilled, LocalDate startDate, LocalDate endDate);

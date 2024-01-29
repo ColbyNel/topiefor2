@@ -1,6 +1,7 @@
 package za.co.bakerysystem.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -17,6 +18,17 @@ public class CategoryController {
     @Path("/add_category")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addCategory(Category category) {
+        String message = "";
+        // Check if category with the same description already exists
+        List<Category> existingCategory = categoryDAO.getAllCategory().stream()
+                .filter(c -> c.getDescription().equals(category.getDescription()))
+                .collect(Collectors.toList());
+
+        if (!existingCategory.isEmpty()) {
+            message = "Category provided already exists";
+            return Response.status(Response.Status.CREATED).entity(message).build();
+        }
+
         if (categoryDAO.addCategory(category)) {
             return Response.status(Response.Status.CREATED).entity("Category added successfully").build();
         } else {
