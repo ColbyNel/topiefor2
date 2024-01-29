@@ -7,6 +7,7 @@ import javax.ws.rs.core.Response;
 import za.co.bakerysystem.dao.IngredientDAO;
 import za.co.bakerysystem.dao.impl.IngredientDAOImpl;
 import za.co.bakerysystem.model.Ingredient;
+import za.co.bakerysystem.model.Product;
 import za.co.bakerysystem.service.IngredientService;
 import za.co.bakerysystem.service.impl.IngredientServiceImpl;
 
@@ -65,6 +66,47 @@ public class IngredientController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllIngredients() {
         List<Ingredient> allIngredients = ingredientService.getIngredients();
+
+        if (allIngredients != null && !allIngredients.isEmpty()) {
+            return Response.ok(allIngredients).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("No ingredients found").build();
+        }
+    }
+
+    @GET
+    @Path("/total_ingredients")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getIngredientQuantity() {
+        int count = ingredientService.getIngredientQuantity();
+
+        if (count > 0) {
+            return Response.ok(count).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("No ingredients found").build();
+        }
+    }
+
+    @GET
+    @Path("/ingredient_products/{ingredientID}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getRelatedProducts(@PathParam("ingredientID") int ingredientID) {
+
+        List<Product> allProduct = ingredientService.getRelatedProducts(ingredientID);
+//        List<Ingredient> allIngredients = ingredientService.getIngredients();
+
+        if (allProduct != null && !allProduct.isEmpty()) {
+            return Response.ok(allProduct).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("No ingredients found").build();
+        }
+    }
+    
+    @GET
+    @Path("/ingredients_to_be_ordered")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getIngredientsToBeOrdered() {
+        List<Ingredient> allIngredients = ingredientService.getIngredientsToBeOrdered();
 
         if (allIngredients != null && !allIngredients.isEmpty()) {
             return Response.ok(allIngredients).build();

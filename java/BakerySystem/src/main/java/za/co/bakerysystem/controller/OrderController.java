@@ -27,7 +27,7 @@ public class OrderController {
 
         }
     }
-    
+
     @POST
     @Path("/add_order_details")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -99,8 +99,8 @@ public class OrderController {
             return Response.status(Response.Status.NOT_FOUND).entity("No orders found").build();
         }
     }
-    
-     @GET
+
+    @GET
     @Path("/lasted_orders")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getLastedOrders() {
@@ -182,6 +182,38 @@ public class OrderController {
     public Response deleteOrderDetail(@PathParam("orderId") int orderId) {
         orderDAO.deleteOrderDetail(orderId);
         return Response.ok("Order detail deleted successfully").build();
+    }
+
+    @GET
+    @Path("/orders_placed")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOrdersPlaced(
+            @QueryParam("startDate") String startDate,
+            @QueryParam("endDate") String endDate,
+            @QueryParam("sortOrder") String sortOrder) {
+        List<Order> ordersByRange = orderDAO.getOrdersPlaced(startDate, endDate, sortOrder);
+
+        if (ordersByRange != null && !ordersByRange.isEmpty()) {
+            return Response.ok(ordersByRange).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("No orders placed currently").build();
+        }
+    }
+
+    @GET
+    @Path("/orders_outstanding")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOrdersOutstanding(
+            @QueryParam("startDate") String startDate,
+            @QueryParam("endDate") String endDate,
+            @QueryParam("category") int category) {
+        List<Order> ordersByRange = orderDAO.getOrdersOutstanding(startDate, endDate, category);
+
+        if (ordersByRange != null && !ordersByRange.isEmpty()) {
+            return Response.ok(ordersByRange).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("No outstanding orders").build();
+        }
     }
 
 }

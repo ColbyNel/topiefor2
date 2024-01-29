@@ -615,9 +615,13 @@ public class OrderDAOImpl implements OrderDAO {
         // Test getOrderPayment
 //        List<Payment> orderPayments = orderDAO.getOrderPayment(1);
 //        System.out.println("Order Payments: " + orderPayments);
+        //Test Order Placed
+//         List<Order> ordersPlaced = orderDAO.getOrdersPlaced("2022-01-01", "2025-12-31", "alphabetical");
+//        System.out.println(ordersPlaced);
+
         // Test getOrderProduct
-        List<Product> orderProducts = orderDAO.getOrderProduct(6);
-        System.out.println("Order Products: " + orderProducts);
+//        List<Product> orderProducts = orderDAO.getOrderProduct(6);
+//        System.out.println("Order Products: " + orderProducts);
         // Test deleteOrder
 //        orderDAO.deleteOrder(1);
 //        System.out.println("Order Deleted");

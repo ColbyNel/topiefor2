@@ -135,6 +135,8 @@ public class CustomerController {
             return Response.status(Response.Status.NOT_FOUND).entity("No customers found").build();
         }
     }
+    
+    
 
     @GET
     @Path("/total_customer")

@@ -278,6 +278,12 @@ public class IngredientDAOImpl implements IngredientDAO {
         ingredient.setPrice(rs.getDouble("Price"));
         ingredient.setFoodCost(rs.getDouble("FoodCost"));
         ingredient.setTimeCost(rs.getInt("TimeCost"));
+        ingredient.setWarnings(rs.getString("warnings"));
+        ingredient.setComment(rs.getString("comment"));
+        ingredient.setCategoryID(rs.getInt("categoryID"));
+        ingredient.setNutrientInformation(rs.getString("nutrientinformation"));
+        ingredient.setDescription(rs.getString("description"));
+
         return ingredient;
     }
 
