@@ -18,9 +18,10 @@ public class RecipeIngredientController {
     public Response createRecipeIngredient(RecipeIngredient recipeIngredient) {
         int recipeID = recipeIngredient.getRecipeID();
         int ingredientID = recipeIngredient.getIngredientID();
-        int grams = recipeIngredient.getGrams();
+        int quantity = recipeIngredient.getQuantity();
+        
 
-        if (recipeIngredientDAO.createRecipeIngredient(recipeID, ingredientID, grams)) {
+        if (recipeIngredientDAO.createRecipeIngredient(recipeID, ingredientID, quantity)) {
             return Response.status(Response.Status.CREATED).entity("Recipe ingredient created successfully").build();
         } else {
             return Response.status(Response.Status.BAD_REQUEST).entity("Failed to create recipe ingredient").build();
