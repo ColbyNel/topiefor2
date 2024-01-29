@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import za.co.bakerysystem.dao.OrderDAO;
@@ -52,7 +53,7 @@ public class OrderDAOImpl implements OrderDAO {
             }
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
-        } 
+        }
         return false;
     }
 
@@ -86,6 +87,112 @@ public class OrderDAOImpl implements OrderDAO {
         return false;
     }
 
+    // Report 1: Orders Placed
+    @Override
+    public List<Order> getOrdersPlaced(String startDate, String endDate, String sortOrder) {
+        List<Order> orders = new ArrayList<>();
+        db = DbManager.getInstance();
+        connection = db.getConnection();
+
+        try {
+            String query = "SELECT * FROM `Order` WHERE DatePlaced BETWEEN ? AND ? ORDER BY "
+                    + (sortOrder.equals("alphabetical") ? "Customer_ID" : "Category_ID");
+            ps = connection.prepareStatement(query);
+            ps.setString(1, startDate);
+            ps.setString(2, endDate);
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int ID = rs.getInt("ID");
+                int customerID = rs.getInt("Customer_ID");
+                LocalDateTime datePlaced = rs.getTimestamp("DatePlaced").toLocalDateTime();
+                LocalDateTime pickupTime = rs.getTimestamp("PickupTime").toLocalDateTime();
+                int fulfilled = rs.getInt("Fulfilled");
+                String comment = rs.getString("Comment");
+                double amount = rs.getDouble("Amount");
+                String status = rs.getString("status");
+
+                Order order = new Order(ID, customerID, datePlaced, pickupTime, fulfilled, comment, amount, status);
+                orders.add(order);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error getting orders placed: " + e.getMessage());
+        }
+        return orders;
+    }
+
+    // Report 2: Orders Outstanding
+    @Override
+    public List<Order> getOrdersOutstanding(String startDate, String endDate, int category) {
+        List<Order> outstandingOrders = new ArrayList<>();
+        db = DbManager.getInstance();
+        connection = db.getConnection();
+
+        try {
+            String query = "SELECT o.* FROM `Order` o JOIN `Order_Details` od ON o.ID = od.Order_ID JOIN `Product` p ON od.Product_ID = p.productID  WHERE o.Fulfilled = 0 AND o.DatePlaced BETWEEN ? AND ? AND p.CategoryID = ? ";
+            ps = connection.prepareStatement(query);
+            ps.setString(1, startDate);
+            ps.setString(2, endDate);
+            ps.setInt(3, category);
+            
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int ID = rs.getInt("ID");
+                int customerID = rs.getInt("Customer_ID");
+                LocalDateTime datePlaced = rs.getTimestamp("DatePlaced").toLocalDateTime();
+                LocalDateTime pickupTime = rs.getTimestamp("PickupTime").toLocalDateTime();
+                int fulfilled = rs.getInt("Fulfilled");
+                String comment = rs.getString("Comment");
+                double amount = rs.getDouble("Amount");
+                String status = rs.getString("status");
+
+                Order order = new Order(ID, customerID, datePlaced, pickupTime, fulfilled, comment, amount, status);
+                outstandingOrders.add(order);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error getting outstanding orders: " + e.getMessage());
+        }
+        return outstandingOrders;
+    }
+
+    // Report 3: Orders Delivered
+    @Override
+    public List<Order> getOrdersDelivered(String startDate, String endDate, String sortOrder) {
+        List<Order> deliveredOrders = new ArrayList<>();
+        db = DbManager.getInstance();
+        connection = db.getConnection();
+
+        try {
+            String query = "SELECT * FROM `Order` WHERE Fulfilled = 1 AND DatePlaced BETWEEN ? AND ? ORDER BY "
+                    + (sortOrder.equals("alphabetical") ? "Customer_ID" : "Category_ID");
+            ps = connection.prepareStatement(query);
+            ps.setString(1, startDate);
+            ps.setString(2, endDate);
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int ID = rs.getInt("ID");
+                int customerID = rs.getInt("Customer_ID");
+                LocalDateTime datePlaced = rs.getTimestamp("DatePlaced").toLocalDateTime();
+                LocalDateTime pickupTime = rs.getTimestamp("PickupTime").toLocalDateTime();
+                int fulfilled = rs.getInt("Fulfilled");
+                String comment = rs.getString("Comment");
+                double amount = rs.getDouble("Amount");
+                String status = rs.getString("status");
+
+                Order order = new Order(ID, customerID, datePlaced, pickupTime, fulfilled, comment, amount, status);
+                deliveredOrders.add(order);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error getting delivered orders: " + e.getMessage());
+        }
+        return deliveredOrders;
+    }
+
     @Override
     public boolean fulfillOrder(int orderID, int fulfilled) {
         db = DbManager.getInstance();
@@ -105,7 +212,7 @@ public class OrderDAOImpl implements OrderDAO {
         } catch (SQLException e) {
             System.out.println("Error fulfilling order: " + e.getMessage());
             System.out.println("Error: " + e.getMessage());
-        } 
+        }
         return false;
     }
 
@@ -466,7 +573,6 @@ public class OrderDAOImpl implements OrderDAO {
 //        boolean fulfillOrderResult = orderDAO.fulfillOrder(orderIdToFulfill, true);
 //        System.out.println("Fulfill Order Result: " + fulfillOrderResult);
         // Test createOrderDetail
-
         OrderDetails orderDetails = new OrderDetails();
 //        orderDetails.setOrderID(orderIdToFulfill);
         orderDetails.setOrderID(4);
@@ -486,7 +592,6 @@ public class OrderDAOImpl implements OrderDAO {
 //        orderDetails.setQuantity(2);
 //        orderDetails.setComment("Test Order Detail");
 ////
-
 //        boolean createOrderDetailResult = orderDAO.createOrderDetail(orderDetails);
 //        System.out.println("Create Order Detail Result: " + createOrderDetailResult);
         // Test getOrders

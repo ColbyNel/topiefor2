@@ -24,6 +24,12 @@ public interface OrderService {
 
     List<Order> getLastedOrders();
 
+    List<Order> getOrdersPlaced(String startDate, String endDate, String sortOrder);
+
+    List<Order> getOrdersOutstanding(String startDate, String endDate, int category);
+
+    List<Order> getOrdersDelivered(String startDate, String endDate, String sortOrder);
+
     int getOrdersCurrent();
 
     int getTotalOrdersQuantity();

@@ -6,13 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import za.co.bakerysystem.dao.OrderDetailsDAO;
 import za.co.bakerysystem.dao.ProductDAO;
 import za.co.bakerysystem.dao.ShoppingCartDAO;
 import za.co.bakerysystem.dao.impl.ProductDAOImpl;
 import za.co.bakerysystem.dao.impl.ShoppingCartDAOImpl;
 import static za.co.bakerysystem.dao.impl.ShoppingCartDAOImpl.db;
-import za.co.bakerysystem.model.OrderDetails;
 import za.co.bakerysystem.model.Product;
 import za.co.bakerysystem.model.RecipeIngredient;
 import za.co.bakerysystem.model.ShoppingCart;
@@ -22,6 +20,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     private ShoppingCartDAO shoppingCartDAO;
     private ProductDAO productDAO;
+    private Connection connection;
+    private PreparedStatement ps;
+    private ResultSet rs;
 
     private static final String CHECK_INGREDIENT_STOCK = "SELECT grams FROM ingredient WHERE id = ?";
     private static final String GET_RECIPE_INGREDIENTS = "SELECT * FROM recipe_ingredient WHERE recipe_id = ?";
@@ -36,7 +37,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return shoppingCartDAO.getShoppingCartById(cartID);
     }
 //---------------------------------------------------------------------------------------------------
-   @Override
+
+    @Override
     public boolean addProductToCart(int cartID, Product product, int quantity) {
         if (product != null && canMakeProduct(product, quantity)) {
             // If canMakeProduct returns true, proceed to add the product to the cart
@@ -45,8 +47,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return false;
     }
 
-
-  
     // Helper method to check if the product can be made with the available ingredients
     private boolean canMakeProduct(Product product, int quantity) {
         List<RecipeIngredient> recipeIngredients = getRecipeIngredients(product);
@@ -60,28 +60,24 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             }
         }
 
-       
         return true;
     }
 
     // Helper method to retrieve the list of ingredients in the product's recipe
     private List<RecipeIngredient> getRecipeIngredients(Product product) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
 
         try {
             connection = db.getConnection();
-            preparedStatement = connection.prepareStatement(GET_RECIPE_INGREDIENTS);
-            preparedStatement.setInt(1, product.getID());
+            ps = connection.prepareStatement(GET_RECIPE_INGREDIENTS);
+            ps.setInt(1, product.getID());
             // Execute the query to get recipe ingredients
-            resultSet = preparedStatement.executeQuery();
+            rs = ps.executeQuery();
 
             List<RecipeIngredient> recipeIngredients = new ArrayList<>();
 
-            while (resultSet.next()) {
-                int ingredientID = resultSet.getInt("ingredient_id");
-                int grams = resultSet.getInt("grams");
+            while (rs.next()) {
+                int ingredientID = rs.getInt("ingredient_id");
+                int grams = rs.getInt("grams");
                 RecipeIngredient recipeIngredient = new RecipeIngredient(product.getID(), ingredientID, grams);
                 recipeIngredients.add(recipeIngredient);
             }
@@ -96,20 +92,17 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     // Helper method to check if there is enough stock for a specific ingredient
     private boolean hasEnoughIngredientStock(int ingredientID, int requiredGrams) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
 
         try {
             connection = db.getConnection();
-            preparedStatement = connection.prepareStatement(CHECK_INGREDIENT_STOCK);
-            preparedStatement.setInt(1, ingredientID);
+            ps = connection.prepareStatement(CHECK_INGREDIENT_STOCK);
+            ps.setInt(1, ingredientID);
             // Execute the query to check ingredient stock
-            resultSet = preparedStatement.executeQuery();
+            rs = ps.executeQuery();
 
             // Placeholder logic to check if there is enough stock, replace with actual logic
-            if (resultSet.next()) {
-                int availableQuantity = resultSet.getInt("grams");
+            if (rs.next()) {
+                int availableQuantity = rs.getInt("grams");
                 return requiredGrams <= availableQuantity;
             } else {
                 return false;
@@ -121,7 +114,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
 //---------------------------------------------------------------------------------------------------
-
     @Override
     public boolean removeProductFromCart(int cartID, Product product) {
         if (product != null) {

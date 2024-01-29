@@ -32,6 +32,12 @@ public interface OrderDAO {
 
     List<Product> getOrderProduct(int orderID);
 
+    List<Order> getOrdersPlaced(String startDate, String endDate, String sortOrder);
+
+    List<Order> getOrdersOutstanding(String startDate, String endDate, int category);
+
+    List<Order> getOrdersDelivered(String startDate, String endDate, String sortOrder);
+
     boolean deleteOrder(int orderID);
 
     void deleteOrderDetail(int orderID);

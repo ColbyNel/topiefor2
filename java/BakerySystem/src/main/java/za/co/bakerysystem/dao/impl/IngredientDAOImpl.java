@@ -180,6 +180,64 @@ public class IngredientDAOImpl implements IngredientDAO {
         return ingredients;
     }
 
+// Report 4: Ingredients in Stock
+    @Override
+    public List<Ingredient> getIngredientsInStock() {
+        List<Ingredient> ingredientsInStock = new ArrayList<>();
+        db = DbManager.getInstance();
+        connection = db.getConnection();
+
+        try {
+            String query = "SELECT * FROM Ingredient ORDER BY Name";
+            ps = connection.prepareStatement(query);
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int ID = rs.getInt("ID");
+                String name = rs.getString("name");
+                double pricePerKG = rs.getDouble("pricePerKG");
+                String note = rs.getString("note");
+                int grams = rs.getInt("grams");
+
+                Ingredient ingredient = new Ingredient(ID, name, pricePerKG, note, grams);
+                ingredientsInStock.add(ingredient);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error getting ingredients in stock: " + e.getMessage());
+        }
+        return ingredientsInStock;
+    }
+
+    // Report 5: Ingredients Required to be Ordered
+    @Override
+    public List<Ingredient> getIngredientsToBeOrdered() {
+        List<Ingredient> ingredientsToBeOrdered = new ArrayList<>();
+        db = DbManager.getInstance();
+        connection = db.getConnection();
+
+        try {
+            String query = "SELECT * FROM Ingredient WHERE grams < 5000 ORDER BY Name";
+            ps = connection.prepareStatement(query);
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int ID = rs.getInt("ID");
+                String name = rs.getString("name");
+                double pricePerKG = rs.getDouble("pricePerKG");
+                String note = rs.getString("note");
+                int grams = rs.getInt("grams");
+
+                Ingredient ingredient = new Ingredient(ID, name, pricePerKG, note, grams);
+                ingredientsToBeOrdered.add(ingredient);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error getting ingredients to be ordered: " + e.getMessage());
+        }
+        return ingredientsToBeOrdered;
+    }
+
     @Override
     public boolean deleteIngredient(int ingredientID) {
         connection = db.getConnection();

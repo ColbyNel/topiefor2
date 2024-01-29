@@ -20,5 +20,9 @@ public interface IngredientService {
 
     List<Product> getRelatedProducts(int ingredientID);
 
+    List<Ingredient> getIngredientsInStock();
+
+    List<Ingredient> getIngredientsToBeOrdered();
+
     boolean deleteIngredient(int ingredientID);
 }
