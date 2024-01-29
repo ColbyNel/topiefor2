@@ -10,20 +10,32 @@ public class Ingredient {
     private String name;
     private double pricePerKG;
     private String note;
+    private int grams;
 
-    public Ingredient(int ID, String name, double pricePerKG, String note) {
+    public Ingredient(int ID, String name, double pricePerKG, String note,int grams) {
         this.ID = ID;
         this.name = name;
         this.pricePerKG = pricePerKG;
         this.note = note;
+        this.grams=grams;
     }
 
-    public Ingredient(String name, double pricePerKG, String note) {
+    public Ingredient(String name, double pricePerKG, String note,int grams) {
         this.name = name;
         this.pricePerKG = pricePerKG;
         this.note = note;
+        this.grams=grams;
     }
 
+    public int getGrams() {
+        return grams;
+    }
+
+    public void setGrams(int grams) {
+        this.grams = grams;
+    }
+
+    
     public Ingredient() {
     }
 
@@ -61,7 +73,8 @@ public class Ingredient {
 
     @Override
     public String toString() {
-        return "Ingredient{" + "ID=" + ID + ", name=" + name + ", pricePerKG=" + pricePerKG + ", note=" + note + '}';
+        return "Ingredient{" + "ID=" + ID + ", name=" + name + ", pricePerKG=" + pricePerKG + ", note=" + note + ", grams=" + grams + '}';
     }
 
+   
 }

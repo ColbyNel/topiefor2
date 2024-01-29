@@ -26,10 +26,11 @@ public class IngredientDAOImpl implements IngredientDAO {
         boolean retVal = false;
         connection = db.getConnection();
         try {
-            ps = connection.prepareStatement("INSERT INTO Ingredient (Name, PricePerKG, Note) VALUES (?, ?, ?)");
+            ps = connection.prepareStatement("INSERT INTO Ingredient (Name, PricePerKG, Note,grams) VALUES (?,?, ?, ?)");
             ps.setString(1, ingredient.getName());
             ps.setDouble(2, ingredient.getPricePerKG());
             ps.setString(3, ingredient.getNote());
+            ps.setInt(4, ingredient.getGrams());
 
             retVal = ps.executeUpdate() > 0;
 
@@ -46,11 +47,12 @@ public class IngredientDAOImpl implements IngredientDAO {
         boolean retVal = false;
         try {
 
-            ps = connection.prepareStatement("UPDATE Ingredient SET Name=?, PricePerKG=?, Note=? WHERE ID=?");
+            ps = connection.prepareStatement("UPDATE Ingredient SET Name=?, PricePerKG=?, Note=?,grams=? WHERE ID=?");
             ps.setString(1, ingredient.getName());
             ps.setDouble(2, ingredient.getPricePerKG());
             ps.setString(3, ingredient.getNote());
-            ps.setInt(4, ingredient.getID());
+            ps.setInt(4, ingredient.getGrams());
+            ps.setInt(5, ingredient.getID());
 
             retVal = ps.executeUpdate() > 0;
 

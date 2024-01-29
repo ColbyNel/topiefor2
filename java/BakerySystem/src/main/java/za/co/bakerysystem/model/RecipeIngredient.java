@@ -5,9 +5,9 @@ public class RecipeIngredient {
 
     private int recipeID;
     private int ingredientID;
-    private Integer grams;
+    private int grams;
 
-    public RecipeIngredient(int recipeID, int ingredientID, Integer grams) {
+    public RecipeIngredient(int recipeID, int ingredientID, int grams) {
         this.recipeID = recipeID;
         this.ingredientID = ingredientID;
         this.grams = grams;
@@ -32,11 +32,11 @@ public class RecipeIngredient {
         this.ingredientID = ingredientID;
     }
 
-    public Integer getGrams() {
+    public int getGrams() {
         return grams;
     }
 
-    public void setGrams(Integer grams) {
+    public void setGrams(int grams) {
         this.grams = grams;
     }
 

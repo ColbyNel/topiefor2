@@ -5,10 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import za.co.bakerysystem.dao.OrderDetailsDAO;
 import za.co.bakerysystem.dbmanager.DbManager;
 import za.co.bakerysystem.model.OrderDetails;
+import za.co.bakerysystem.model.Product;
 
 public class OrderDetailsDAOImpl implements OrderDetailsDAO {
 
@@ -37,22 +39,43 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
             // Check if the insertion was successful
             return affectedRows > 0;
         } catch (SQLException e) {
-            System.out.println("Error: "+ e.getMessage());
+            System.out.println("Error: " + e.getMessage());
             return false;
         }
     }
 
-// Helper method to close resources
-    private void closeResources() {
+    @Override
+    public List<Product> getProductsForOrder(int orderID) {
+
         try {
-            if (ps != null) {
-                ps.close();
+            connection = db.getConnection();
+            String query = "SELECT p.* FROM order_details od JOIN product p ON od.product_id = p.productid WHERE od.order_id = ?";
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, orderID);
+            rs = ps.executeQuery();
+
+            List<Product> products = new ArrayList<>();
+
+            while (rs.next()) {
+                int productID = rs.getInt("productid");
+                String name = rs.getString("name");
+                double price = rs.getDouble("price");
+                double foodCost = rs.getDouble("foodcost");
+                int timeCost = rs.getInt("timecost");
+                String comment = rs.getString("comment");
+                String description = rs.getString("description");
+                String nutrientInformation = rs.getString("nutrientinformation");
+                String warnings = rs.getString("warnings");
+                int categoryID = rs.getInt("categoryid");
+
+                Product product = new Product(productID, name, price, foodCost, timeCost, comment, description, nutrientInformation, warnings, categoryID);
+                products.add(product);
             }
-            if (connection != null) {
-                connection.close();
-            }
+
+            return products;
         } catch (SQLException e) {
-            System.out.println("Error: "+ e.getMessage());
+            System.err.println("SQL Exception: " + e.getMessage());
+            return Collections.emptyList();
         }
     }
 
@@ -74,7 +97,7 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
                 orderDetails = extractOrderDetails(rs);
             }
         } catch (SQLException e) {
-            System.out.println("Error: "+ e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
         return orderDetails;
     }
@@ -95,7 +118,7 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
                 orderDetailsList.add(orderDetails);
             }
         } catch (SQLException e) {
-            System.out.println("Error: "+ e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
         return orderDetailsList;
     }
@@ -119,7 +142,7 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
 
             return affectedRows > 0;
         } catch (SQLException e) {
-            System.out.println("Error: "+ e.getMessage());
+            System.out.println("Error: " + e.getMessage());
 
         }
         return false;
@@ -141,7 +164,7 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
             // Check if the deletion was successful
             return affectedRows > 0;
         } catch (SQLException e) {
-            System.out.println("Error: "+ e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
         return false;
 
@@ -180,7 +203,6 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
 //        newOrderDetails.setComment("Test Comment");
 //        newOrderDetails.setPriceAtSale(10.99);
 //        newOrderDetails.setFoodCostAtSale(5.99);
-
 //
         boolean saveSuccess = orderDetailsDAO.save(newOrderDetails);
         System.out.println("Save success: " + saveSuccess);
@@ -195,18 +217,29 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
 //        newOrderDetails.setQuantity(3);
 //        boolean updateSuccess = orderDetailsDAO.update(newOrderDetails);
 //        System.out.println("Update success: " + updateSuccess);
-
- //       System.out.println("All OrderDetails: " + orderDetailsDAO.findAll());
-
+        //       System.out.println("All OrderDetails: " + orderDetailsDAO.findAll());
         // Test update method
-        newOrderDetails.setQuantity(10);
-        boolean updateSuccess = orderDetailsDAO.update(newOrderDetails);
-        System.out.println("Update success: " + updateSuccess);
-
+       // newOrderDetails.setQuantity(10);
+       // boolean updateSuccess = orderDetailsDAO.update(newOrderDetails);
+       // System.out.println("Update success: " + updateSuccess);
 
 //        // Test delete method
 //        boolean deleteSuccess = orderDetailsDAO.delete(6, 2);
 //        System.out.println("Delete success: " + deleteSuccess);
+
+
+//        int orderIDToTest = 3; // Replace with an actual order ID
+//
+//        List<Product> products = orderDetailsDAO.getProductsForOrder(orderIDToTest);
+//
+//        if (!products.isEmpty()) {
+//            System.out.println("Products for Order ID " + orderIDToTest + ":");
+//            for (Product product : products) {
+//                System.out.println(product);
+//            }
+//        } else {
+//            System.out.println("No products found for Order ID " + orderIDToTest);
+//        }
     }
 
 }
