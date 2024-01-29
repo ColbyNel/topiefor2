@@ -1,25 +1,51 @@
 package za.co.bakerysystem.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import za.co.bakerysystem.dao.CustomerDAO;
 import za.co.bakerysystem.dao.impl.CustomerDAOImpl;
 import za.co.bakerysystem.model.Customer;
+import za.co.bakerysystem.model.Order;
+import za.co.bakerysystem.service.CustomerService;
+import za.co.bakerysystem.service.impl.CustomerServiceImpl;
 
 @Path("/customers")
 public class CustomerController {
 
     private final CustomerDAO customerDAO = new CustomerDAOImpl();
+    private final CustomerService customerService = new CustomerServiceImpl(customerDAO);
 
     @POST
     @Path("/signup")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createCustomer(Customer customer) {
+        String message = "";
+        
+        // Check if customer with the same email already exists
+        List<Customer> existingCustomersWithEmail = customerService.getCustomers().stream()
+                .filter(c -> c.getEmail().equals(customer.getEmail()))
+                .collect(Collectors.toList());
+        
+        if (!existingCustomersWithEmail.isEmpty()) {
+            message = "Email provided already exists";
+            return Response.status(Response.Status.CREATED).entity(message).build();
+        }
+        // Check if customer with the same customerID already exists
+        List<Customer> existingCustomersWithID = customerService.getCustomers().stream()
+                .filter(c -> c.getCustomerIDNo().equals(customer.getCustomerIDNo()))
+                .collect(Collectors.toList());
 
-        if (customerDAO.createCustomer(customer)) {
-            return Response.status(Response.Status.CREATED).entity("Signup successful!").build();
+        if (!existingCustomersWithID.isEmpty()) {
+            message = "ID/Passport Number provided already exists";
+            return Response.status(Response.Status.CREATED).entity(message).build();
+        }
+
+        if (customerService.createCustomer(customer)) {
+            message = "Signup successful!";
+            return Response.status(Response.Status.CREATED).entity(message).build();
         } else {
             return Response.status(Response.Status.BAD_REQUEST).entity("Signup was not successful!").build();
         }
@@ -87,8 +113,8 @@ public class CustomerController {
     @GET
     @Path("/customer_orders/{customerID}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCustomerOrder(@PathParam("customerId") int customerId) {
-        List<Customer> allCustomerOrder = customerDAO.getCustomers();
+    public Response getCustomerOrder(@PathParam("customerID") int customerId) {
+        List<Order> allCustomerOrder = customerDAO.getCustomerOrders(customerId);
 
         if (allCustomerOrder != null && !allCustomerOrder.isEmpty()) {
             return Response.ok(allCustomerOrder).build();
@@ -126,7 +152,7 @@ public class CustomerController {
     @GET
     @Path("/order_number/{customerID}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getNumOrders(@PathParam("customerId") int customerId) {
+    public Response getNumOrders(@PathParam("customerID") int customerId) {
         int count = customerDAO.getNumOrders(customerId);
 
         if (count > 0) {

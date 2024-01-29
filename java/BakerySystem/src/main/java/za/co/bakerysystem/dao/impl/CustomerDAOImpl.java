@@ -483,8 +483,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 //        System.out.println("Retrieved customer by ID " + customerIdToRetrieve + ": " + retrievedCustomer);
 
         //Test getCustomerByEmail
-        Customer retrievedCustomer = customerDAO.getCustomerByEmail("john@example.com");
-        System.out.println("Retrieved customer by ID " + ": " + retrievedCustomer);
+//        Customer retrievedCustomer = customerDAO.getCustomerByEmail("john@example.com");
+//        System.out.println("Retrieved customer by ID " + ": " + retrievedCustomer);
 //
         // Test getFavoriteProducts method
 //        List<Product> favoriteProducts = customerDAO.getFavoriteProducts(1);
@@ -492,13 +492,12 @@ public class CustomerDAOImpl implements CustomerDAO {
         // Test getCustomerPoints method
 //        int customerPoints = customerDAO.getCustomerPoints(1);
 //        System.out.println("Customer points for customer ID " + 1 + ": " + customerPoints);
-
         // Test getCustomerOrders method
-//        List<Order> customerOrders = customerDAO.getCustomerOrders(4);
+//        List<Order> customerOrders = customerDAO.getCustomerOrders(1);
 //        System.out.println("Orders for customer ID " + 4 + ": " + customerOrders);
 //        // Test getNumOrders method
-//        int numOrders = customerDAO.getNumOrders(customerIdToRetrieve);
-//        System.out.println("Number of orders for customer ID " + customerIdToRetrieve + ": " + numOrders);
+//        int numOrders = customerDAO.getNumOrders(1);
+//        System.out.println("Number of orders:  " + numOrders);
 //
         // Test getOrdersByRange method
 //        int fulfilled = 0;

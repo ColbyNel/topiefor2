@@ -2,6 +2,7 @@ package za.co.bakerysystem.service.impl;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 import za.co.bakerysystem.dao.CustomerDAO;
 import za.co.bakerysystem.dao.impl.CustomerDAOImpl;
 import za.co.bakerysystem.model.Customer;
@@ -11,7 +12,7 @@ import za.co.bakerysystem.service.CustomerService;
 
 public class CustomerServiceImpl implements CustomerService {
 
-    private CustomerDAO customerDAO;
+    private final CustomerDAO customerDAO;
 
     public CustomerServiceImpl(CustomerDAO customerDAO) {
         this.customerDAO = customerDAO;
@@ -90,9 +91,9 @@ public class CustomerServiceImpl implements CustomerService {
         CustomerService customerService = new CustomerServiceImpl(customerDAO);
 
         // Testing createCustomer
-//        Customer newCustomer = new Customer("John","84884","09833","add1","add2","city","zip","com","john@example.com", "password");
-//        boolean customerCreated = customerService.createCustomer(newCustomer);
-//        System.out.println("Customer created: " + customerCreated);
+        Customer newCustomer = new Customer("John", "84884", "09833", "add1", "add2", "city", "zip", "com", "john@example.com", "password");
+        boolean customerCreated = customerService.createCustomer(newCustomer);
+        System.out.println("Customer created: " + customerCreated);
         // Testing login
         //   String emailAddress = "john@example.com";
         //      String password = "password";
