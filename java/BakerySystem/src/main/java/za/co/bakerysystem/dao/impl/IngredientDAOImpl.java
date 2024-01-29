@@ -26,7 +26,7 @@ public class IngredientDAOImpl implements IngredientDAO {
         boolean retVal = false;
         connection = db.getConnection();
         try {
-            ps = connection.prepareStatement("INSERT INTO Ingredient (Name, PricePerKG, Note,grams) VALUES (?,?, ?, ?)");
+            ps = connection.prepareStatement("INSERT INTO Ingredient (Name, PricePerKG, Note,Grams) VALUES (?,?, ?, ?)");
             ps.setString(1, ingredient.getName());
             ps.setDouble(2, ingredient.getPricePerKG());
             ps.setString(3, ingredient.getNote());
@@ -277,19 +277,19 @@ public class IngredientDAOImpl implements IngredientDAO {
     }
 
     public static void main(String[] args) {
-//        Ingredient ingredient = new Ingredient("Flour", 97.0, "Raising flour for baking cakes");
+        Ingredient ingredient = new Ingredient("Flour", 97.0, "Raising flour for baking cakes", 12);
 //        Ingredient ingredient1 = new Ingredient(1, "Baking powder", 17.0, "Baking powder for cake");
 //
-//        IngredientDAO ingredientDAO = new IngredientDAOImpl();
+        IngredientDAO ingredientDAO = new IngredientDAOImpl();
 //
 //        //test for add ingredient
-//                if (ingredientDAO.createIngredient(ingredient1)) {
-//                    System.out.println("Success");
-//        
-//                } else {
-//                    System.out.println("Failed");
-//        
-//                }
+        if (ingredientDAO.createIngredient(ingredient)) {
+            System.out.println("Success");
+
+        } else {
+            System.out.println("Failed");
+
+        }
         //test for update ingredient
 //                if (ingredientDAO.updateIngredient(ingredient1)) {
 //                    System.out.println("Successfully updated ");
