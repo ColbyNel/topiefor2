@@ -26,11 +26,12 @@ public class IngredientDAOImpl implements IngredientDAO {
         boolean retVal = false;
         connection = db.getConnection();
         try {
-            ps = connection.prepareStatement("INSERT INTO Ingredient (Name, PricePerKG, Note,Grams) VALUES (?,?, ?, ?)");
+            ps = connection.prepareStatement("INSERT INTO Ingredient (Name, PricePerKG, Note,Quantity,unitid) VALUES (?,?, ?, ?)");
             ps.setString(1, ingredient.getName());
             ps.setDouble(2, ingredient.getPricePerKG());
             ps.setString(3, ingredient.getNote());
-            ps.setInt(4, ingredient.getGrams());
+            ps.setInt(4, ingredient.getQuantity());
+            ps.setInt(5, ingredient.getUnitID());
 
             retVal = ps.executeUpdate() > 0;
 
@@ -47,12 +48,13 @@ public class IngredientDAOImpl implements IngredientDAO {
         boolean retVal = false;
         try {
 
-            ps = connection.prepareStatement("UPDATE Ingredient SET Name=?, PricePerKG=?, Note=?,grams=? WHERE ID=?");
+            ps = connection.prepareStatement("UPDATE Ingredient SET Name=?, PricePerKG=?, Note=?,quantity=?,unitid=? WHERE ID=?");
             ps.setString(1, ingredient.getName());
             ps.setDouble(2, ingredient.getPricePerKG());
             ps.setString(3, ingredient.getNote());
-            ps.setInt(4, ingredient.getGrams());
-            ps.setInt(5, ingredient.getID());
+            ps.setInt(4, ingredient.getQuantity());
+            ps.setInt(5, ingredient.getUnitID());
+            ps.setInt(6, ingredient.getID());
 
             retVal = ps.executeUpdate() > 0;
 
@@ -198,9 +200,9 @@ public class IngredientDAOImpl implements IngredientDAO {
                 String name = rs.getString("name");
                 double pricePerKG = rs.getDouble("pricePerKG");
                 String note = rs.getString("note");
-                int grams = rs.getInt("grams");
-
-                Ingredient ingredient = new Ingredient(ID, name, pricePerKG, note, grams);
+                int quantity = rs.getInt("quantity");
+                int unitid = rs.getInt("unitid");
+                Ingredient ingredient = new Ingredient(ID, name, pricePerKG, note, quantity, unitid);
                 ingredientsInStock.add(ingredient);
             }
         } catch (SQLException e) {
@@ -217,7 +219,7 @@ public class IngredientDAOImpl implements IngredientDAO {
         connection = db.getConnection();
 
         try {
-            String query = "SELECT * FROM Ingredient WHERE grams < 5000 ORDER BY Name";
+            String query = "SELECT * FROM Ingredient WHERE quantity < 5000 ORDER BY Name";
             ps = connection.prepareStatement(query);
 
             rs = ps.executeQuery();
@@ -227,9 +229,10 @@ public class IngredientDAOImpl implements IngredientDAO {
                 String name = rs.getString("name");
                 double pricePerKG = rs.getDouble("pricePerKG");
                 String note = rs.getString("note");
-                int grams = rs.getInt("grams");
+                int quantity = rs.getInt("quantity");
+                int unitid = rs.getInt("unitid");
 
-                Ingredient ingredient = new Ingredient(ID, name, pricePerKG, note, grams);
+                Ingredient ingredient = new Ingredient(ID, name, pricePerKG, note, quantity, unitid);
                 ingredientsToBeOrdered.add(ingredient);
             }
         } catch (SQLException e) {
@@ -263,6 +266,8 @@ public class IngredientDAOImpl implements IngredientDAO {
         ingredient.setName(rs.getString("Name"));
         ingredient.setPricePerKG(rs.getDouble("PricePerKG"));
         ingredient.setNote(rs.getString("Note"));
+        ingredient.setQuantity(rs.getInt("quantity"));
+        ingredient.setUnitID(rs.getInt("unitid"));
         return ingredient;
     }
 
@@ -277,7 +282,7 @@ public class IngredientDAOImpl implements IngredientDAO {
     }
 
     public static void main(String[] args) {
-        Ingredient ingredient = new Ingredient("Flour", 97.0, "Raising flour for baking cakes", 12);
+        Ingredient ingredient = new Ingredient("Flour", 97.0, "Raising flour for baking cakes", 12, 1);
 //        Ingredient ingredient1 = new Ingredient(1, "Baking powder", 17.0, "Baking powder for cake");
 //
         IngredientDAO ingredientDAO = new IngredientDAOImpl();

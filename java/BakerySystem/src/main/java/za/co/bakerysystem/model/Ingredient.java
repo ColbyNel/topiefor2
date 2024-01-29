@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package za.co.bakerysystem.model;
 
 public class Ingredient {
@@ -10,35 +7,31 @@ public class Ingredient {
     private String name;
     private double pricePerKG;
     private String note;
-    private int grams;
+    private int quantity;
+    private int UnitID;
 
-    public Ingredient(int ID, String name, double pricePerKG, String note,int grams) {
+    public Ingredient(int ID, String name, double pricePerKG, String note, int quantity, int UnitID) {
         this.ID = ID;
         this.name = name;
         this.pricePerKG = pricePerKG;
         this.note = note;
-        this.grams=grams;
-    }
-
-    public Ingredient(String name, double pricePerKG, String note,int grams) {
-        this.name = name;
-        this.pricePerKG = pricePerKG;
-        this.note = note;
-        this.grams=grams;
-    }
-
-    public int getGrams() {
-        return grams;
-    }
-
-    public void setGrams(int grams) {
-        this.grams = grams;
+        this.quantity = quantity;
+        this.UnitID = UnitID;
     }
 
     
+    public Ingredient(String name, double pricePerKG, String note, int quantity, int UnitID) {
+        this.name = name;
+        this.pricePerKG = pricePerKG;
+        this.note = note;
+        this.quantity = quantity;
+        this.UnitID = UnitID;
+    }
+
     public Ingredient() {
     }
 
+    
     public int getID() {
         return ID;
     }
@@ -71,10 +64,22 @@ public class Ingredient {
         this.note = note;
     }
 
-    @Override
-    public String toString() {
-        return "Ingredient{" + "ID=" + ID + ", name=" + name + ", pricePerKG=" + pricePerKG + ", note=" + note + ", grams=" + grams + '}';
+    public int getQuantity() {
+        return quantity;
     }
 
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public int getUnitID() {
+        return UnitID;
+    }
+
+    public void setUnitID(int UnitID) {
+        this.UnitID = UnitID;
+    }
+
+    
    
 }

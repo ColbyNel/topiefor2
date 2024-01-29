@@ -24,7 +24,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private PreparedStatement ps;
     private ResultSet rs;
 
-    private static final String CHECK_INGREDIENT_STOCK = "SELECT grams FROM ingredient WHERE id = ?";
+    private static final String CHECK_INGREDIENT_STOCK = "SELECT quantity FROM ingredient WHERE id = ?";
     private static final String GET_RECIPE_INGREDIENTS = "SELECT * FROM recipe_ingredient WHERE recipe_id = ?";
 
     public ShoppingCartServiceImpl(ShoppingCartDAO shoppingCartDAO, ProductDAO productDAO) {
@@ -52,8 +52,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         List<RecipeIngredient> recipeIngredients = getRecipeIngredients(product);
 
         for (RecipeIngredient recipeIngredient : recipeIngredients) {
-            int requiredGrams = recipeIngredient.getGrams() * quantity;
-            if (!hasEnoughIngredientStock(recipeIngredient.getIngredientID(), requiredGrams)) {
+            int requiredQuantity = recipeIngredient.getQuantity() * quantity;
+            if (!hasEnoughIngredientStock(recipeIngredient.getIngredientID(), requiredQuantity)) {
                 // Display an error message or handle out-of-stock scenario
                 System.out.println("Product is out of stock. Ingredient ID: " + recipeIngredient.getIngredientID());
                 return false;
@@ -77,8 +77,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
             while (rs.next()) {
                 int ingredientID = rs.getInt("ingredient_id");
-                int grams = rs.getInt("grams");
-                RecipeIngredient recipeIngredient = new RecipeIngredient(product.getID(), ingredientID, grams);
+                int quantity = rs.getInt("quantity");
+                RecipeIngredient recipeIngredient = new RecipeIngredient(product.getID(), ingredientID, quantity);
                 recipeIngredients.add(recipeIngredient);
             }
 
@@ -91,7 +91,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     // Helper method to check if there is enough stock for a specific ingredient
-    private boolean hasEnoughIngredientStock(int ingredientID, int requiredGrams) {
+    private boolean hasEnoughIngredientStock(int ingredientID, int requiredQuantity) {
 
         try {
             connection = db.getConnection();
@@ -102,8 +102,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
             // Placeholder logic to check if there is enough stock, replace with actual logic
             if (rs.next()) {
-                int availableQuantity = rs.getInt("grams");
-                return requiredGrams <= availableQuantity;
+                int availableQuantity = rs.getInt("quantity");
+                return requiredQuantity <= availableQuantity;
             } else {
                 return false;
             }
@@ -160,7 +160,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 //        Product newProduct = new Product("Blue", 4.99, 6.7, 2, "GOOD BREAD", "HIGH IN carbo", "fibre", "none", 2);
 //        productDAO.createProduct(newProduct);
         // Get the newly added product from the database
-        Product addedProduct = productDAO.getProductsByKeyWord("Black Cake").get(0);
+        Product addedProduct = productDAO.getProductsByKeyWord("Freshhh").get(0);
         int totalQuantity = shoppingCartService.calculateTotalQuantity(2);
 
         // Add the product to the cart

@@ -49,9 +49,9 @@ public class PaymentDAOImpl implements PaymentDAO {
             // Get products from OrderDetails
             List<Product> products = orderDetailsDAO.getProductsForOrder(payment.getOrderID());
 
-            // Iterate through each product and subtract ingredient grams from the database
+            // Iterate through each product and subtract ingredient quantity from the database
             for (Product product : products) {
-                subtractIngredientGramsForProduct(product);
+                subtractIngredientQuantityForProduct(product);
             }
             // Commit the transaction after successful payment insertion and ingredient subtraction
             connection.commit();
@@ -84,9 +84,9 @@ public class PaymentDAOImpl implements PaymentDAO {
 
             while (rs.next()) {
                 int ingredientID = rs.getInt("ingredient_id");
-                int grams = rs.getInt("grams");
+                int quantity = rs.getInt("quantity");
 
-                RecipeIngredient recipeIngredient = new RecipeIngredient(product.getID(), ingredientID, grams);
+                RecipeIngredient recipeIngredient = new RecipeIngredient(product.getID(), ingredientID, quantity);
                 recipeIngredients.add(recipeIngredient);
             }
 
@@ -97,17 +97,17 @@ public class PaymentDAOImpl implements PaymentDAO {
         }
     }
 
-    private void subtractIngredientGramsForProduct(Product product) {
+    private void subtractIngredientQuantityForProduct(Product product) {
         List<RecipeIngredient> recipeIngredients = getRecipeIngredients(product);
 
         try {
             connection = db.getConnection();
             for (RecipeIngredient recipeIngredient : recipeIngredients) {
-                int requiredGrams = recipeIngredient.getGrams();
+                int requiredQuantity = recipeIngredient.getQuantity();
 
-                String updateQuery = "UPDATE ingredient SET grams = grams - ? WHERE id = ?";
+                String updateQuery = "UPDATE ingredient SET quantity = quantity - ? WHERE id = ?";
                 ps = connection.prepareStatement(updateQuery);
-                ps.setInt(1, requiredGrams);
+                ps.setInt(1, requiredQuantity);
                 ps.setInt(2, recipeIngredient.getIngredientID());
 
                 ps.executeUpdate();
@@ -191,7 +191,7 @@ public class PaymentDAOImpl implements PaymentDAO {
 
         // Test createPayment method
         Payment newPayment = new Payment();
-        newPayment.setOrderID(6); 
+        newPayment.setOrderID(5); 
         newPayment.setPaymentTypeID(1);
         newPayment.setAmount(50.0);
 

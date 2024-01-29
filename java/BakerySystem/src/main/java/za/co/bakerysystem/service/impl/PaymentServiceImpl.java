@@ -57,7 +57,7 @@ public class PaymentServiceImpl implements PaymentService {
 //        System.out.println("Order Payments: " + orderPayments);
 
         // Test getPaymentTypes
-        List<PaymentType> paymentTypes = paymentService.getPaymentTypes();
-        System.out.println("Payment Types: " + paymentTypes);
+//        List<PaymentType> paymentTypes = paymentService.getPaymentTypes();
+//        System.out.println("Payment Types: " + paymentTypes);
     }
 }
