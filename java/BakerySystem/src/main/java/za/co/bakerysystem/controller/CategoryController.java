@@ -8,11 +8,14 @@ import javax.ws.rs.core.Response;
 import za.co.bakerysystem.dao.CategoryDAO;
 import za.co.bakerysystem.dao.impl.CategoryDAOImpl;
 import za.co.bakerysystem.model.Category;
+import za.co.bakerysystem.service.CategoryService;
+import za.co.bakerysystem.service.impl.CategoryServiceImpl;
 
 @Path("/categories")
 public class CategoryController {
 
     private final CategoryDAO categoryDAO = new CategoryDAOImpl();
+    private final CategoryService categoryService = new CategoryServiceImpl(categoryDAO);
 
     @POST
     @Path("/add_category")
@@ -20,7 +23,7 @@ public class CategoryController {
     public Response addCategory(Category category) {
         String message = "";
         // Check if category with the same description already exists
-        List<Category> existingCategory = categoryDAO.getAllCategory().stream()
+        List<Category> existingCategory = categoryService.getAllCategory().stream()
                 .filter(c -> c.getDescription().equals(category.getDescription()))
                 .collect(Collectors.toList());
 
@@ -29,7 +32,7 @@ public class CategoryController {
             return Response.status(Response.Status.CREATED).entity(message).build();
         }
 
-        if (categoryDAO.addCategory(category)) {
+        if (categoryService.addCategory(category)) {
             return Response.status(Response.Status.CREATED).entity("Category added successfully").build();
         } else {
             return Response.status(Response.Status.BAD_REQUEST).entity("Category was not added successfully").build();
@@ -41,8 +44,8 @@ public class CategoryController {
     @Path("/get_category/{categoryId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCategoryById(@PathParam("categoryId") int categoryId) {
-        if (categoryDAO.getCategoryById(categoryId) != null) {
-            return Response.ok(categoryDAO.getCategoryById(categoryId)).build();
+        if (categoryService.getCategoryById(categoryId) != null) {
+            return Response.ok(categoryService.getCategoryById(categoryId)).build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).entity("Category not found").build();
         }
@@ -51,7 +54,7 @@ public class CategoryController {
     @DELETE
     @Path("/delete_category/{categoryId}")
     public Response deleteCustomer(@PathParam("categoryId") int categoryId) {
-        if (categoryDAO.deleteCategory(categoryId)) {
+        if (categoryService.deleteCategory(categoryId)) {
             return Response.ok("Category deleted successfully").build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).entity("Category not found").build();
@@ -62,7 +65,7 @@ public class CategoryController {
     @Path("/all_categories")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllCategories() {
-        List<Category> allCategories = categoryDAO.getAllCategory();
+        List<Category> allCategories = categoryService.getAllCategory();
 
         if (allCategories != null && !allCategories.isEmpty()) {
             return Response.ok(allCategories).build();
@@ -75,7 +78,7 @@ public class CategoryController {
     @Path("/update_category/{categoryId}")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateCategory(Category updatedCategory, @PathParam("categoryId") int categoryId) {
-        if (categoryDAO.updateCategory(updatedCategory, categoryId)) {
+        if (categoryService.updateCategory(updatedCategory, categoryId)) {
             return Response.ok("Category updated successfully").build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).entity("Category not found").build();
