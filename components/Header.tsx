@@ -52,15 +52,14 @@ const Header = () => {
                 <Menu as="div" className="relative ml-3">
                   <div>
                     <div className="relative flex text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                      <span className="absolute -inset-1.5" />
 
-                      <Link href="/shoppingCart">
+                      <a href="/shoppingcart" className="button-hover">
                         <img
                           className=" h-8 w-8 "
                           src="/shoppingcart.png"
                           alt="Cart"
                         />
-                      </Link>
+                      </a>
                     </div>
                   </div>
                 </Menu>

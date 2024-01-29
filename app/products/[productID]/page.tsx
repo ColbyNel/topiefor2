@@ -1,7 +1,7 @@
 import { getProductById } from "@/actions";
 
-const product = async ({ params: { id } }: any) => {
-  const product = await getProductById(5);
+const product = async ({ params: { productID } }: any) => {
+  const product = await getProductById(productID);
 
   return (
     <div className="flex items-center justify-center h-screen">
@@ -21,12 +21,13 @@ const product = async ({ params: { id } }: any) => {
                   {product.name}
                 </h2>
               </div>
-              <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 mb-3 mt-3 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
-                R{product.price}
-              </span>
               <p className="focus:outline-none text-xs text-gray-200 mt-2">
                 {product.description}
               </p>
+              <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 mb-3 mt-3 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
+                R{product.price}
+              </span>
+              
               <p className="focus:outline-none text-xs text-gray-200 mt-2">
                 Nutrient Info: {product.nutrientInformation}
               </p>

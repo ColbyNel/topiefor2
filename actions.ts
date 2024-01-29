@@ -105,6 +105,11 @@ export const getCategoryById = async (
   return data;
 };
 
+export const getCategoryNameById = async (categoryID: number) => {
+  const categoryObject = getCategoryById(categoryID)
+  return (await categoryObject).description;
+}
+
 export const getProductById = async (productId: any) => {
   const req = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/products/get_product/${productId}`,
@@ -217,4 +222,49 @@ export const signUp = async (formData: RegisterFormData ) => {
   );
   const responseData = await req;
   return responseData.text();
+}
+
+export const getAllOrders = async () => {
+  const req = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/orders/all_orders`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      next: {
+        revalidate: 10,
+        tags: ["products", "allProducts"],
+      },
+    }
+  )
+  return await req.json();
+}
+
+export const deleteProduct = async (productId: number) => {
+  const req = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/products/delete_product/${productId}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(this)
+    }
+  )
+  const responseData = await req;
+  return responseData.text();
+}
+
+export const getProductsFromCart = async (cartId: number) => {
+  const req = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/shopping_carts/get_shoppingcart/${cartId}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type":"application/json",
+      }
+    }
+  )
+  return req.json();
 }

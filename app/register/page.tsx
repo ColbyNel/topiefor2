@@ -52,14 +52,9 @@ const Register = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen">
-      <div className="pb-6 rounded-lg border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-        <div className="bg-primary rounded-t-lg border-b border-stroke py-4 px-6.5 dark:border-strokedark">
-          <h3 className="font-extrabold text-lg p-5 text-white dark:text-white text-center ">
-            Join our family
-          </h3>
-        </div>
-        <form onSubmit={handleSubmit} className="p-20 mb-6">
+    <div className="flex h-screen">
+    <div className="w-1/2 p-8 flex items-center justify-center">
+        <form onSubmit={handleSubmit} className="p-9 mb-6">
           <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
             <div className="w-full xl:w-1/2">
               <label className="mb-2.5 block text-black dark:text-white">
@@ -71,7 +66,7 @@ const Register = () => {
                 value={formData.customerName}
                 onChange={handleInputChange}
                 placeholder="Enter your full name"
-                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-2 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
               />
             </div>
 
@@ -85,7 +80,7 @@ const Register = () => {
                 value={formData.customerIDNo}
                 onChange={handleInputChange}
                 placeholder="ID or Passport Number"
-                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-2 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
               />
             </div>
 
@@ -99,7 +94,7 @@ const Register = () => {
                 value={formData.phoneNumber}
                 onChange={handleInputChange}
                 placeholder="Mobile Number"
-                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-2 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
               />
             </div>
           </div>
@@ -114,7 +109,7 @@ const Register = () => {
               value={formData.email}
               onChange={handleInputChange}
               placeholder="Enter your email address"
-              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-2 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
             />
           </div>
 
@@ -128,7 +123,7 @@ const Register = () => {
               value={formData.addressOne}
               onChange={handleInputChange}
               placeholder="Address Line 1"
-              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-2 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
             />
           </div>
 
@@ -142,7 +137,7 @@ const Register = () => {
               value={formData.addressTwo}
               onChange={handleInputChange}
               placeholder="Address Line 2"
-              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-2 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
             />
           </div>
 
@@ -156,7 +151,7 @@ const Register = () => {
               value={formData.city}
               onChange={handleInputChange}
               placeholder="City"
-              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-2 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
             />
           </div>
 
@@ -170,10 +165,11 @@ const Register = () => {
               value={formData.zip}
               onChange={handleInputChange}
               placeholder="Zip Code"
-              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-2 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
             />
           </div>
 
+          <div className="flex row">
           <div className="mb-4.5 pb-6">
             <label className="mb-2.5 block text-black dark:text-white">
               Password
@@ -184,36 +180,43 @@ const Register = () => {
               value={formData.password}
               onChange={handleInputChange}
               placeholder="Minimum 8 characters"
-              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-2 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
             />
           </div>
 
-          <div className="mb-4.5 pb-8">
+          <div className="mb-4.5 pb-8 ml-5">
             <label className="mb-2.5 block text-black dark:text-white">
               Confirm Password
             </label>
             <input
               type="password"
               placeholder="Confirm password"
-              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-2 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
             />
+          </div>
           </div>
 
           <button
             type="submit"
-            className="button-hover flex w-full justify-center rounded bg-primary p-3  font-medium text-white"
+            className="button-hover flex items-center w-28 justify-center rounded bg-primary py-2  font-medium text-white"
           >
             Sign Up
           </button>
         </form>
         {registerSuccess && <Success />}
-        <div className="flex items-center justify-center">
+        {/* <div className="flex items-center justify-center">
           <p className="">Already a member?</p>
 
           <a href="/login" className="text-sm text-primary">
             Log in
           </a>
-        </div>
+        </div> */}
+      </div>
+      <div className="w-1/2 ">
+        <img 
+        src="/signup.jpg"
+        alt="Bakery"
+        className="w-full h-full object-cover " />
       </div>
     </div>
   );

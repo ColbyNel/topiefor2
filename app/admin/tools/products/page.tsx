@@ -2,6 +2,7 @@ import AdminHead from "@/components/AdminHead"
 import AdminMenu from "@/components/AdminMenu"
 import OrderFilter from "@/components/OrderFilter"
 import OrderList from "@/components/OrderList"
+import ProductList from "@/components/ProductList"
 
 const products = () => {
     return(
@@ -12,6 +13,7 @@ const products = () => {
           <AdminMenu />
         </div>
         <div className="admin-content">
+          <ProductList />
         </div>
       </div>
         </>

@@ -13,7 +13,7 @@ const orders = () => {
           <AdminMenu />
         </div>
         <div className="admin-content">
-          <OrderFilter />
+          {/* <OrderFilter /> */}
           <OrderList />
         </div>
       </div>

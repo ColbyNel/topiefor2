@@ -63,7 +63,7 @@ const admintools = () => {
             </a>
             <a
               className="button-hover  my-2 inline-flex items-center gap-2 rounded border border-primary bg-primary px-8 py-3 text-white hover:bg-red-900 hover:text-white focus:outline-none focus:ring active:text-black"
-              href="/download"
+              href="/admin/tools/products"
             >
               <span className="text-sm font-medium"> Edit Products </span>
 
@@ -84,7 +84,7 @@ const admintools = () => {
             </a>
             <a
               className="button-hover my-2 inline-flex items-center gap-2 rounded border border-primary bg-primary px-8 py-3 text-white hover:bg-red-900 hover:text-white focus:outline-none focus:ring active:text-black"
-              href="/download"
+              href="/admin/tools/ingredients"
             >
               <span className="text-sm font-medium"> Ingredients </span>
 

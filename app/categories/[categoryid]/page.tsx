@@ -9,17 +9,15 @@ import React from "react";
 
 export default async function SinglePage({ params: { categoryId } }:any) {
   //   const category = await getCategoryById(categoryId);
-  console.log(categoryId);
-  const items = await getProductsByCategory(2);
-  const category = await getCategoryById(2);
-  console.log(items)
+  const items = await getProductsByCategory(categoryId);
+  const category = await getCategoryById(categoryId);
   return (
     <>
       <Header />
 
       <div className="bg-white flex min-h-screen">
         <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-          <h2 className="text-8xl font-bold text-black text-center pb-32">
+          <h2 className="text-8xl font-chicle font-bold text-black text-center pb-32">
             {category.description}
           </h2>
           <div className="grid grid-cols-3 gap-x-10 gap-y-10 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">

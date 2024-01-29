@@ -55,7 +55,8 @@ const config = {
         },
       },
       fontFamily: {
-        feature: ['Caveat Brush']
+        feature: ['Caveat Brush'],
+        chicle: ['Chicle']
       },
       borderRadius: {
         lg: "var(--radius)",
