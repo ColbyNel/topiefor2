@@ -15,7 +15,7 @@ public class RecipeIngredientDAOImpl implements RecipeIngredientDAO {
     private ResultSet rs;
 
     @Override
-    public boolean createRecipeIngredient(int recipeID, int ingredientID, int grams) {
+    public boolean createRecipeIngredient(int recipeID, int ingredientID, int quantity) {
         connection = db.getConnection();
 
         try {
@@ -23,7 +23,7 @@ public class RecipeIngredientDAOImpl implements RecipeIngredientDAO {
 
             ps.setInt(1, recipeID);
             ps.setInt(2, ingredientID);
-            ps.setInt(3, grams);
+            ps.setInt(3, quantity);
 
             int affectedRows = ps.executeUpdate();
             return affectedRows > 0;
