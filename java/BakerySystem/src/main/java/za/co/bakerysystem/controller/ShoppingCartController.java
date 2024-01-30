@@ -4,15 +4,21 @@ import java.util.List;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import za.co.bakerysystem.dao.ProductDAO;
 import za.co.bakerysystem.dao.ShoppingCartDAO;
+import za.co.bakerysystem.dao.impl.ProductDAOImpl;
 import za.co.bakerysystem.dao.impl.ShoppingCartDAOImpl;
 import za.co.bakerysystem.model.Product;
 import za.co.bakerysystem.model.ShoppingCart;
+import za.co.bakerysystem.service.ShoppingCartService;
+import za.co.bakerysystem.service.impl.ShoppingCartServiceImpl;
 
 @Path("/shopping_carts")
 public class ShoppingCartController {
 
-    private final ShoppingCartDAO shoppingCartDAO = new ShoppingCartDAOImpl(); // Replace with your actual implementation
+    private final ShoppingCartDAO shoppingCartDAO = new ShoppingCartDAOImpl();
+    private ProductDAO productDAO = new ProductDAOImpl();
+    private final ShoppingCartService shoppingCartService = new ShoppingCartServiceImpl(shoppingCartDAO, productDAO);
 
     @GET
     @Path("/get_shoppingcart/{cartID}")
@@ -22,7 +28,7 @@ public class ShoppingCartController {
             return Response.status(Response.Status.BAD_REQUEST).entity("Cart ID must be greater than 0").build();
         }
 
-        ShoppingCart shoppingCart = shoppingCartDAO.getShoppingCartById(cartID);
+        ShoppingCart shoppingCart = shoppingCartService.getShoppingCartById(cartID);
 
         if (shoppingCart != null) {
             return Response.ok(shoppingCart).build();
@@ -42,7 +48,7 @@ public class ShoppingCartController {
             return Response.status(Response.Status.BAD_REQUEST).entity("Cart ID and quantity must be greater than 0").build();
         }
 
-        boolean success = shoppingCartDAO.addProductToCart(cartID, product, quantity);
+        boolean success = shoppingCartService.addProductToCart(cartID, product, quantity);
 
         if (success) {
             return Response.status(Response.Status.CREATED).entity("Product added to cart successfully").build();
@@ -61,7 +67,7 @@ public class ShoppingCartController {
             return Response.status(Response.Status.BAD_REQUEST).entity("Cart ID must be greater than 0").build();
         }
 
-        boolean success = shoppingCartDAO.removeProductFromCart(cartID, product);
+        boolean success = shoppingCartService.removeProductFromCart(cartID, product);
 
         if (success) {
             return Response.ok("Product removed from cart successfully").build();
@@ -78,7 +84,7 @@ public class ShoppingCartController {
             return Response.status(Response.Status.BAD_REQUEST).entity("Cart ID must be greater than 0").build();
         }
 
-        List<Product> products = shoppingCartDAO.getProductsForShoppingCart(cartID);
+        List<Product> products = shoppingCartService.getProductsForShoppingCart(cartID);
 
         if (products != null && !products.isEmpty()) {
             return Response.ok(products).build();
@@ -95,7 +101,7 @@ public class ShoppingCartController {
             return Response.status(Response.Status.BAD_REQUEST).entity("Cart ID must be greater than 0").build();
         }
 
-        double totalAmount = shoppingCartDAO.calculateTotalAmount(cartID);
+        double totalAmount = shoppingCartService.calculateTotalAmount(cartID);
 
         return Response.ok(totalAmount).build();
     }
