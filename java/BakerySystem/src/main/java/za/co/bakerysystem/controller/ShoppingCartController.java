@@ -17,7 +17,7 @@ import za.co.bakerysystem.service.impl.ShoppingCartServiceImpl;
 public class ShoppingCartController {
 
     private final ShoppingCartDAO shoppingCartDAO = new ShoppingCartDAOImpl();
-    private ProductDAO productDAO = new ProductDAOImpl();
+    private final ProductDAO productDAO = new ProductDAOImpl();
     private final ShoppingCartService shoppingCartService = new ShoppingCartServiceImpl(shoppingCartDAO, productDAO);
 
     @GET
