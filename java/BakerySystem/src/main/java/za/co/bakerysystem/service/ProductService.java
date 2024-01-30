@@ -10,6 +10,8 @@ public interface ProductService {
     boolean createProduct(Product product);
 
     boolean updateProduct(Product product);
+    
+    List<Product> getAllProductByCategory(int categoryID); 
 
     List<Product> getProducts();
 

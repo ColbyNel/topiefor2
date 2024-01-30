@@ -247,7 +247,7 @@ public class ProductDAOImpl implements ProductDAO {
         db = DbManager.getInstance();
         connection = db.getConnection();
         try {
-            ps = connection.prepareStatement("SELECT COUNT(ID) As quantity FROM Product");
+            ps = connection.prepareStatement("SELECT COUNT(productid) As quantity FROM Product");
             rs = ps.executeQuery();
 
             if (rs.next()) {
@@ -477,13 +477,13 @@ public class ProductDAOImpl implements ProductDAO {
         //Test for getProduct 
 //        System.out.println(productDAO.getProduct(6));
         //Test for getProductQuantity
-//        System.out.println(productDAO.getProductQuantity());
+        System.out.println(productDAO.getProductQuantity());
 
         //Test for getProductsByKeyWord
-        List<Product> listOfProductByCategory = productDAO.getAllProductByCategory(1);
-        listOfProductByCategory.forEach(product1 -> {
-            System.out.println(product1);
-        });
+//        List<Product> listOfProductByCategory = productDAO.getAllProductByCategory(1);
+//        listOfProductByCategory.forEach(product1 -> {
+//            System.out.println(product1);
+//        });
 //        
     }
 

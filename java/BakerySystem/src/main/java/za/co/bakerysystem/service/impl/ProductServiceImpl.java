@@ -38,6 +38,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> getAllProductByCategory(int categoryID) {
+        return productDAO.getAllProductByCategory(categoryID);
+    }
+
+    @Override
     public int getOrderQuantity(int productID) {
         return productDAO.getOrderQuantity(productID);
     }
@@ -81,12 +86,10 @@ public class ProductServiceImpl implements ProductService {
     public boolean deleteProduct(int productID) {
         return productDAO.deleteProduct(productID);
     }
-    
+
     //--------------------------------------------------------------------------------------------
     //--------------------------------------------------------------------------------------------
     //--------------------------------------------------------------------------------------------
-    
-    
     public static void main(String[] args) {
         ProductDAO productDAO = new ProductDAOImpl();
         ProductServiceImpl productService = new ProductServiceImpl(productDAO);
@@ -95,7 +98,6 @@ public class ProductServiceImpl implements ProductService {
 //        Product newProduct = new Product("Bread", 7.99, 2.0, 5, "Delicious bread", "High in fiber", "Nutrient info", "No warnings", 1);
 //        boolean productCreated = productService.createProduct(newProduct);
 //        System.out.println("Creating Product: " + productCreated);
-
         // Test updateProduct
 //        int productIdToUpdate = 8; // Replace with a valid product ID
 //        Product productToUpdate = productService.getProduct(productIdToUpdate);
@@ -106,18 +108,17 @@ public class ProductServiceImpl implements ProductService {
 //        } else {
 //            System.out.println("Product not found for updating.");
 //        }
-
 //        // Test getProducts
 //        List<Product> allProducts = productService.getProducts();
 //        System.out.println("All Products: " + allProducts);
-
         // Test getProduct
 //        int productIdToGet = 6; // Replace with a valid product ID
 //        Product retrievedProduct = productService.getProduct(productIdToGet);
 //        System.out.println("Retrieved Product: " + retrievedProduct);
-
 //        // Test deleteProduct
 //        boolean productDeleted = productService.deleteProduct(productIdToGet);
 //        System.out.println("Deleting Product: " + productDeleted);
+        System.out.println(productService.getProductQuantity());
     }
+
 }

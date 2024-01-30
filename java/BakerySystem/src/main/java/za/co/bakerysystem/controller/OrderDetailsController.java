@@ -7,17 +7,20 @@ import java.util.List;
 import za.co.bakerysystem.dao.OrderDetailsDAO;
 import za.co.bakerysystem.dao.impl.OrderDetailsDAOImpl;
 import za.co.bakerysystem.model.OrderDetails;
+import za.co.bakerysystem.service.OrderDetailsService;
+import za.co.bakerysystem.service.impl.OrderDetailsServiceImpl;
 
 @Path("/orderdetails")
 public class OrderDetailsController {
 
     private final OrderDetailsDAO orderDetailsDAO = new OrderDetailsDAOImpl();
+    private final OrderDetailsService orderDetailsService = new OrderDetailsServiceImpl(orderDetailsDAO);
 
     @POST
     @Path("/save")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response saveOrderDetails(OrderDetails orderDetails) {
-        if (orderDetailsDAO.save(orderDetails)) {
+        if (orderDetailsService.saveOrderDetails(orderDetails)) {
             return Response.status(Response.Status.CREATED).entity("Order details saved successfully").build();
         } else {
             return Response.status(Response.Status.BAD_REQUEST).entity("Order details not saved").build();
@@ -30,7 +33,7 @@ public class OrderDetailsController {
     public Response findOrderDetails(
             @PathParam("orderId") int orderId,
             @PathParam("productId") int productId) {
-        OrderDetails orderDetails = orderDetailsDAO.findById(orderId, productId);
+        OrderDetails orderDetails = orderDetailsService.findOrderDetailsById(orderId, productId);
 
         if (orderDetails != null) {
             return Response.ok(orderDetails).build();
@@ -43,7 +46,7 @@ public class OrderDetailsController {
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAllOrderDetails() {
-        List<OrderDetails> allOrderDetails = orderDetailsDAO.findAll();
+        List<OrderDetails> allOrderDetails = orderDetailsService.findAllOrderDetails();
 
         if (allOrderDetails != null && !allOrderDetails.isEmpty()) {
             return Response.ok(allOrderDetails).build();
@@ -56,7 +59,7 @@ public class OrderDetailsController {
     @Path("/update")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateOrderDetails(OrderDetails orderDetails) {
-        if (orderDetailsDAO.update(orderDetails)) {
+        if (orderDetailsService.updateOrderDetails(orderDetails)) {
             return Response.ok("Order details updated successfully").build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).entity("Order details not found").build();
@@ -68,7 +71,7 @@ public class OrderDetailsController {
     public Response deleteOrderDetails(
             @PathParam("orderId") int orderId,
             @PathParam("productId") int productId) {
-        if (orderDetailsDAO.delete(orderId, productId)) {
+        if (orderDetailsService.deleteOrderDetails(orderId, productId)) {
             return Response.ok("Order details deleted successfully").build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).entity("Order details not found").build();

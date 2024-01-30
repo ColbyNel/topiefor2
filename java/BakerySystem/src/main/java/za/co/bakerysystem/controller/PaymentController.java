@@ -8,11 +8,14 @@ import za.co.bakerysystem.dao.PaymentDAO;
 import za.co.bakerysystem.dao.impl.PaymentDAOImpl;
 import za.co.bakerysystem.model.Payment;
 import za.co.bakerysystem.model.PaymentType;
+import za.co.bakerysystem.service.PaymentService;
+import za.co.bakerysystem.service.impl.PaymentServiceImpl;
 
 @Path("/payments")
 public class PaymentController {
 
-    private final PaymentDAO paymentDAO = new PaymentDAOImpl(); // Replace with your actual implementation
+    private final PaymentDAO paymentDAO = new PaymentDAOImpl();
+    private final PaymentService paymentService = new PaymentServiceImpl(paymentDAO);
 
     @POST
     @Path("/create")
@@ -23,7 +26,7 @@ public class PaymentController {
             return Response.status(Response.Status.BAD_REQUEST).entity("Payment amount must be greater than 0").build();
         }
 
-        if (paymentDAO.createPayment(payment)) {
+        if (paymentService.createPayment(payment)) {
             return Response.status(Response.Status.CREATED).entity("Payment created successfully").build();
         } else {
             return Response.status(Response.Status.BAD_REQUEST).entity("Failed to create payment").build();
@@ -37,7 +40,7 @@ public class PaymentController {
             return Response.status(Response.Status.BAD_REQUEST).entity("Order ID must be greater than 0").build();
         }
 
-        if (paymentDAO.deletePayment(orderID)) {
+        if (paymentService.deletePayment(orderID)) {
             return Response.ok("Payment deleted successfully").build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).entity("Payment not found").build();
@@ -52,7 +55,7 @@ public class PaymentController {
             return Response.status(Response.Status.BAD_REQUEST).entity("Order ID must be greater than 0").build();
         }
 
-        List<Payment> orderPayments = paymentDAO.getOrderPayments(orderID);
+        List<Payment> orderPayments = paymentService.getOrderPayments(orderID);
 
         if (orderPayments != null && !orderPayments.isEmpty()) {
             return Response.ok(orderPayments).build();
@@ -65,7 +68,7 @@ public class PaymentController {
     @Path("/payment_types")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPaymentTypes() {
-        List<PaymentType> paymentTypes = paymentDAO.getPaymentTypes();
+        List<PaymentType> paymentTypes = paymentService.getPaymentTypes();
 
         if (paymentTypes != null && !paymentTypes.isEmpty()) {
             return Response.ok(paymentTypes).build();

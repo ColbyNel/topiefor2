@@ -26,7 +26,7 @@ public class IngredientDAOImpl implements IngredientDAO {
         boolean retVal = false;
         connection = db.getConnection();
         try {
-            ps = connection.prepareStatement("INSERT INTO Ingredient (Name, PricePerKG, Note,Quantity,unitid) VALUES (?,?, ?, ?)");
+            ps = connection.prepareStatement("INSERT INTO Ingredient (Name, PricePerKG, Note,Quantity,unitid) VALUES (?,?, ?, ?,?)");
             ps.setString(1, ingredient.getName());
             ps.setDouble(2, ingredient.getPricePerKG());
             ps.setString(3, ingredient.getNote());

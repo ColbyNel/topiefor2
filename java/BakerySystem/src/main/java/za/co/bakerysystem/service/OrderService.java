@@ -42,7 +42,7 @@ public interface OrderService {
 
     List<Product> getOrderProduct(int orderID);
 
-    void deleteOrder(int orderID);
+    boolean deleteOrder(int orderID);
 
     void deleteOrderDetail(int orderID);
 }

@@ -8,6 +8,10 @@ public class RecipeServiceImpl implements RecipeService {
 
     private RecipeDAO recipeDAO;
 
+    public RecipeServiceImpl(RecipeDAO recipeDAO) {
+        this.recipeDAO = recipeDAO;
+    }
+
     public RecipeServiceImpl() {
         this.recipeDAO = new RecipeDAOImpl();
     }
@@ -21,11 +25,10 @@ public class RecipeServiceImpl implements RecipeService {
     public boolean deleteRecipeDetail(int recipeID) {
         return recipeDAO.deleteRecipeDetail(recipeID);
     }
-    
+
     //-------------------------------------------------------------------------------------------------
     //-------------------------------------------------------------------------------------------------
     //-------------------------------------------------------------------------------------------------
-    
     public static void main(String[] args) {
         // Create an instance of RecipeServiceImpl
 //        RecipeService recipeService = new RecipeServiceImpl();

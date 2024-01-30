@@ -94,8 +94,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void deleteOrder(int orderID) {
-        orderDAO.deleteOrder(orderID);
+    public boolean deleteOrder(int orderID) {
+       return orderDAO.deleteOrder(orderID);
     }
 
     @Override
