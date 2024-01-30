@@ -12,13 +12,15 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
 
     public Connection connection;
     public static DbManager db;
+    private PreparedStatement ps;
+    private ResultSet rs;
 
     public ShoppingCartDAOImpl(Connection connection) {
         this.connection = connection;
     }
-    
-     public ShoppingCartDAOImpl() {
-         db = DbManager.getInstance();
+
+    public ShoppingCartDAOImpl() {
+        db = DbManager.getInstance();
         this.connection = db.getConnection();
     }
 
@@ -30,31 +32,29 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
 
     @Override
     public ShoppingCart getShoppingCartById(int cartID) {
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
         db = DbManager.getInstance();
 
         try {
             connection = db.getConnection();
-            preparedStatement = connection.prepareStatement(SELECT_CART_BY_ID);
-            preparedStatement.setInt(1, cartID);
-            resultSet = preparedStatement.executeQuery();
+            ps = connection.prepareStatement(SELECT_CART_BY_ID);
+            ps.setInt(1, cartID);
+            rs = ps.executeQuery();
 
-            if (resultSet.next()) {
-                return extractShoppingCartFromResultSet(resultSet);
+            if (rs.next()) {
+                return extractShoppingCartFromResultSet(rs);
             }
         } catch (SQLException e) {
-            System.out.println("Error :"+e.getMessage());
+            System.out.println("Error :" + e.getMessage());
         } finally {
             try {
-                if (resultSet != null) {
-                    resultSet.close();
+                if (rs != null) {
+                    rs.close();
                 }
-                if (preparedStatement != null) {
-                    preparedStatement.close();
+                if (ps != null) {
+                    ps.close();
                 }
             } catch (SQLException e) {
-                System.out.println("Error :"+e.getMessage());
+                System.out.println("Error :" + e.getMessage());
             }
         }
         return null;
@@ -62,7 +62,7 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
 
     @Override
     public boolean addProductToCart(int cartID, Product product, int quantity) {
-        PreparedStatement preparedStatement = null;
+
         db = DbManager.getInstance();
 
         try {
@@ -74,19 +74,21 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
                 createShoppingCart(cartID);
             }
 
-            preparedStatement = connection.prepareStatement(ADD_ITEM_TO_CART);
-            preparedStatement.setInt(1, cartID);
-            preparedStatement.setInt(2, product.getID());
-            preparedStatement.setInt(3, quantity);
-            int rowsAffected = preparedStatement.executeUpdate();
+            ps = connection.prepareStatement(ADD_ITEM_TO_CART);
+            ps.setInt(1, cartID);
+            ps.setInt(2, product.getID());
+            ps.setInt(3, quantity);
+            int rowsAffected = ps.executeUpdate();
 
-            // After adding the product to the cart, update the cart total
-            updateCartTotal(cartID);
-
-            // Return true if at least one row was affected (success), false otherwise
-            return rowsAffected > 0;
+            // If the product was successfully added to the cart, update the total amount
+            if (rowsAffected > 0) {
+                updateCartTotal(cartID);
+                return true;
+            } else {
+                return false;
+            }
         } catch (SQLException e) {
-            System.out.println("Error :"+e.getMessage());
+            System.out.println("Error :" + e.getMessage());
             System.err.println("SQL Exception: " + e.getMessage());
             return false;  // Operation failed
         }
@@ -94,38 +96,36 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
 
 // Helper method to check if the cartID exists in the shoppingcart table
     private boolean isCartExists(int cartID) throws SQLException {
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+
         try {
             connection = db.getConnection();
-            preparedStatement = connection.prepareStatement(SELECT_CART_BY_ID);
-            preparedStatement.setInt(1, cartID);
-            resultSet = preparedStatement.executeQuery();
-            return resultSet.next();  // Return true if there is a result (cartID exists), false otherwise
+            ps = connection.prepareStatement(SELECT_CART_BY_ID);
+            ps.setInt(1, cartID);
+            rs = ps.executeQuery();
+            return rs.next();  // Return true if there is a result (cartID exists), false otherwise
         } finally {
-            if (resultSet != null) {
-                resultSet.close();
+            if (rs != null) {
+                rs.close();
             }
-            if (preparedStatement != null) {
-                preparedStatement.close();
+            if (ps != null) {
+                ps.close();
             }
         }
     }
 
 // Helper method to create a new shopping cart entry
     private boolean createShoppingCart(int cartID) {
-        PreparedStatement preparedStatement = null;
         try {
             connection = db.getConnection();
             String createCartQuery = "INSERT INTO ShoppingCart (cartID, totalAmount) VALUES (?, 0)";
-            preparedStatement = connection.prepareStatement(createCartQuery);
-            preparedStatement.setInt(1, cartID);
-            int rowsAffected = preparedStatement.executeUpdate();
+            ps = connection.prepareStatement(createCartQuery);
+            ps.setInt(1, cartID);
+            int rowsAffected = ps.executeUpdate();
 
             // Return true if at least one row was affected (success), false otherwise
             return rowsAffected > 0;
         } catch (SQLException e) {
-            System.out.println("Error :"+e.getMessage());
+            System.out.println("Error :" + e.getMessage());
             System.err.println("SQL Exception: " + e.getMessage());
             return false;  // Operation failed
         }
@@ -133,60 +133,26 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
 
     @Override
     public boolean removeProductFromCart(int cartID, Product product) {
-        PreparedStatement preparedStatement = null;
         db = DbManager.getInstance();
 
         try {
             connection = db.getConnection();
-            preparedStatement = connection.prepareStatement(REMOVE_ITEM_FROM_CART);
-            preparedStatement.setInt(1, cartID);
-            preparedStatement.setInt(2, product.getID());
-            int rowsAffected = preparedStatement.executeUpdate();
-            updateCartTotal(cartID);//not sure
+            ps = connection.prepareStatement(REMOVE_ITEM_FROM_CART);
+            ps.setInt(1, cartID);
+            ps.setInt(2, product.getID());
+            int rowsAffected = ps.executeUpdate();
 
             // Return true if at least one row was affected (success), false otherwise
             return rowsAffected > 0;
         } catch (SQLException e) {
-            System.out.println("Error :"+e.getMessage());
+            System.out.println("Error :" + e.getMessage());
             return false;  // Operation failed
         }
     }
 
-    @Override
-    public boolean updateCartTotal(int cartID) {
-        PreparedStatement preparedStatement = null;
-        db = DbManager.getInstance();
-
-        try {
-            connection = db.getConnection();
-            int totalQuantity = calculateTotalQuantity(cartID);
-
-            // Update the total quantity in the ShoppingCartProduct table
-            String updateQuery = "UPDATE ShoppingCartProduct SET quantity = ? WHERE cartID = ?";
-            preparedStatement = connection.prepareStatement(updateQuery);
-            preparedStatement.setInt(1, totalQuantity);
-            preparedStatement.setInt(2, cartID);
-            int quantityUpdateResult = preparedStatement.executeUpdate();
-
-            // Calculate and update the total amount in the ShoppingCart table
-            double totalAmount = calculateTotalAmount(cartID);
-            String updateTotalQuery = "UPDATE ShoppingCart SET totalAmount = ? WHERE cartID = ?";
-            preparedStatement = connection.prepareStatement(updateTotalQuery);
-            preparedStatement.setDouble(1, totalAmount);
-            preparedStatement.setInt(2, cartID);
-            int totalAmountUpdateResult = preparedStatement.executeUpdate();
-
-            // Return true if at least one of the updates was successful, false otherwise
-            return quantityUpdateResult > 0 || totalAmountUpdateResult > 0;
-        } catch (SQLException e) {
-            System.out.println("Error :"+e.getMessage());
-            return false;  // Operation failed
-        }
-    }
-
-    private ShoppingCart extractShoppingCartFromResultSet(ResultSet resultSet) throws SQLException {
-        int cartID = resultSet.getInt("cartID");
-        double totalAmount = resultSet.getDouble("totalAmount");
+    private ShoppingCart extractShoppingCartFromResultSet(ResultSet rs) throws SQLException {
+        int cartID = rs.getInt("cartID");
+        double totalAmount = rs.getDouble("totalAmount");
         // Retrieve products for the shopping cart
         List<Product> products = getProductsForShoppingCart(cartID);
 
@@ -196,58 +162,42 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
     @Override
     public List<Product> getProductsForShoppingCart(int cartID) {
         List<Product> products = new ArrayList<>();
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+
         db = DbManager.getInstance();
 
         try {
             connection = db.getConnection();
-            // Assuming there's a table named ShoppingCartProduct with columns (cartID, productID, quantity)
             String query = "SELECT i.* FROM Product i "
                     + "JOIN ShoppingCartProduct sci ON i.productID = sci.productID "
                     + "WHERE sci.cartID = ?";
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, cartID);
-            resultSet = preparedStatement.executeQuery();
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, cartID);
+            rs = ps.executeQuery();
 
-            while (resultSet.next()) {
-                Product product = extractProductFromResultSet(resultSet);
+            while (rs.next()) {
+                Product product = extractProductFromResultSet(rs);
                 products.add(product);
             }
         } catch (SQLException e) {
-            System.out.println("Error :"+e.getMessage());
-        } 
+            System.out.println("Error :" + e.getMessage());
+        }
         return products;
     }
 
-    @Override
-    public int calculateTotalQuantity(int cartID) {
-        int totalQuantity = 0;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        db = DbManager.getInstance();
+    // Helper method to update the total amount in the shopping cart
+    private void updateCartTotal(int cartID) throws SQLException {
+        double totalAmount = calculateTotalAmount(cartID);
 
-        try {
-            connection = db.getConnection();
-            String query = "SELECT COUNT(DISTINCT productID) AS Quantity FROM ShoppingCartProduct WHERE cartID = ?";
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, cartID);
-            resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                totalQuantity = resultSet.getInt("Quantity");
-            }
-        } catch (SQLException e) {
-            System.out.println("Error :"+e.getMessage());
-        } 
-        return totalQuantity;
+        ps = connection.prepareStatement(UPDATE_CART_TOTAL);
+        ps.setDouble(1, totalAmount);
+        ps.setInt(2, cartID);
+        ps.executeUpdate();
     }
 
     @Override
     public double calculateTotalAmount(int cartID) {
         double totalAmount = 0;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+
         db = DbManager.getInstance();
 
         try {
@@ -255,30 +205,30 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
             String query = "SELECT SUM(i.price * sci.quantity) AS totalAmount "
                     + "FROM Product i JOIN ShoppingCartProduct sci ON i.productID = sci.productID "
                     + "WHERE sci.cartID = ?";
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, cartID);
-            resultSet = preparedStatement.executeQuery();
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, cartID);
+            rs = ps.executeQuery();
 
-            if (resultSet.next()) {
-                totalAmount = resultSet.getDouble("totalAmount");
+            if (rs.next()) {
+                totalAmount = rs.getDouble("totalAmount");
             }
         } catch (SQLException e) {
-            System.out.println("Error :"+e.getMessage());
-        } 
+            System.out.println("Error :" + e.getMessage());
+        }
         return totalAmount;
     }
 
-    public Product extractProductFromResultSet(ResultSet resultSet) throws SQLException {
-        int ID = resultSet.getInt("productID");
-        String name = resultSet.getString("name");
-        int categoryID = resultSet.getInt("categoryID");
-        double foodcost = resultSet.getDouble("foodcost");
-        String description = resultSet.getString("description");
-        String warnings = resultSet.getString("warnings");
-        String nutrientInfo = resultSet.getString("nutrientInfoRMATION");
-        int timecost = resultSet.getInt("timecost");
-        String comment = resultSet.getString("comment");
-        double price = resultSet.getDouble("price");
+    public Product extractProductFromResultSet(ResultSet rs) throws SQLException {
+        int ID = rs.getInt("productID");
+        String name = rs.getString("name");
+        int categoryID = rs.getInt("categoryID");
+        double foodcost = rs.getDouble("foodcost");
+        String description = rs.getString("description");
+        String warnings = rs.getString("warnings");
+        String nutrientInfo = rs.getString("nutrientInfoRMATION");
+        int timecost = rs.getInt("timecost");
+        String comment = rs.getString("comment");
+        double price = rs.getDouble("price");
 
         return new Product(ID, name, price, foodcost, timecost, comment, description, nutrientInfo, warnings, categoryID);
     }
@@ -299,17 +249,15 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
             // Get the newly added product from the database
             Product addedProduct = productDAO.getProductsByKeyWord("Freshh").get(0);
 
-            //int totalQuantity = shoppingCartDAO.calculateTotalQuantity(5);
-//           
-//            // Add the product to the shopping cart with the calculated total quantity
-            // shoppingCartDAO.addProductToCart(2,addedProduct, totalQuantity);
+            // Add the product to the shopping cart with the calculated total quantity
+            shoppingCartDAO.addProductToCart(2, addedProduct, 3);
             // Display the updated shopping cart
 //            ShoppingCart retrievedCart = shoppingCartDAO.getShoppingCartById(1);
 //            System.out.println("Shopping Cart after adding product: " + retrievedCart);
             //Display all products after adding to the cart
             // System.out.println("Products after adding to the cart: " + productDAO.getProducts());
         } catch (Exception e) {
-            System.out.println("Error :"+e.getMessage());
+            System.out.println("Error :" + e.getMessage());
         }
     }
 }

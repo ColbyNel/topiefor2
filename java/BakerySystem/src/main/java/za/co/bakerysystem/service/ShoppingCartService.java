@@ -12,11 +12,7 @@ public interface ShoppingCartService {
 
     boolean removeProductFromCart(int cartID, Product product);
 
-    boolean updateCartTotal(int cartID);
-
     List<Product> getProductsForShoppingCart(int cartID);
-
-    int calculateTotalQuantity(int cartID);
 
     double calculateTotalAmount(int cartID);
 }

@@ -128,18 +128,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public int calculateTotalQuantity(int cartID) {
-        return shoppingCartDAO.calculateTotalQuantity(cartID);
-    }
-
-    @Override
     public double calculateTotalAmount(int cartID) {
         return shoppingCartDAO.calculateTotalAmount(cartID);
-    }
-
-    @Override
-    public boolean updateCartTotal(int cartID) {
-        return shoppingCartDAO.updateCartTotal(cartID);
     }
 
     //---------------------------------------------------------------------------------------------------
@@ -160,11 +150,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 //        Product newProduct = new Product("Blue", 4.99, 6.7, 2, "GOOD BREAD", "HIGH IN carbo", "fibre", "none", 2);
 //        productDAO.createProduct(newProduct);
         // Get the newly added product from the database
-        Product addedProduct = productDAO.getProductsByKeyWord("Freshhh").get(0);
-        int totalQuantity = shoppingCartService.calculateTotalQuantity(2);
+        Product addedProduct = productDAO.getProductsByKeyWord("Bread").get(0);
 
         // Add the product to the cart
-        boolean addProductResult = shoppingCartService.addProductToCart(2, addedProduct, totalQuantity);
+        boolean addProductResult = shoppingCartService.addProductToCart(2, addedProduct, 3);
         System.out.println("Add Product to Cart Result: " + addProductResult);
 
 //        // Test removeProductFromCart

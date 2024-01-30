@@ -70,22 +70,6 @@ public class ShoppingCartController {
         }
     }
 
-    @PUT
-    @Path("/update_total/{cartID}")
-    public Response updateCartTotal(@PathParam("cartID") int cartID) {
-        if (cartID <= 0) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Cart ID must be greater than 0").build();
-        }
-
-        boolean success = shoppingCartDAO.updateCartTotal(cartID);
-
-        if (success) {
-            return Response.ok("Cart total updated successfully").build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).entity("Shopping cart not found").build();
-        }
-    }
-
     @GET
     @Path("/products/{cartID}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -101,19 +85,6 @@ public class ShoppingCartController {
         } else {
             return Response.status(Response.Status.NOT_FOUND).entity("No products found for the specified cart").build();
         }
-    }
-
-    @GET
-    @Path("/total_quantity/{cartID}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response calculateTotalQuantity(@PathParam("cartID") int cartID) {
-        if (cartID <= 0) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Cart ID must be greater than 0").build();
-        }
-
-        int totalQuantity = shoppingCartDAO.calculateTotalQuantity(cartID);
-
-        return Response.ok(totalQuantity).build();
     }
 
     @GET
