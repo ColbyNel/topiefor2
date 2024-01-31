@@ -1,8 +1,6 @@
 package za.co.bakerysystem.service;
 
 import java.util.List;
-import za.co.bakerysystem.model.Customer;
-import za.co.bakerysystem.model.Order;
 import za.co.bakerysystem.model.Product;
 
 public interface ProductService {
@@ -10,28 +8,24 @@ public interface ProductService {
     boolean createProduct(Product product);
 
     boolean updateProduct(Product product);
-    
-    List<Product> getAllProductByCategory(int categoryID); 
+
+    List<Product> getAllProductByCategory(int categoryID);
 
     List<Product> getProducts();
 
     List<Product> getProductsByKeyWord(String keyWord);
 
-    int getOrderQuantity(int productID);
+    List<Product> getFavoriteProducts(int customerID);
 
-    int getSaleQuantity(int productID);
+    List<Product> getOrderProduct(int orderID);
 
-    int getOrderQuantityByKeyWord(String keyWord);
+    List<Product> getRelatedProducts(int ingredientID);
 
-    List<Order> getOrders(int productID);
-
-    List<Customer> getTopCustomers(int productID);
+    List<Product> getProductsForShoppingCart(int cartID);
 
     Product getProduct(int productID);
 
     int getProductQuantity();
-
-    List<String> getRecipe(int productID);
 
     boolean deleteProduct(int productID);
 }

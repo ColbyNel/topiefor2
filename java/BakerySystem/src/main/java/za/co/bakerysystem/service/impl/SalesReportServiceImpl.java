@@ -27,6 +27,11 @@ public class SalesReportServiceImpl implements SalesReportService {
     }
 
     @Override
+    public int getSaleQuantity(int productID) {
+        return salesReportDAO.getSaleQuantity(productID);
+    }
+
+    @Override
     public List<SalesReport> getSales(LocalDate startDate, LocalDate endDate) {
         return salesReportDAO.getSales(startDate, endDate);
     }
@@ -70,12 +75,11 @@ public class SalesReportServiceImpl implements SalesReportService {
     public boolean deleteSales(int saleID) {
         return salesReportDAO.deleteSales(saleID);
     }
-    
+
     //-----------------------------------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------
-    
-      public static void main(String[] args) {
+    public static void main(String[] args) {
         SalesReportService salesReportService = new SalesReportServiceImpl();
 
         // Test createSale method
@@ -87,7 +91,6 @@ public class SalesReportServiceImpl implements SalesReportService {
 //        } else {
 //            System.out.println("Failed to create sale.");
 //        }
-
         // Test getSales method
 //        LocalDate startDate = LocalDate.now().minusDays(30);
 //        LocalDate endDate = LocalDate.now();
@@ -97,7 +100,6 @@ public class SalesReportServiceImpl implements SalesReportService {
 //        for (SalesReport sale : salesList) {
 //            System.out.println(sale);
 //        }
-
         // Test getSalesDetails method
 //        int saleIDToFetchDetails = 1;
 //        List<SalesReportDetails> salesDetailsList = salesReportService.getSalesDetails(saleIDToFetchDetails);
@@ -106,7 +108,6 @@ public class SalesReportServiceImpl implements SalesReportService {
 //        for (SalesReportDetails details : salesDetailsList) {
 //            System.out.println(details); 
 //        }
-
 //        // Test deleteSales method
 //        int saleIDToDelete = 1;
 //        boolean deleteSaleResult = salesReportService.deleteSales(saleIDToDelete);

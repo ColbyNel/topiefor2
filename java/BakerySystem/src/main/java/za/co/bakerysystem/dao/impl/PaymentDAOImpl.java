@@ -1,13 +1,14 @@
 package za.co.bakerysystem.dao.impl;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import za.co.bakerysystem.dao.OrderDetailsDAO;
 import za.co.bakerysystem.dao.PaymentDAO;
+import za.co.bakerysystem.dao.ProductDAO;
 import za.co.bakerysystem.dbmanager.DbManager;
 import za.co.bakerysystem.model.Payment;
 import za.co.bakerysystem.model.PaymentType;
@@ -20,12 +21,13 @@ public class PaymentDAOImpl implements PaymentDAO {
     private static final DbManager db = DbManager.getInstance();
     private PreparedStatement ps;
     private ResultSet rs;
-    private OrderDetailsDAO orderDetailsDAO;
+    private ProductDAO productDAO;
+    private CallableStatement cs;
 
     //--------------------------------------------------------------------------------------------------
     @Override
     public boolean createPayment(Payment payment) {
-        orderDetailsDAO = new OrderDetailsDAOImpl();
+        productDAO = new ProductDAOImpl();
         connection = db.getConnection();
 
         try {
@@ -47,7 +49,7 @@ public class PaymentDAOImpl implements PaymentDAO {
                 return false;
             }
             // Get products from OrderDetails
-            List<Product> products = orderDetailsDAO.getProductsForOrder(payment.getOrderID());
+            List<Product> products = productDAO.getProductsForOrder(payment.getOrderID());
 
             // Iterate through each product and subtract ingredient quantity from the database
             for (Product product : products) {
@@ -162,6 +164,31 @@ public class PaymentDAOImpl implements PaymentDAO {
     }
 
     @Override
+    public List<Payment> getOrderPayment(int orderID) {
+        List<Payment> payments = new ArrayList<>();
+        connection = db.getConnection();
+
+        try {
+            String sql = "{CALL fetch_single_order_payments(?)}";
+            cs = connection.prepareCall(sql);
+            cs.setInt(1, orderID);
+
+            rs = cs.executeQuery();
+
+            while (rs.next()) {
+                Payment payment = new Payment();
+                payment.setPaymentTypeID(rs.getInt("payment_type_id"));
+                payment.setOrderID(orderID);
+                payment.setAmount(rs.getDouble("Amount"));
+                payments.add(payment);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error getting order payments: " + e.getMessage());
+        }
+        return payments;
+    }
+
+    @Override
     public List<PaymentType> getPaymentTypes() {
         List<PaymentType> paymentTypes = new ArrayList<>();
         connection = db.getConnection();
@@ -191,7 +218,7 @@ public class PaymentDAOImpl implements PaymentDAO {
 
         // Test createPayment method
         Payment newPayment = new Payment();
-        newPayment.setOrderID(5); 
+        newPayment.setOrderID(5);
         newPayment.setPaymentTypeID(1);
         newPayment.setAmount(50.0);
 

@@ -1,14 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package za.co.bakerysystem.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import za.co.bakerysystem.model.Order;
 import za.co.bakerysystem.model.OrderDetails;
-import za.co.bakerysystem.model.Payment;
-import za.co.bakerysystem.model.Product;
 
 public interface OrderService {
 
@@ -18,9 +13,21 @@ public interface OrderService {
 
     boolean fulfillOrder(int orderID, int fullFilled);
 
+    int getOrderQuantity(int productID);
+
+    int getOrderQuantityByKeyWord(String keyWord);
+
     boolean createOrderDetail(OrderDetails orderDetails);
 
+    int getNumOrders(int customerID);
+
+    List<Order> getOrders(int productID);
+
+    List<Order> getOrdersByRange(int fulfilled, LocalDate startDate, LocalDate endDate);
+
     List<Order> getOrders();
+
+    List<Order> getCustomerOrders(int customerID);
 
     List<Order> getLastedOrders();
 
@@ -37,10 +44,6 @@ public interface OrderService {
     List<Order> getOrdersByRange(String startDate, String endDate, String keyWord);
 
     Order getOrder(int orderID);
-
-    List<Payment> getOrderPayment(int orderID);
-
-    List<Product> getOrderProduct(int orderID);
 
     boolean deleteOrder(int orderID);
 

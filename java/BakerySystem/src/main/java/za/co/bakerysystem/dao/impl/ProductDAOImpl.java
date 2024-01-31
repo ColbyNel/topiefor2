@@ -1,16 +1,16 @@
 package za.co.bakerysystem.dao.impl;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import za.co.bakerysystem.dao.ProductDAO;
 import za.co.bakerysystem.dbmanager.DbManager;
-import za.co.bakerysystem.model.Customer;
-import za.co.bakerysystem.model.Order;
 import za.co.bakerysystem.model.Product;
 
 public class ProductDAOImpl implements ProductDAO {
@@ -19,10 +19,116 @@ public class ProductDAOImpl implements ProductDAO {
     private static DbManager db;
     private PreparedStatement ps;
     private ResultSet rs;
+    private CallableStatement cs;
 
     public ProductDAOImpl() {
         db = DbManager.getInstance();
         this.connection = db.getConnection();
+    }
+
+    @Override
+    public List<Product> getRelatedProducts(int ingredientID) {
+        List<Product> ingredients = new ArrayList<>();
+
+        connection = DbManager.getInstance().getConnection();
+
+        try {
+            CallableStatement cs = connection.prepareCall("CALL fetch_ingredient_products(?)");
+            cs.setInt(1, ingredientID);
+            rs = cs.executeQuery();
+
+            while (rs.next()) {
+                Product ingredient = extractProductFromResultSet(rs);
+                ingredients.add(ingredient);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error:" + e.getMessage());
+
+        }
+
+        return ingredients;
+    }
+
+    @Override
+    public List<Product> getProductsForShoppingCart(int cartID) {
+        List<Product> products = new ArrayList<>();
+
+        db = DbManager.getInstance();
+
+        try {
+            connection = db.getConnection();
+            String query = "SELECT i.* FROM Product i "
+                    + "JOIN ShoppingCartProduct sci ON i.productID = sci.productID "
+                    + "WHERE sci.cartID = ?";
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, cartID);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Product product = extractProductFromResultSet(rs);
+                products.add(product);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error :" + e.getMessage());
+        }
+        return products;
+    }
+
+    @Override
+    public List<Product> getOrderProduct(int orderID) {
+        List<Product> products = new ArrayList<>();
+        db = DbManager.getInstance();
+        connection = db.getConnection();
+
+        try {
+            //Made changes on fetch_single_order_details
+            String sql = "{CALL fetch_single_order_details(?)}";
+            cs = connection.prepareCall(sql);
+            cs.setInt(1, orderID);
+
+            rs = cs.executeQuery();
+
+            while (rs.next()) {
+                Product product = new Product();
+                product.setID(rs.getInt("productid"));
+                product.setName(rs.getString("Name"));
+                product.setPrice(rs.getDouble("Price"));
+                product.setFoodCost(rs.getDouble("FoodCost"));
+                product.setTimeCost(rs.getInt("TimeCost"));
+                product.setComment(rs.getString("Comment"));
+                product.setDescription(rs.getString("Description"));
+                product.setNutrientInformation(rs.getString("NutrientInformation"));
+                product.setWarnings(rs.getString("Warnings"));
+                product.setCategoryID(rs.getInt("CategoryID"));
+                products.add(product);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error getting order products: " + e.getMessage());
+        }
+        return products;
+    }
+
+    @Override
+    public List<Product> getFavoriteProducts(int customerID) {
+        db = DbManager.getInstance();
+
+        List<Product> favoriteProducts = new ArrayList<>();
+        connection = db.getConnection();
+        try {
+            ps = connection.prepareCall("CALL fetch_customer_favorites(?)");
+            ps.setInt(1, customerID);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Product product = extractProductFromResultSet(rs);
+                favoriteProducts.add(product);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+
+        return favoriteProducts;
     }
 
     @Override
@@ -120,93 +226,7 @@ public class ProductDAOImpl implements ProductDAO {
             System.out.println("Error: " + e.getMessage());
         }
 
-        //finally {
-//            closeConnection(connection);
-//        }
         return products;
-    }
-
-// Helper method to close the connection
-    private void closeConnection(Connection connection) {
-        if (connection != null) {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                System.out.println("Error closing connection: " + e.getMessage());
-            }
-        }
-    }
-
-    @Override
-    public int getOrderQuantityByKeyWord(String keyWord) {
-        int orderQuantity = 0;
-        db = DbManager.getInstance();
-        connection = db.getConnection();
-        try {
-            ps = connection.prepareStatement("CALL fetch_product_quantity_Keyword(?)");
-            ps.setString(1, keyWord);
-            rs = ps.executeQuery();
-
-            if (rs.next()) {
-                orderQuantity = rs.getInt("orderQuantity");
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-
-        //finally {
-//            closeConnection(connection);
-//        }
-        return orderQuantity;
-    }
-
-    @Override
-    public List<Order> getOrders(int productID) {
-        List<Order> orders = new ArrayList<>();
-        db = DbManager.getInstance();
-        connection = db.getConnection();
-        try {
-            ps = connection.prepareStatement("CALL fetch_product_orders(?)");
-            ps.setInt(1, productID);
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-                Order order = new Order();
-                order.setID(rs.getInt("orderID"));
-                orders.add(order);
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
-        } //finally {
-        // closeConnection(connection);
-        //}
-        return orders;
-    }
-
-    @Override
-    public List<Customer> getTopCustomers(int productID) {
-        List<Customer> topCustomers = new ArrayList<>();
-        db = DbManager.getInstance();
-        connection = db.getConnection();
-        try {
-            ps = connection.prepareStatement("CALL fetch_product_top_customer(?)");
-            ps.setInt(1, productID);
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-                Customer customer = new Customer();
-                customer.setID(rs.getInt("customerID"));
-                topCustomers.add(customer);
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
-        } //finally {
-        // closeConnection(connection);
-        // }
-        return topCustomers;
     }
 
     @Override
@@ -235,9 +255,7 @@ public class ProductDAOImpl implements ProductDAO {
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
-        //finally {
-        //closeConnection(connection);
-        //}
+
         return product;
     }
 
@@ -256,32 +274,8 @@ public class ProductDAOImpl implements ProductDAO {
 
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
-        }// finally {
-        // closeConnection(connection);
-        //}
+        }
         return productQuantity;
-    }
-
-    @Override
-    public List<String> getRecipe(int productID) {
-        List<String> recipe = new ArrayList<>();
-        db = DbManager.getInstance();
-        connection = db.getConnection();
-        try {
-            ps = connection.prepareStatement("CALL fetch_product_recipe(?)");
-            ps.setInt(1, productID);
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-                recipe.add(rs.getString("ingredient"));
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
-        } //finally {
-        //closeConnection(connection);
-        //}
-        return recipe;
     }
 
     @Override
@@ -296,15 +290,10 @@ public class ProductDAOImpl implements ProductDAO {
 
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
-        } //finally {
-            //closeConnection(connection);
-        //}
+        }
 
         return retVal;
 
-        // finally {
-        //  closeConnection(connection);
-        //}
     }
 
     @Override
@@ -335,14 +324,43 @@ public class ProductDAOImpl implements ProductDAO {
 
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
-        } //finally {
-          //  closeConnection(connection);
-        //}
-
-        //finally {
-        //closeConnection(connection);
-        // }
+        }
         return products;
+    }
+
+    @Override
+    public List<Product> getProductsForOrder(int orderID) {
+
+        try {
+            connection = db.getConnection();
+            String query = "SELECT p.* FROM order_details od JOIN product p ON od.product_id = p.productid WHERE od.order_id = ?";
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, orderID);
+            rs = ps.executeQuery();
+
+            List<Product> products = new ArrayList<>();
+
+            while (rs.next()) {
+                int productID = rs.getInt("productid");
+                String name = rs.getString("name");
+                double price = rs.getDouble("price");
+                double foodCost = rs.getDouble("foodcost");
+                int timeCost = rs.getInt("timecost");
+                String comment = rs.getString("comment");
+                String description = rs.getString("description");
+                String nutrientInformation = rs.getString("nutrientinformation");
+                String warnings = rs.getString("warnings");
+                int categoryID = rs.getInt("categoryid");
+
+                Product product = new Product(productID, name, price, foodCost, timeCost, comment, description, nutrientInformation, warnings, categoryID);
+                products.add(product);
+            }
+
+            return products;
+        } catch (SQLException e) {
+            System.err.println("SQL Exception: " + e.getMessage());
+            return Collections.emptyList();
+        }
     }
 
     @Override
@@ -378,70 +396,14 @@ public class ProductDAOImpl implements ProductDAO {
         return products;
     }
 
-    @Override
-    public int getOrderQuantity(int productID) {
-        int orderQuantity = 0;
-        db = DbManager.getInstance();
-        connection = db.getConnection();
-        try {
-            ps = connection.prepareStatement("CALL fetch_product_quantity(?)");
-            ps.setInt(1, productID);
-            rs = ps.executeQuery();
+    private Product extractProductFromResultSet(ResultSet rs) throws SQLException {
+        Product product = new Product();
+        product.setID(rs.getInt("ID"));
+        product.setName(rs.getString("name"));
+        product.setPrice(rs.getDouble("total")); //it is the total number of times the price was bought
 
-            if (rs.next()) {
-                orderQuantity = rs.getInt("orderQuantity");
-            }
+        return product;
 
-        } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
-        } //finally {
-        //closeConnection(connection);
-        // }
-        return orderQuantity;
-    }
-
-    @Override
-    public int getSaleQuantity(int productID) {
-        int saleQuantity = 0;
-        db = DbManager.getInstance();
-        connection = db.getConnection();
-
-        try {
-            ps = connection.prepareStatement("CALL fetch_product_quantity_sale(?)");
-            ps.setInt(1, productID);
-            rs = ps.executeQuery();
-
-            if (rs.next()) {
-                saleQuantity = rs.getInt("saleQuantity");
-            }
-        } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
-        } //finally {
-        //closeResultSet(rs);
-        // closeStatement(ps);
-        //closeConnection(connection);
-        // }
-        return saleQuantity;
-    }
-
-    private void closeStatement(PreparedStatement ps) {
-        if (ps != null) {
-            try {
-                ps.close();
-            } catch (SQLException e) {
-                System.out.println("Error closing statement: " + e.getMessage());
-            }
-        }
-    }
-
-    private void closeResultSet(ResultSet rs) {
-        if (rs != null) {
-            try {
-                rs.close();
-            } catch (SQLException e) {
-                System.out.println("Error closing result set: " + e.getMessage());
-            }
-        }
     }
 
     public static void main(String[] args) {

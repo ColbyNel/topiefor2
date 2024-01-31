@@ -17,6 +17,8 @@ public interface SalesReportService {
 
     SalesReport getSale(int saleID);
 
+    int getSaleQuantity(int productID);
+
     List<SalesReport> getSalesLast14Days();
 
     int getTotalSalesQuantity();

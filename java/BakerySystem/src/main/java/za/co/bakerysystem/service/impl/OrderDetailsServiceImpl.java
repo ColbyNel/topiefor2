@@ -17,17 +17,17 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 
     @Override
     public boolean saveOrderDetails(OrderDetails orderDetails) {
-        return orderDetailsDAO.save(orderDetails);
+        return orderDetailsDAO.create(orderDetails);
     }
 
     @Override
     public OrderDetails findOrderDetailsById(int orderId, int productId) {
-        return orderDetailsDAO.findById(orderId, productId);
+        return orderDetailsDAO.getById(orderId, productId);
     }
 
     @Override
     public List<OrderDetails> findAllOrderDetails() {
-        return orderDetailsDAO.findAll();
+        return orderDetailsDAO.getAll();
     }
 
     @Override
@@ -39,8 +39,8 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
     public boolean deleteOrderDetails(int orderId, int productId) {
         return orderDetailsDAO.delete(orderId, productId);
     }
-    
-      public static void main(String[] args) {
+
+    public static void main(String[] args) {
         OrderDetailsDAO orderDetailsDAO = new OrderDetailsDAOImpl();
         OrderDetailsService orderDetailsService = new OrderDetailsServiceImpl(orderDetailsDAO);
 
@@ -48,17 +48,14 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 //        OrderDetails newOrderDetails = new OrderDetails(3,5,5.7,7.6,10,"comme");
 //        boolean saved = orderDetailsService.saveOrderDetails(newOrderDetails);
 //        System.out.println("OrderDetails saved: " + saved);
-
         // Test findOrderDetailsById
 //        int orderIdToFind = 3; // Replace with an existing order ID
 //        int productIdToFind = 5; // Replace with an existing product ID
 //        OrderDetails foundOrderDetails = orderDetailsService.findOrderDetailsById(orderIdToFind, productIdToFind);
 //        System.out.println("OrderDetails found by ID (" + orderIdToFind + ", " + productIdToFind + "): " + foundOrderDetails);
-
 //        // Test findAllOrderDetails
 //        List<OrderDetails> allOrderDetails = orderDetailsService.findAllOrderDetails();
 //        System.out.println("All OrderDetails: " + allOrderDetails);
-
         // Test deleteOrderDetails
 //        int orderIdToDelete = 3; // Replace with an existing order ID
 //        int productIdToDelete = 5; // Replace with an existing product ID

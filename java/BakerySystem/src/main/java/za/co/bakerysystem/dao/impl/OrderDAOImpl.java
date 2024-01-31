@@ -2,11 +2,13 @@ package za.co.bakerysystem.dao.impl;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,72 @@ public class OrderDAOImpl implements OrderDAO {
     private PreparedStatement ps;
     private ResultSet rs;
     private CallableStatement callableStatement;
+
+    @Override
+    public int getNumOrders(int customerID) {
+        db = DbManager.getInstance();
+        connection = db.getConnection();
+        try {
+            ps = connection.prepareStatement("SELECT COUNT(ID) AS numOrder FROM `Order` o WHERE Customer_ID = ?");
+            ps.setInt(1, customerID);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("numOrder");
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+
+        }
+
+        return 0;
+    }
+
+    @Override
+    public List<Order> getOrdersByRange(int fulfilled, LocalDate startDate, LocalDate endDate) {
+        List<Order> orders = new ArrayList<>();
+        connection = DbManager.getInstance().getConnection();
+        try {
+            ps = connection.prepareCall("CALL fetch_select_orders_in_range(?, ?, ?)");
+            ps.setInt(1, fulfilled);
+            ps.setDate(2, Date.valueOf(startDate));
+            ps.setDate(3, Date.valueOf(endDate));
+
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Order order = extractOrderFromResultSet(rs);
+                orders.add(order);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+
+        }
+
+        return orders;
+    }
+
+    @Override
+    public List<Order> getCustomerOrders(int customerID) {
+        db = DbManager.getInstance();
+
+        List<Order> customerOrders = new ArrayList<>();
+        connection = db.getConnection();
+        try {
+            ps = connection.prepareCall("CALL fetch_customer_orders(?)");
+            ps.setInt(1, customerID);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Order order = extractOrderFromResultSet(rs);
+                customerOrders.add(order);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+
+        }
+
+        return customerOrders;
+    }
 
     @Override
     public boolean createOrder(Order order) {
@@ -135,7 +203,6 @@ public class OrderDAOImpl implements OrderDAO {
             ps.setString(1, startDate);
             ps.setString(2, endDate);
             ps.setInt(3, category);
-            
 
             rs = ps.executeQuery();
 
@@ -437,66 +504,6 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     @Override
-    public List<Payment> getOrderPayment(int orderID) {
-        List<Payment> payments = new ArrayList<>();
-        db = DbManager.getInstance();
-        connection = db.getConnection();
-
-        try {
-            String sql = "{CALL fetch_single_order_payments(?)}";
-            callableStatement = connection.prepareCall(sql);
-            callableStatement.setInt(1, orderID);
-
-            rs = callableStatement.executeQuery();
-
-            while (rs.next()) {
-                Payment payment = new Payment();
-                payment.setPaymentTypeID(rs.getInt("payment_type_id"));
-                payment.setOrderID(orderID);
-                payment.setAmount(rs.getDouble("Amount"));
-                payments.add(payment);
-            }
-        } catch (SQLException e) {
-            System.out.println("Error getting order payments: " + e.getMessage());
-        }
-        return payments;
-    }
-
-    @Override
-    public List<Product> getOrderProduct(int orderID) {
-        List<Product> products = new ArrayList<>();
-        db = DbManager.getInstance();
-        connection = db.getConnection();
-
-        try {
-            //Made changes on fetch_single_order_details
-            String sql = "{CALL fetch_single_order_details(?)}";
-            callableStatement = connection.prepareCall(sql);
-            callableStatement.setInt(1, orderID);
-
-            rs = callableStatement.executeQuery();
-
-            while (rs.next()) {
-                Product product = new Product();
-                product.setID(rs.getInt("productid"));
-                product.setName(rs.getString("Name"));
-                product.setPrice(rs.getDouble("Price"));
-                product.setFoodCost(rs.getDouble("FoodCost"));
-                product.setTimeCost(rs.getInt("TimeCost"));
-                product.setComment(rs.getString("Comment"));
-                product.setDescription(rs.getString("Description"));
-                product.setNutrientInformation(rs.getString("NutrientInformation"));
-                product.setWarnings(rs.getString("Warnings"));
-                product.setCategoryID(rs.getInt("CategoryID"));
-                products.add(product);
-            }
-        } catch (SQLException e) {
-            System.out.println("Error getting order products: " + e.getMessage());
-        }
-        return products;
-    }
-
-    @Override
     public boolean deleteOrder(int orderID) {
         boolean retVal = false;
         db = DbManager.getInstance();
@@ -515,6 +522,69 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     @Override
+    public int getOrderQuantity(int productID) {
+        int orderQuantity = 0;
+        db = DbManager.getInstance();
+        connection = db.getConnection();
+        try {
+            ps = connection.prepareStatement("CALL fetch_product_quantity(?)");
+            ps.setInt(1, productID);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                orderQuantity = rs.getInt("orderQuantity");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return orderQuantity;
+    }
+
+    @Override
+    public List<Order> getOrders(int productID) {
+        List<Order> orders = new ArrayList<>();
+        db = DbManager.getInstance();
+        connection = db.getConnection();
+        try {
+            ps = connection.prepareStatement("CALL fetch_product_orders(?)");
+            ps.setInt(1, productID);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Order order = new Order();
+                order.setID(rs.getInt("orderID"));
+                orders.add(order);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return orders;
+    }
+
+    @Override
+    public int getOrderQuantityByKeyWord(String keyWord) {
+        int orderQuantity = 0;
+        db = DbManager.getInstance();
+        connection = db.getConnection();
+        try {
+            ps = connection.prepareStatement("CALL fetch_product_quantity_Keyword(?)");
+            ps.setString(1, keyWord);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                orderQuantity = rs.getInt("orderQuantity");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        return orderQuantity;
+    }
+
+    @Override
     public void deleteOrderDetail(int orderID) {
         db = DbManager.getInstance();
         connection = db.getConnection();
@@ -526,18 +596,20 @@ public class OrderDAOImpl implements OrderDAO {
             ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
-        } finally {
-            try {
-                if (ps != null) {
-                    ps.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                System.out.println("Error: " + e.getMessage());
-            }
         }
+    }
+
+    private Order extractOrderFromResultSet(ResultSet rs) throws SQLException {
+        Order order = new Order();
+        order.setID(rs.getInt("OrderID"));
+        order.setCustomerID(rs.getInt("customer_ID"));
+        order.setDatePlaced(rs.getObject("datePlaced", LocalDateTime.class));
+        order.setPickupTime(rs.getObject("pickupTime", LocalDateTime.class));
+        order.setFulfilled(rs.getInt("fulfilled"));
+        order.setComment(rs.getString("comment"));
+        order.setAmount(rs.getDouble("amount"));
+        order.setStatus(rs.getString("status"));
+        return order;
     }
 
     //------------------------------------------------------------------------------------------------
@@ -618,7 +690,6 @@ public class OrderDAOImpl implements OrderDAO {
         //Test Order Placed
 //         List<Order> ordersPlaced = orderDAO.getOrdersPlaced("2022-01-01", "2025-12-31", "alphabetical");
 //        System.out.println(ordersPlaced);
-
         // Test getOrderProduct
 //        List<Product> orderProducts = orderDAO.getOrderProduct(6);
 //        System.out.println("Order Products: " + orderProducts);

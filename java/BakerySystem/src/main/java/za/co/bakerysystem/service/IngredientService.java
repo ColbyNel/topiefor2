@@ -18,7 +18,6 @@ public interface IngredientService {
 
     int getIngredientQuantity();
 
-    List<Product> getRelatedProducts(int ingredientID);
 
     List<Ingredient> getIngredientsInStock();
 

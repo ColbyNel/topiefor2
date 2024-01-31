@@ -22,6 +22,11 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
+    public List<Payment> getOrderPayment(int orderID) {
+        return paymentDAO.getOrderPayment(orderID);
+    }
+
+    @Override
     public boolean deletePayment(int orderID) {
         return paymentDAO.deletePayment(orderID);
     }
@@ -35,12 +40,11 @@ public class PaymentServiceImpl implements PaymentService {
     public List<PaymentType> getPaymentTypes() {
         return paymentDAO.getPaymentTypes();
     }
-    
+
     //----------------------------------------------------------------------------------------------
     //----------------------------------------------------------------------------------------------
     //----------------------------------------------------------------------------------------------
-    
-     public static void main(String[] args) {
+    public static void main(String[] args) {
         PaymentDAO paymentDAO = new PaymentDAOImpl();
         PaymentServiceImpl paymentService = new PaymentServiceImpl(paymentDAO);
 
@@ -51,11 +55,9 @@ public class PaymentServiceImpl implements PaymentService {
 //        payment.setPaymentTypeID(3); // Assuming 3 is a valid payment type ID
 //        boolean paymentCreated = paymentService.createPayment(payment);
 //        System.out.println("Creating Payment: " + paymentCreated);
-
         // Test getOrderPayments
 //        List<Payment> orderPayments = paymentService.getOrderPayments(2); // Assuming 2 is a valid order ID
 //        System.out.println("Order Payments: " + orderPayments);
-
         // Test getPaymentTypes
 //        List<PaymentType> paymentTypes = paymentService.getPaymentTypes();
 //        System.out.println("Payment Types: " + paymentTypes);

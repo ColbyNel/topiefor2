@@ -20,6 +20,27 @@ public class SalesReportDAOImpl implements SalesReportDAO {
     private static DbManager db;
     private PreparedStatement ps;
     private ResultSet rs;
+    private CallableStatement cs;
+
+    @Override
+    public int getSaleQuantity(int productID) {
+        int saleQuantity = 0;
+        db = DbManager.getInstance();
+        connection = db.getConnection();
+
+        try {
+            ps = connection.prepareStatement("CALL fetch_product_quantity_sale(?)");
+            ps.setInt(1, productID);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                saleQuantity = rs.getInt("saleQuantity");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return saleQuantity;
+    }
 
     @Override
     public boolean createSale(SalesReport salesReport) {
@@ -48,9 +69,6 @@ public class SalesReportDAOImpl implements SalesReportDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            // Close resources in the finally block
-            closeResources(ps, rs, connection);
         }
 
         return creationSuccessful;
@@ -74,9 +92,6 @@ public class SalesReportDAOImpl implements SalesReportDAO {
             updateSuccessful = affectedRows > 0;
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            // Close resources in the finally block
-            closeResources(ps, rs, connection);
         }
 
         return updateSuccessful;
@@ -86,7 +101,6 @@ public class SalesReportDAOImpl implements SalesReportDAO {
     public List<SalesReport> getSales(LocalDate startDate, LocalDate endDate) {
         List<SalesReport> salesReports = new ArrayList<>();
         connection = DbManager.getInstance().getConnection();
-        CallableStatement cs = null;
 
         try {
             cs = connection.prepareCall("{CALL fetch_all_sales_in_range(?, ?)}");
@@ -104,9 +118,6 @@ public class SalesReportDAOImpl implements SalesReportDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            // Close resources in the finally block
-            closeResources(ps, rs, connection);
         }
 
         return salesReports;
@@ -117,7 +128,6 @@ public class SalesReportDAOImpl implements SalesReportDAO {
         List<SalesReport> salesReports = new ArrayList<>();
         db = DbManager.getInstance();
         connection = db.getConnection();
-        CallableStatement cs = null;
 
         try {
             cs = connection.prepareCall("{CALL fetch_sales_in_range(?, ?)}");
@@ -135,9 +145,6 @@ public class SalesReportDAOImpl implements SalesReportDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            // Close resources in the finally block
-            closeResources(ps, rs, connection);
         }
 
         return salesReports;
@@ -147,7 +154,6 @@ public class SalesReportDAOImpl implements SalesReportDAO {
     public SalesReport getSale(int saleID) {
         SalesReport salesReport = new SalesReport();
         connection = DbManager.getInstance().getConnection();
-        CallableStatement cs = null;
 
         try {
             cs = connection.prepareCall("{CALL fetch_single_sale(?)}");
@@ -162,10 +168,7 @@ public class SalesReportDAOImpl implements SalesReportDAO {
             }
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
-        } //finally {
-//            // Close resources in the finally block
-//            closeResources(ps, rs, connection);
-//        }
+        }
 
         return salesReport;
     }
@@ -175,7 +178,6 @@ public class SalesReportDAOImpl implements SalesReportDAO {
         List<SalesReport> salesReports = new ArrayList<>();
         db = DbManager.getInstance();
         connection = db.getConnection();
-        CallableStatement cs = null;
 
         try {
             cs = connection.prepareCall("{CALL fetch_sales_two_weeks()}");
@@ -191,9 +193,6 @@ public class SalesReportDAOImpl implements SalesReportDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            // Close resources in the finally block
-            closeResources(ps, rs, connection);
         }
 
         return salesReports;
@@ -204,7 +203,6 @@ public class SalesReportDAOImpl implements SalesReportDAO {
         int totalSalesQuantity = 0;
         db = DbManager.getInstance();
         connection = db.getConnection();
-        ResultSet rs = null;
 
         try {
             String sql = "SELECT SUM(QuantitySold) as salesQuantity FROM Sales_Report_Details";
@@ -216,9 +214,6 @@ public class SalesReportDAOImpl implements SalesReportDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            // Close resources in the finally block
-            closeResources(ps, rs, connection);
         }
 
         return totalSalesQuantity;
@@ -243,9 +238,6 @@ public class SalesReportDAOImpl implements SalesReportDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            // Close resources in the finally block
-            closeResources(ps, rs, connection);
         }
 
         return salesReport;
@@ -256,7 +248,6 @@ public class SalesReportDAOImpl implements SalesReportDAO {
         List<SalesReportDetails> salesReports = new ArrayList<>();
         db = DbManager.getInstance();
         connection = db.getConnection();
-        CallableStatement cs = null;
 
         try {
             cs = connection.prepareCall("{CALL fetch_single_sale_details(?)}");
@@ -281,9 +272,6 @@ public class SalesReportDAOImpl implements SalesReportDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            // Close resources in the finally block
-            closeResources(ps, rs, connection);
         }
 
         return salesReports;
@@ -302,9 +290,6 @@ public class SalesReportDAOImpl implements SalesReportDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
-        } finally {
-            // Close resources in the finally block
-            closeResources(ps, rs, connection);
         }
     }
 
@@ -328,26 +313,6 @@ public class SalesReportDAOImpl implements SalesReportDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
-        } finally {
-            // Close resources in the finally block
-            closeResources(ps, null, connection);
-        }
-    }
-
-// Add this helper method to close resources
-    private void closeResources(PreparedStatement ps, ResultSet rs, Connection connection) {
-        try {
-            if (ps != null) {
-                ps.close();
-            }
-            if (rs != null) {
-                rs.close();
-            }
-            if (connection != null) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 

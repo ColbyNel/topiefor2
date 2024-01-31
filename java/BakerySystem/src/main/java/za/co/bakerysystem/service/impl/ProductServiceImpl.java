@@ -1,8 +1,6 @@
 package za.co.bakerysystem.service.impl;
 
 import za.co.bakerysystem.dao.ProductDAO;
-import za.co.bakerysystem.model.Customer;
-import za.co.bakerysystem.model.Order;
 import za.co.bakerysystem.model.Product;
 import za.co.bakerysystem.service.ProductService;
 
@@ -27,6 +25,21 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> getOrderProduct(int orderID) {
+        return productDAO.getOrderProduct(orderID);
+    }
+
+    @Override
+    public List<Product> getProductsForShoppingCart(int cartID) {
+        return productDAO.getProductsForShoppingCart(cartID);
+    }
+
+    @Override
+    public List<Product> getFavoriteProducts(int customerID) {
+        return productDAO.getFavoriteProducts(customerID);
+    }
+
+    @Override
     public boolean updateProduct(Product product) {
         return productDAO.updateProduct(product);
     }
@@ -47,28 +60,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public int getOrderQuantity(int productID) {
-        return productDAO.getOrderQuantity(productID);
-    }
-
-    @Override
-    public int getSaleQuantity(int productID) {
-        return productDAO.getSaleQuantity(productID);
-    }
-
-    @Override
-    public int getOrderQuantityByKeyWord(String keyWord) {
-        return productDAO.getOrderQuantityByKeyWord(keyWord);
-    }
-
-    @Override
-    public List<Order> getOrders(int productID) {
-        return productDAO.getOrders(productID);
-    }
-
-    @Override
-    public List<Customer> getTopCustomers(int productID) {
-        return productDAO.getTopCustomers(productID);
+    public List<Product> getRelatedProducts(int ingredientID) {
+        return productDAO.getRelatedProducts(ingredientID);
     }
 
     @Override
@@ -79,11 +72,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public int getProductQuantity() {
         return productDAO.getProductQuantity();
-    }
-
-    @Override
-    public List<String> getRecipe(int productID) {
-        return productDAO.getRecipe(productID);
     }
 
     @Override

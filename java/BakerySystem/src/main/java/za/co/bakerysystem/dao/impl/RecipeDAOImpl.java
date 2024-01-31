@@ -2,18 +2,43 @@ package za.co.bakerysystem.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import za.co.bakerysystem.dao.RecipeDAO;
 import za.co.bakerysystem.dbmanager.DbManager;
 
 public class RecipeDAOImpl implements RecipeDAO {
 
     private Connection connection;
-    private static final DbManager db = DbManager.getInstance();
     private PreparedStatement ps;
+    private static DbManager db;
+    private ResultSet rs;
+
+    @Override
+    public List<String> getRecipe(int productID) {
+        List<String> recipe = new ArrayList<>();
+        db = DbManager.getInstance();
+        connection = db.getConnection();
+        try {
+            ps = connection.prepareStatement("CALL fetch_product_recipe(?)");
+            ps.setInt(1, productID);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                recipe.add(rs.getString("ingredient"));
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return recipe;
+    }
 
     @Override
     public boolean createRecipe(int productID, String comment) {
+        db = DbManager.getInstance();
         connection = db.getConnection();
 
         try {
@@ -26,13 +51,14 @@ public class RecipeDAOImpl implements RecipeDAO {
             return affectedRows > 0;
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
-            
+
         }
         return false;
     }
 
     @Override
     public boolean deleteRecipeDetail(int recipeID) {
+        db = DbManager.getInstance();
         connection = db.getConnection();
 
         try {

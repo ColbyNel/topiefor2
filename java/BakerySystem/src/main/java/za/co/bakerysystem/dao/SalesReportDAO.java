@@ -15,6 +15,8 @@ public interface SalesReportDAO {
 
     List<SalesReport> getSalesInRange(LocalDate startDate, LocalDate endDate);
 
+    int getSaleQuantity(int productID);
+
     SalesReport getSale(int saleID);
 
     List<SalesReport> getSalesLast14Days();

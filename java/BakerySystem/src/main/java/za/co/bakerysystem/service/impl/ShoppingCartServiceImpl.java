@@ -123,11 +123,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public List<Product> getProductsForShoppingCart(int cartID) {
-        return shoppingCartDAO.getProductsForShoppingCart(cartID);
-    }
-
-    @Override
     public double calculateTotalAmount(int cartID) {
         return shoppingCartDAO.calculateTotalAmount(cartID);
     }

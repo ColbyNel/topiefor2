@@ -1,10 +1,9 @@
 package za.co.bakerysystem.dao;
 
+import java.time.LocalDate;
 import java.util.List;
 import za.co.bakerysystem.model.Order;
 import za.co.bakerysystem.model.OrderDetails;
-import za.co.bakerysystem.model.Payment;
-import za.co.bakerysystem.model.Product;
 
 public interface OrderDAO {
 
@@ -22,15 +21,23 @@ public interface OrderDAO {
 
     int getOrdersCurrent();
 
+    List<Order> getCustomerOrders(int customerID);
+
+    int getNumOrders(int customerID);
+
+    List<Order> getOrdersByRange(int fulfilled, LocalDate startDate, LocalDate endDate);
+
+    int getOrderQuantity(int productID);
+
+    int getOrderQuantityByKeyWord(String keyWord);
+
+    List<Order> getOrders(int productID);
+
     int getTotalOrdersQuantity();
 
     List<Order> getOrdersByRange(String startDate, String endDate, String keyWord);
 
     Order getOrder(int orderID);
-
-    List<Payment> getOrderPayment(int orderID);
-
-    List<Product> getOrderProduct(int orderID);
 
     List<Order> getOrdersPlaced(String startDate, String endDate, String sortOrder);
 

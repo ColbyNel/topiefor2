@@ -1,14 +1,11 @@
 package za.co.bakerysystem.service.impl;
 
-import java.time.LocalDate;
 import java.util.List;
 import za.co.bakerysystem.dao.CustomerDAO;
 import za.co.bakerysystem.dao.impl.CustomerDAOImpl;
 import za.co.bakerysystem.exception.DuplicateEmailException;
 import za.co.bakerysystem.exception.DuplicateIdException;
 import za.co.bakerysystem.model.Customer;
-import za.co.bakerysystem.model.Order;
-import za.co.bakerysystem.model.Product;
 import za.co.bakerysystem.service.CustomerService;
 
 public class CustomerServiceImpl implements CustomerService {
@@ -55,23 +52,13 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<Product> getFavoriteProducts(int customerID) {
-        return customerDAO.getFavoriteProducts(customerID);
-    }
-
-    @Override
     public int getCustomerPoints(int customerID) {
         return customerDAO.getCustomerPoints(customerID);
     }
 
     @Override
-    public List<Order> getCustomerOrders(int customerID) {
-        return customerDAO.getCustomerOrders(customerID);
-    }
-
-    @Override
     public Customer getCustomerByEmail(String email) {
-        
+
         //if(user not found){
         // throw new UserNotFound("user not found");
 //        }
@@ -79,32 +66,27 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public int getNumOrders(int customerID) {
-        
-        return customerDAO.getNumOrders(customerID);
-    }
-
-    @Override
-    public List<Order> getOrdersByRange(int fulfilled, LocalDate startDate, LocalDate endDate) {
-        return customerDAO.getOrdersByRange(fulfilled, startDate, endDate);
-    }
-
-    @Override
     public boolean deleteCustomer(int customerID) {
         return customerDAO.deleteCustomer(customerID);
     }
 
-     @Override
-    public boolean exists(String email,String id) throws DuplicateEmailException,DuplicateIdException {
-        
-        if(customerDAO.getCustomers().stream().anyMatch(customer->customer.getEmail().equalsIgnoreCase(email.toLowerCase()))){
+    @Override
+    public List<Customer> getTopCustomers(int productID) {
+        return customerDAO.getTopCustomers(productID);
+    }
+
+    @Override
+    public boolean exists(String email, String id) throws DuplicateEmailException, DuplicateIdException {
+
+        if (customerDAO.getCustomers().stream().anyMatch(customer -> customer.getEmail().equalsIgnoreCase(email.toLowerCase()))) {
             throw new DuplicateEmailException("Email provided already exists");
         }
-        if(customerDAO.getCustomers().stream().anyMatch(customer->customer.getCustomerIDNo().equalsIgnoreCase(id))){
+        if (customerDAO.getCustomers().stream().anyMatch(customer -> customer.getCustomerIDNo().equalsIgnoreCase(id))) {
             throw new DuplicateIdException("ID/Passport Number provided already exists");
         }
         return false;
     }
+
     //--------------------------------------------------------------------------------------------------
     //--------------------------------------------------------------------------------------------------
     //--------------------------------------------------------------------------------------------------
@@ -166,7 +148,5 @@ public class CustomerServiceImpl implements CustomerService {
 //        boolean customerDeleted = customerService.deleteCustomer(customerIdToDelete);
 //        System.out.println("Customer deleted: " + customerDeleted);
     }
-
-   
 
 }

@@ -1,13 +1,11 @@
 package za.co.bakerysystem.service.impl;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import za.co.bakerysystem.dao.OrderDAO;
 import za.co.bakerysystem.dao.impl.OrderDAOImpl;
 import za.co.bakerysystem.model.Order;
 import za.co.bakerysystem.model.OrderDetails;
-import za.co.bakerysystem.model.Payment;
-import za.co.bakerysystem.model.Product;
 import za.co.bakerysystem.service.OrderService;
 
 public class OrderServiceImpl implements OrderService {
@@ -26,6 +24,37 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public boolean updateOrder(Order order) {
         return orderDAO.updateOrder(order);
+    }
+
+    @Override
+    public int getOrderQuantityByKeyWord(String keyWord) {
+        return orderDAO.getOrderQuantityByKeyWord(keyWord);
+    }
+
+    @Override
+    public int getOrderQuantity(int productID) {
+        return orderDAO.getOrderQuantity(productID);
+    }
+
+    @Override
+    public List<Order> getOrders(int productID) {
+        return orderDAO.getOrders(productID);
+    }
+
+    @Override
+    public List<Order> getCustomerOrders(int customerID) {
+        return orderDAO.getCustomerOrders(customerID);
+    }
+
+    @Override
+    public int getNumOrders(int customerID) {
+
+        return orderDAO.getNumOrders(customerID);
+    }
+
+    @Override
+    public List<Order> getOrdersByRange(int fulfilled, LocalDate startDate, LocalDate endDate) {
+        return orderDAO.getOrdersByRange(fulfilled, startDate, endDate);
     }
 
     @Override
@@ -84,18 +113,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Payment> getOrderPayment(int orderID) {
-        return orderDAO.getOrderPayment(orderID);
-    }
-
-    @Override
-    public List<Product> getOrderProduct(int orderID) {
-        return orderDAO.getOrderProduct(orderID);
-    }
-
-    @Override
     public boolean deleteOrder(int orderID) {
-       return orderDAO.deleteOrder(orderID);
+        return orderDAO.deleteOrder(orderID);
     }
 
     @Override
@@ -125,8 +144,8 @@ public class OrderServiceImpl implements OrderService {
 //        orderDetails.setFoodCostAtSale(5.99);
 //        orderDetails.setQuantity(2);
 //        orderDetails.setComment("Ordered");
-           //Test getOrderByID
-           System.out.println(orderService.getOrder(2));
+        //Test getOrderByID
+        System.out.println(orderService.getOrder(2));
 
         // Test creating an order
         //System.out.println("Creating Order: " + orderService.createOrder(order));
@@ -148,22 +167,17 @@ public class OrderServiceImpl implements OrderService {
 //
 //        // Test deleting an order detail
 //        orderService.deleteOrderDetail(orderDetails.getOrderID());
-
-
 //        // Test Orders Placed
 //        System.out.println("Report: Orders Placed");
 //        List<Order> ordersPlaced = orderService.getOrdersPlaced("2022-01-01", "2025-12-31", "alphabetical");
 //        System.out.println(ordersPlaced);
-
 //        // Test Orders Outstanding
 //        System.out.println("Report: Orders Outstanding");
 //        List<Order> ordersOutstanding = orderService.getOrdersOutstanding("2022-01-01", "2025-12-31", 1);
 //        System.out.println(ordersOutstanding);
-
         // Test Orders Delivered
 //        System.out.println("Report: Orders Delivered");
 //        List<Order> ordersDelivered = orderService.getOrdersDelivered("2022-01-01", "2025-12-31", "alphabetical");
 //        System.out.println(ordersDelivered);
-
     }
 }

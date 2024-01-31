@@ -55,10 +55,7 @@ public class IngredientServiceImpl implements IngredientService {
         return ingredientDAO.getIngredientQuantity();
     }
 
-    @Override
-    public List<Product> getRelatedProducts(int ingredientID) {
-        return ingredientDAO.getRelatedProducts(ingredientID);
-    }
+   
 
     @Override
     public boolean deleteIngredient(int ingredientID) {

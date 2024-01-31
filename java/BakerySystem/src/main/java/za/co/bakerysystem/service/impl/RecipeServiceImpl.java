@@ -1,5 +1,6 @@
 package za.co.bakerysystem.service.impl;
 
+import java.util.List;
 import za.co.bakerysystem.dao.RecipeDAO;
 import za.co.bakerysystem.dao.impl.RecipeDAOImpl;
 import za.co.bakerysystem.service.RecipeService;
@@ -19,6 +20,11 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public boolean createRecipe(int productID, String comment) {
         return recipeDAO.createRecipe(productID, comment);
+    }
+
+    @Override
+    public List<String> getRecipe(int productID) {
+        return recipeDAO.getRecipe(productID);
     }
 
     @Override

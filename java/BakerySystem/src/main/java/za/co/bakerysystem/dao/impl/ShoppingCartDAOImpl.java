@@ -3,6 +3,7 @@ package za.co.bakerysystem.dao.impl;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import za.co.bakerysystem.dao.ProductDAO;
 import za.co.bakerysystem.dao.ShoppingCartDAO;
 import za.co.bakerysystem.dbmanager.DbManager;
 import za.co.bakerysystem.model.Product;
@@ -14,6 +15,7 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
     public static DbManager db;
     private PreparedStatement ps;
     private ResultSet rs;
+    private ProductDAO productDAO = new ProductDAOImpl();
 
     public ShoppingCartDAOImpl(Connection connection) {
         this.connection = connection;
@@ -154,34 +156,9 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
         int cartID = rs.getInt("cartID");
         double totalAmount = rs.getDouble("totalAmount");
         // Retrieve products for the shopping cart
-        List<Product> products = getProductsForShoppingCart(cartID);
+        List<Product> products = productDAO.getProductsForShoppingCart(cartID);
 
         return new ShoppingCart(cartID, products, totalAmount);
-    }
-
-    @Override
-    public List<Product> getProductsForShoppingCart(int cartID) {
-        List<Product> products = new ArrayList<>();
-
-        db = DbManager.getInstance();
-
-        try {
-            connection = db.getConnection();
-            String query = "SELECT i.* FROM Product i "
-                    + "JOIN ShoppingCartProduct sci ON i.productID = sci.productID "
-                    + "WHERE sci.cartID = ?";
-            ps = connection.prepareStatement(query);
-            ps.setInt(1, cartID);
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-                Product product = extractProductFromResultSet(rs);
-                products.add(product);
-            }
-        } catch (SQLException e) {
-            System.out.println("Error :" + e.getMessage());
-        }
-        return products;
     }
 
     // Helper method to update the total amount in the shopping cart

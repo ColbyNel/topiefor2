@@ -12,5 +12,7 @@ public interface PaymentDAO {
 
     List<Payment> getOrderPayments(int orderID);
 
+    List<Payment> getOrderPayment(int orderID);
+
     List<PaymentType> getPaymentTypes();
 }

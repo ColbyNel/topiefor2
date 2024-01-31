@@ -158,30 +158,6 @@ public class IngredientDAOImpl implements IngredientDAO {
         return quantity;
     }
 
-    @Override
-    public List<Product> getRelatedProducts(int ingredientID) {
-        List<Product> ingredients = new ArrayList<>();
-
-        connection = DbManager.getInstance().getConnection();
-
-        try {
-            CallableStatement cs = connection.prepareCall("CALL fetch_ingredient_products(?)");
-            cs.setInt(1, ingredientID);
-            rs = cs.executeQuery();
-
-            while (rs.next()) {
-                Product ingredient = extractProductFromResultSet(rs);
-                ingredients.add(ingredient);
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Error:" + e.getMessage());
-
-        }
-
-        return ingredients;
-    }
-
 // Report 4: Ingredients in Stock
     @Override
     public List<Ingredient> getIngredientsInStock() {

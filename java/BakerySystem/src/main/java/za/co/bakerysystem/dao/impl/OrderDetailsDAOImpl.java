@@ -5,12 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import za.co.bakerysystem.dao.OrderDetailsDAO;
 import za.co.bakerysystem.dbmanager.DbManager;
 import za.co.bakerysystem.model.OrderDetails;
-import za.co.bakerysystem.model.Product;
 
 public class OrderDetailsDAOImpl implements OrderDetailsDAO {
 
@@ -20,7 +18,7 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
     private ResultSet rs;
 
     @Override
-    public boolean save(OrderDetails orderDetails) {
+    public boolean create(OrderDetails orderDetails) {
         connection = db.getConnection();
 
         try {
@@ -45,42 +43,7 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
     }
 
     @Override
-    public List<Product> getProductsForOrder(int orderID) {
-
-        try {
-            connection = db.getConnection();
-            String query = "SELECT p.* FROM order_details od JOIN product p ON od.product_id = p.productid WHERE od.order_id = ?";
-            ps = connection.prepareStatement(query);
-            ps.setInt(1, orderID);
-            rs = ps.executeQuery();
-
-            List<Product> products = new ArrayList<>();
-
-            while (rs.next()) {
-                int productID = rs.getInt("productid");
-                String name = rs.getString("name");
-                double price = rs.getDouble("price");
-                double foodCost = rs.getDouble("foodcost");
-                int timeCost = rs.getInt("timecost");
-                String comment = rs.getString("comment");
-                String description = rs.getString("description");
-                String nutrientInformation = rs.getString("nutrientinformation");
-                String warnings = rs.getString("warnings");
-                int categoryID = rs.getInt("categoryid");
-
-                Product product = new Product(productID, name, price, foodCost, timeCost, comment, description, nutrientInformation, warnings, categoryID);
-                products.add(product);
-            }
-
-            return products;
-        } catch (SQLException e) {
-            System.err.println("SQL Exception: " + e.getMessage());
-            return Collections.emptyList();
-        }
-    }
-
-    @Override
-    public OrderDetails findById(int orderId, int productId) {
+    public OrderDetails getById(int orderId, int productId) {
         OrderDetails orderDetails = null;
         connection = db.getConnection();
 
@@ -103,7 +66,7 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
     }
 
     @Override
-    public List<OrderDetails> findAll() {
+    public List<OrderDetails> getAll() {
         List<OrderDetails> orderDetailsList = new ArrayList<>();
         connection = db.getConnection();
 
@@ -204,7 +167,7 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
 //        newOrderDetails.setPriceAtSale(10.99);
 //        newOrderDetails.setFoodCostAtSale(5.99);
 //
-        boolean saveSuccess = orderDetailsDAO.save(newOrderDetails);
+        boolean saveSuccess = orderDetailsDAO.create(newOrderDetails);
         System.out.println("Save success: " + saveSuccess);
 //        // Test findById method
 //        OrderDetails foundOrderDetails = orderDetailsDAO.findById(6, 2);
@@ -219,15 +182,12 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
 //        System.out.println("Update success: " + updateSuccess);
         //       System.out.println("All OrderDetails: " + orderDetailsDAO.findAll());
         // Test update method
-       // newOrderDetails.setQuantity(10);
-       // boolean updateSuccess = orderDetailsDAO.update(newOrderDetails);
-       // System.out.println("Update success: " + updateSuccess);
-
+        // newOrderDetails.setQuantity(10);
+        // boolean updateSuccess = orderDetailsDAO.update(newOrderDetails);
+        // System.out.println("Update success: " + updateSuccess);
 //        // Test delete method
 //        boolean deleteSuccess = orderDetailsDAO.delete(6, 2);
 //        System.out.println("Delete success: " + deleteSuccess);
-
-
 //        int orderIDToTest = 3; // Replace with an actual order ID
 //
 //        List<Product> products = orderDetailsDAO.getProductsForOrder(orderIDToTest);
