@@ -18,7 +18,7 @@ public class PaymentTypeDAOImpl implements PaymentTypeDAO {
     private ResultSet rs;
 
     @Override
-    public boolean save(PaymentType paymentType) {
+    public boolean create(PaymentType paymentType) {
         connection = db.getConnection();
 
         try {
@@ -37,7 +37,7 @@ public class PaymentTypeDAOImpl implements PaymentTypeDAO {
     }
 
     @Override
-    public PaymentType findById(int id) {
+    public PaymentType getById(int id) {
         PaymentType paymentType = null;
         connection = db.getConnection();
 
@@ -58,7 +58,7 @@ public class PaymentTypeDAOImpl implements PaymentTypeDAO {
     }
 
     @Override
-    public List<PaymentType> findAll() {
+    public List<PaymentType> getAll() {
         List<PaymentType> paymentTypes = new ArrayList<>();
         connection = db.getConnection();
 
@@ -130,13 +130,13 @@ public class PaymentTypeDAOImpl implements PaymentTypeDAO {
 //        PaymentType newPaymentType = new PaymentType();
 //        newPaymentType.setType("Cashhhhhhhh");
 ////
-//        boolean saveSuccess = paymentTypeDAO.save(newPaymentType);
+//        boolean saveSuccess = paymentTypeDAO.create(newPaymentType);
 //        System.out.println("Save success: " + saveSuccess);
 //        // Test the findAll method
-//        List<PaymentType> paymentTypes = paymentTypeDAO.findAll();
+//        List<PaymentType> paymentTypes = paymentTypeDAO.getAll();
 //        System.out.println("All Payment Types: " + paymentTypes);
         // Test the findById method
-//        PaymentType foundPaymentType = paymentTypeDAO.findById(2); // Assuming ID 1 exists
+//        PaymentType foundPaymentType = paymentTypeDAO.getById(2); // Assuming ID 1 exists
 //        System.out.println("Found Payment Type: " + foundPaymentType);
 //
 //        // Test the update method

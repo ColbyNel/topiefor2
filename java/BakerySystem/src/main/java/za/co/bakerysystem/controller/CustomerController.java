@@ -23,32 +23,18 @@ public class CustomerController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createCustomer(Customer customer) {
         String message = "";
-        
-        // Check if customer with the same email already exists
-        List<Customer> existingCustomersWithEmail = customerService.getCustomers().stream()
-                .filter(c -> c.getEmail().equals(customer.getEmail()))
-                .collect(Collectors.toList());
-        
-        if (!existingCustomersWithEmail.isEmpty()) {
-            message = "Email provided already exists";
-            return Response.status(Response.Status.CREATED).entity(message).build();
-        }
-        // Check if customer with the same customerID already exists
-        List<Customer> existingCustomersWithID = customerService.getCustomers().stream()
-                .filter(c -> c.getCustomerIDNo().equals(customer.getCustomerIDNo()))
-                .collect(Collectors.toList());
 
-        if (!existingCustomersWithID.isEmpty()) {
-            message = "ID/Passport Number provided already exists";
-            return Response.status(Response.Status.CREATED).entity(message).build();
-        }
+        try {
+            customerService.exists(customer.getEmail().toLowerCase(), customer.getCustomerIDNo());
 
-        if (customerService.createCustomer(customer)) {
-            message = "Signup successful!";
-            return Response.status(Response.Status.CREATED).entity(message).build();
-        } else {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Signup was not successful!").build();
+            if (customerService.createCustomer(customer)) {
+                message = "Signup successful!";
+                return Response.status(Response.Status.CREATED).entity(message).build();
+            }
+        } catch (Exception ex) {
+            return Response.status(Response.Status.FORBIDDEN).entity(ex.getMessage()).build();
         }
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
     }
 
     @POST
@@ -135,8 +121,6 @@ public class CustomerController {
             return Response.status(Response.Status.NOT_FOUND).entity("No customers found").build();
         }
     }
-    
-    
 
     @GET
     @Path("/total_customer")

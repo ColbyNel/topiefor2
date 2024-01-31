@@ -15,18 +15,18 @@ public class PaymentTypeServiceImpl implements PaymentTypeService {
     }
 
     @Override
-    public boolean save(PaymentType paymentType) {
-        return paymentTypeDAO.save(paymentType);
+    public boolean create(PaymentType paymentType) {
+        return paymentTypeDAO.create(paymentType);
     }
 
     @Override
-    public PaymentType findById(int id) {
-        return paymentTypeDAO.findById(id);
+    public PaymentType getById(int id) {
+        return paymentTypeDAO.getById(id);
     }
 
     @Override
-    public List<PaymentType> findAll() {
-        return paymentTypeDAO.findAll();
+    public List<PaymentType> getAll() {
+        return paymentTypeDAO.getAll();
     }
 
     @Override

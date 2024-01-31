@@ -5,11 +5,11 @@ import za.co.bakerysystem.model.PaymentType;
 
 public interface PaymentTypeService {
 
-    boolean save(PaymentType paymentType);
+    boolean create(PaymentType paymentType);
 
-    PaymentType findById(int id);
+    PaymentType getById(int id);
 
-    List<PaymentType> findAll();
+    List<PaymentType> getAll();
 
     boolean update(PaymentType paymentType);
 

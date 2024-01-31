@@ -2,6 +2,8 @@ package za.co.bakerysystem.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import za.co.bakerysystem.exception.DuplicateEmailException;
+import za.co.bakerysystem.exception.DuplicateIdException;
 import za.co.bakerysystem.model.Customer;
 import za.co.bakerysystem.model.Order;
 import za.co.bakerysystem.model.Product;
@@ -35,4 +37,6 @@ public interface CustomerService {
     List<Order> getOrdersByRange(int fulfilled, LocalDate startDate, LocalDate endDate);
 
     boolean deleteCustomer(int customerIDs);
+
+    boolean exists(String email, String ID) throws DuplicateEmailException, DuplicateIdException;
 }

@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 import za.co.bakerysystem.dao.CustomerDAO;
 import za.co.bakerysystem.dao.impl.CustomerDAOImpl;
+import za.co.bakerysystem.exception.DuplicateEmailException;
+import za.co.bakerysystem.exception.DuplicateIdException;
 import za.co.bakerysystem.model.Customer;
 import za.co.bakerysystem.model.Order;
 import za.co.bakerysystem.model.Product;
@@ -87,6 +89,17 @@ public class CustomerServiceImpl implements CustomerService {
         return customerDAO.deleteCustomer(customerID);
     }
 
+     @Override
+    public boolean exists(String email,String id) throws DuplicateEmailException,DuplicateIdException {
+        
+        if(customerDAO.getCustomers().stream().anyMatch(customer->customer.getEmail().equalsIgnoreCase(email.toLowerCase()))){
+            throw new DuplicateEmailException("Email provided already exists");
+        }
+        if(customerDAO.getCustomers().stream().anyMatch(customer->customer.getCustomerIDNo().equalsIgnoreCase(id))){
+            throw new DuplicateIdException("ID/Passport Number provided already exists");
+        }
+        return false;
+    }
     //--------------------------------------------------------------------------------------------------
     //--------------------------------------------------------------------------------------------------
     //--------------------------------------------------------------------------------------------------
@@ -148,5 +161,7 @@ public class CustomerServiceImpl implements CustomerService {
 //        boolean customerDeleted = customerService.deleteCustomer(customerIdToDelete);
 //        System.out.println("Customer deleted: " + customerDeleted);
     }
+
+   
 
 }

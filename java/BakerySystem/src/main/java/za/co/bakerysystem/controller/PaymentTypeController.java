@@ -20,7 +20,7 @@ public class PaymentTypeController {
     @Path("/save")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response savePaymentType(PaymentType paymentType) {
-        if (paymentTypeService.save(paymentType)) {
+        if (paymentTypeService.create(paymentType)) {
             return Response.status(Response.Status.CREATED).entity("Payment type saved successfully").build();
         } else {
             return Response.status(Response.Status.BAD_REQUEST).entity("Failed to save payment type").build();
@@ -35,7 +35,7 @@ public class PaymentTypeController {
             return Response.status(Response.Status.BAD_REQUEST).entity("Payment type ID must be greater than 0").build();
         }
         
-        PaymentType paymentType = paymentTypeService.findById(id);
+        PaymentType paymentType = paymentTypeService.getById(id);
         
         if (paymentType != null) {
             return Response.ok(paymentType).build();
@@ -48,7 +48,7 @@ public class PaymentTypeController {
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAllPaymentTypes() {
-        List<PaymentType> paymentTypes = paymentTypeService.findAll();
+        List<PaymentType> paymentTypes = paymentTypeService.getAll();
         
         if (paymentTypes != null && !paymentTypes.isEmpty()) {
             return Response.ok(paymentTypes).build();

@@ -427,21 +427,21 @@ public class CustomerDAOImpl implements CustomerDAO {
         //db = DbManager.getInstance();
         CustomerDAO customerDAO = new CustomerDAOImpl();
 
-        // Test createCustomer method
-        Customer newCustomer = new Customer();
-        newCustomer.setCustomerName("Sphe Doe");
-        newCustomer.setCustomerIDNo("123456789");
-        newCustomer.setPhoneNumber("555-1234");
-        newCustomer.setJoinDate(LocalDateTime.now());
-        newCustomer.setAddressOne("123 Main St");
-        newCustomer.setCity("Pretoria");
-        newCustomer.setZip("12345");
-        newCustomer.setComment("A new customer");
-        newCustomer.setEmail("john@example.com");
-        newCustomer.setPassword("password34");
-
-        //   Adding customer
-        System.out.println(customerDAO.createCustomer(newCustomer));;
+//        // Test createCustomer method
+//        Customer newCustomer = new Customer();
+//        newCustomer.setCustomerName("Sphe Doe");
+//        newCustomer.setCustomerIDNo("123456789");
+//        newCustomer.setPhoneNumber("555-1234");
+//        newCustomer.setJoinDate(LocalDateTime.now());
+//        newCustomer.setAddressOne("123 Main St");
+//        newCustomer.setCity("Pretoria");
+//        newCustomer.setZip("12345");
+//        newCustomer.setComment("A new customer");
+//        newCustomer.setEmail("john@example.com");
+//        newCustomer.setPassword("password34");
+//
+//        //   Adding customer
+//        System.out.println(customerDAO.createCustomer(newCustomer));;
         //Test for login    
 //        System.out.println(customerDAO.login("john@example.com", "password34"));
         //update customer
@@ -487,8 +487,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 //        System.out.println("Retrieved customer by ID " + ": " + retrievedCustomer);
 //
         // Test getFavoriteProducts method
-//        List<Product> favoriteProducts = customerDAO.getFavoriteProducts(1);
-//        System.out.println("Favorite products for customer ID " + 1 + ": " + favoriteProducts);
+        List<Product> favoriteProducts = customerDAO.getFavoriteProducts(2);
+        System.out.println("Favorite products for customer ID " + 1 + ": " + favoriteProducts);
         // Test getCustomerPoints method
 //        int customerPoints = customerDAO.getCustomerPoints(1);
 //        System.out.println("Customer points for customer ID " + 1 + ": " + customerPoints);
