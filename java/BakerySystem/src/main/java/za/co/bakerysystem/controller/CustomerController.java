@@ -1,7 +1,6 @@
 package za.co.bakerysystem.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -9,6 +8,7 @@ import za.co.bakerysystem.dao.CustomerDAO;
 import za.co.bakerysystem.dao.impl.CustomerDAOImpl;
 import za.co.bakerysystem.model.Customer;
 import za.co.bakerysystem.model.Order;
+import za.co.bakerysystem.model.Product;
 import za.co.bakerysystem.service.CustomerService;
 import za.co.bakerysystem.service.impl.CustomerServiceImpl;
 
@@ -16,6 +16,7 @@ import za.co.bakerysystem.service.impl.CustomerServiceImpl;
 public class CustomerController {
 
     private final CustomerDAO customerDAO = new CustomerDAOImpl();
+    // private final CustomerDAO customerDAO2 = new CustomerDAOImpl();
     private final CustomerService customerService = new CustomerServiceImpl(customerDAO);
 
     @POST
@@ -25,6 +26,7 @@ public class CustomerController {
         String message = "";
 
         try {
+            
             customerService.exists(customer.getEmail().toLowerCase(), customer.getCustomerIDNo());
 
             if (customerService.createCustomer(customer)) {
@@ -54,6 +56,14 @@ public class CustomerController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCustomersById(@PathParam("customerId") int customerId) {
         //List<Customer> allCustomers = customerService.getAllCustomers();
+
+        
+        
+//        try{
+//         return Response.ok(customerService.getCustomer(customerId)).build();
+//        }catch(UserNotFound ex){
+//             return Response.status(Response.Status.NOT_FOUND).entity("Customer not found").build();
+//        }
 
         if (customerService.getCustomer(customerId) != null) {
             return Response.ok(customerService.getCustomer(customerId)).build();
@@ -157,6 +167,19 @@ public class CustomerController {
             return Response.ok(customer).build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).entity("Customer not found for the provided email").build();
+        }
+    }
+
+    @GET
+    @Path("/favorite_products/{customerID}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getFavoriteProducts(@PathParam("customerID") int customerID) {
+        List<Product> favoriteProducts = customerService.getFavoriteProducts(customerID);
+
+        if (favoriteProducts != null && !favoriteProducts.isEmpty()) {
+            return Response.ok(favoriteProducts).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
 

@@ -71,11 +71,16 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer getCustomerByEmail(String email) {
+        
+        //if(user not found){
+        // throw new UserNotFound("user not found");
+//        }
         return customerDAO.getCustomerByEmail(email);
     }
 
     @Override
     public int getNumOrders(int customerID) {
+        
         return customerDAO.getNumOrders(customerID);
     }
 

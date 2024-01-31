@@ -78,13 +78,13 @@ public class OrderController {
     }
 
     @GET
-    @Path("/get_order/{orderID}")
+    @Path("/get_order/{orderId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getOrderOrder(@PathParam("orderId") int orderId) {
-        List<Order> allOrderOrder = orderService.getOrders();
+        Order order = orderService.getOrder(orderId);
 
-        if (allOrderOrder != null && !allOrderOrder.isEmpty()) {
-            return Response.ok(allOrderOrder).build();
+        if (order != null) {
+            return Response.ok(order).build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).entity("No orders found").build();
         }

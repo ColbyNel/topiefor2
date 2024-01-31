@@ -1,12 +1,12 @@
 package za.co.bakerysystem.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import za.co.bakerysystem.dao.CategoryDAO;
 import za.co.bakerysystem.dao.impl.CategoryDAOImpl;
+import za.co.bakerysystem.exception.DuplicateCategory;
 import za.co.bakerysystem.model.Category;
 import za.co.bakerysystem.service.CategoryService;
 import za.co.bakerysystem.service.impl.CategoryServiceImpl;
@@ -20,24 +20,22 @@ public class CategoryController {
     @POST
     @Path("/add_category")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response addCategory(Category category) {
         String message = "";
-        // Check if category with the same description already exists
-        List<Category> existingCategory = categoryService.getAllCategory().stream()
-                .filter(c -> c.getDescription().equals(category.getDescription()))
-                .collect(Collectors.toList());
+        try {
+            categoryService.exists(category.getDescription().toLowerCase());
 
-        if (!existingCategory.isEmpty()) {
-            message = "Category provided already exists";
-            return Response.status(Response.Status.CREATED).entity(message).build();
+            if (categoryDAO.addCategory(category)) {
+                message = "Category added successfully";
+                return Response.status(Response.Status.CREATED).entity(message).build();
+            }
+
+        } catch (DuplicateCategory ex) {
+            return Response.status(Response.Status.FORBIDDEN).entity(ex.getMessage()).build();
         }
 
-        if (categoryService.addCategory(category)) {
-            return Response.status(Response.Status.CREATED).entity("Category added successfully").build();
-        } else {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Category was not added successfully").build();
-
-        }
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
     }
 
     @GET

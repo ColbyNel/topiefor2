@@ -1,6 +1,7 @@
 package za.co.bakerysystem.service;
 
 import java.util.List;
+import za.co.bakerysystem.exception.DuplicateCategory;
 import za.co.bakerysystem.model.Category;
 
 public interface CategoryService {
@@ -14,4 +15,6 @@ public interface CategoryService {
     boolean updateCategory(Category category, int categoryId);
 
     boolean deleteCategory(int categoryID);
+
+    boolean exists(String description) throws DuplicateCategory;
 }

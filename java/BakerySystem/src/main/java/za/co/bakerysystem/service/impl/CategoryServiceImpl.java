@@ -3,6 +3,7 @@ package za.co.bakerysystem.service.impl;
 import java.util.List;
 import za.co.bakerysystem.dao.CategoryDAO;
 import za.co.bakerysystem.dao.impl.CategoryDAOImpl;
+import za.co.bakerysystem.exception.DuplicateCategory;
 import za.co.bakerysystem.model.Category;
 import za.co.bakerysystem.service.CategoryService;
 
@@ -21,6 +22,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public boolean addCategory(Category category) {
+
         return categoryDAO.addCategory(category);
     }
 
@@ -38,39 +40,44 @@ public class CategoryServiceImpl implements CategoryService {
     public boolean deleteCategory(int categoryID) {
         return categoryDAO.deleteCategory(categoryID);
     }
-    
+
+    @Override
+    public boolean exists(String description) throws DuplicateCategory {
+
+        if (categoryDAO.getAllCategory().stream().anyMatch(category -> category.getDescription().equalsIgnoreCase(description))) {
+            throw new DuplicateCategory("Category provided already exist");
+        }
+        return false;
+    }
+
     //----------------------------------------------------------------------------------------------------
     //----------------------------------------------------------------------------------------------------
     //----------------------------------------------------------------------------------------------------
-    
-    
     public static void main(String[] args) {
-        CategoryDAO categoryDAO = new CategoryDAOImpl(); 
+        CategoryDAO categoryDAO = new CategoryDAOImpl();
         CategoryService categoryService = new CategoryServiceImpl(categoryDAO);
 
         // Testing getCategoryById
 //        int categoryIdToRetrieve = 1;
 //        Category retrievedCategory = categoryService.getCategoryById(categoryIdToRetrieve);
 //        System.out.println("Category retrieved by ID " + categoryIdToRetrieve + ": " + retrievedCategory);
-
 //        // Testing addCategory
 //        Category newCategory = new Category("New Category");
 //        boolean added = categoryService.addCategory(newCategory);
 //        System.out.println("Category added: " + added);
-
         // Testing getAllCategory
 //        List<Category> allCategories = categoryService.getAllCategory();
 //        System.out.println("All Categories: " + allCategories);
-
 //        // Testing updateCategory
 //        int categoryIdToUpdate = 1; // Assuming category with ID 2 exists
 //        Category updatedCategory = new Category(1,"Updated Category");
 //        boolean updated = categoryService.updateCategory(updatedCategory, categoryIdToUpdate);
 //        System.out.println("Category updated: " + updated);
-
         // Testing deleteCategory
 //        int categoryIdToDelete = 5; // Assuming category with ID 3 exists
 //        boolean deleted = categoryService.deleteCategory(categoryIdToDelete);
 //        System.out.println("Category deleted: " + deleted);
+        System.out.println(categoryDAO.getAllCategory().stream().anyMatch(category -> category.getDescription().equalsIgnoreCase("Cakes")));
     }
+
 }

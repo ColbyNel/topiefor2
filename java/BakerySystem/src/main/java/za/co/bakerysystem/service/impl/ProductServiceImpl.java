@@ -17,6 +17,10 @@ public class ProductServiceImpl implements ProductService {
         this.productDAO = productDAO;
     }
 
+    public ProductServiceImpl() {
+        this.productDAO = new ProductDAOImpl();
+    }
+
     @Override
     public boolean createProduct(Product product) {
         return productDAO.createProduct(product);

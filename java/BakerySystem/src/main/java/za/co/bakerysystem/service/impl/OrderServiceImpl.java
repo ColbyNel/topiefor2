@@ -125,6 +125,8 @@ public class OrderServiceImpl implements OrderService {
 //        orderDetails.setFoodCostAtSale(5.99);
 //        orderDetails.setQuantity(2);
 //        orderDetails.setComment("Ordered");
+           //Test getOrderByID
+           System.out.println(orderService.getOrder(2));
 
         // Test creating an order
         //System.out.println("Creating Order: " + orderService.createOrder(order));

@@ -218,7 +218,7 @@ public class CustomerDAOImpl implements CustomerDAO {
     }
 
     @Override
-    public Customer getCustomer(int customerID) {
+    public Customer getCustomer(int customerID) { // throws Us
         db = DbManager.getInstance();
         connection = db.getConnection();
         try {
@@ -231,7 +231,7 @@ public class CustomerDAOImpl implements CustomerDAO {
         } catch (SQLException ex) {
             System.out.println("Error: " + ex.getMessage());
         }
-
+        // throw new UserNotFound("User not found");
         return null;
     }
 
