@@ -44,6 +44,19 @@ public class OrderController {
     }
 
     @GET
+    @Path("/customer_orders/{customerID}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCustomerOrder(@PathParam("customerID") int customerId) {
+        List<Order> allCustomerOrder = orderService.getCustomerOrders(customerId);
+
+        if (allCustomerOrder != null && !allCustomerOrder.isEmpty()) {
+            return Response.ok(allCustomerOrder).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("No orders for this customers").build();
+        }
+    }
+
+    @GET
     @Path("/all_orders")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllOrders() {
@@ -74,6 +87,19 @@ public class OrderController {
             return Response.ok("Order deleted successfully").build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).entity("Order not found").build();
+        }
+    }
+
+    @GET
+    @Path("/order_number/{customerID}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getNumOrders(@PathParam("customerID") int customerId) {
+        int count = orderService.getNumOrders(customerId);
+
+        if (count > 0) {
+            return Response.ok(count).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("No orders for this customers").build();
         }
     }
 
@@ -151,32 +177,6 @@ public class OrderController {
             return Response.ok(order).build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).entity("Order not found").build();
-        }
-    }
-
-    @GET
-    @Path("/order_payment/{orderId}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getOrderPayment(@PathParam("orderId") int orderId) {
-        List<Payment> orderPayments = orderService.getOrderPayment(orderId);
-
-        if (orderPayments != null && !orderPayments.isEmpty()) {
-            return Response.ok(orderPayments).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).entity("No payment information found for the order").build();
-        }
-    }
-
-    @GET
-    @Path("/order_product/{orderId}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getOrderProduct(@PathParam("orderId") int orderId) {
-        List<Product> orderProducts = orderService.getOrderProduct(orderId);
-
-        if (orderProducts != null && !orderProducts.isEmpty()) {
-            return Response.ok(orderProducts).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).entity("No product information found for the order").build();
         }
     }
 

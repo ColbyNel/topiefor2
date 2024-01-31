@@ -77,23 +77,6 @@ public class ShoppingCartController {
     }
 
     @GET
-    @Path("/products/{cartID}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getProductsForShoppingCart(@PathParam("cartID") int cartID) {
-        if (cartID <= 0) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Cart ID must be greater than 0").build();
-        }
-
-        List<Product> products = shoppingCartService.getProductsForShoppingCart(cartID);
-
-        if (products != null && !products.isEmpty()) {
-            return Response.ok(products).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).entity("No products found for the specified cart").build();
-        }
-    }
-
-    @GET
     @Path("/total_amount/{cartID}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response calculateTotalAmount(@PathParam("cartID") int cartID) {

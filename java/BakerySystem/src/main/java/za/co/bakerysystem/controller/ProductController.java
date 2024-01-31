@@ -30,6 +30,19 @@ public class ProductController {
     }
 
     @GET
+    @Path("/order_product/{orderId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOrderProduct(@PathParam("orderId") int orderId) {
+        List<Product> orderProducts = productService.getOrderProduct(orderId);
+
+        if (orderProducts != null && !orderProducts.isEmpty()) {
+            return Response.ok(orderProducts).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("No product information found for the order").build();
+        }
+    }
+
+    @GET
     @Path("/get_product/{productId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProductById(@PathParam("productId") int productId) {
@@ -110,6 +123,51 @@ public class ProductController {
             return Response.ok(count).build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).entity("No products found").build();
+        }
+    }
+
+    @GET
+    @Path("/favorite_products/{customerID}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getFavoriteProducts(@PathParam("customerID") int customerID) {
+        List<Product> favoriteProducts = productService.getFavoriteProducts(customerID);
+
+        if (favoriteProducts != null && !favoriteProducts.isEmpty()) {
+            return Response.ok(favoriteProducts).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
+
+    @GET
+    @Path("/ingredient_products/{ingredientID}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getRelatedProducts(@PathParam("ingredientID") int ingredientID) {
+
+        List<Product> allProduct = productService.getRelatedProducts(ingredientID);
+//        List<Ingredient> allIngredients = ingredientService.getIngredients();
+
+        if (allProduct != null && !allProduct.isEmpty()) {
+            return Response.ok(allProduct).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("No ingredients found").build();
+        }
+    }
+
+    @GET
+    @Path("/products/{cartID}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getProductsForShoppingCart(@PathParam("cartID") int cartID) {
+        if (cartID <= 0) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Cart ID must be greater than 0").build();
+        }
+
+        List<Product> products = productService.getProductsForShoppingCart(cartID);
+
+        if (products != null && !products.isEmpty()) {
+            return Response.ok(products).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("No products found for the specified cart").build();
         }
     }
 

@@ -396,14 +396,20 @@ public class ProductDAOImpl implements ProductDAO {
         return products;
     }
 
-    private Product extractProductFromResultSet(ResultSet rs) throws SQLException {
-        Product product = new Product();
-        product.setID(rs.getInt("ID"));
-        product.setName(rs.getString("name"));
-        product.setPrice(rs.getDouble("total")); //it is the total number of times the price was bought
+        private Product extractProductFromResultSet(ResultSet rs) throws SQLException {
+        Product ingredient = new Product();
+        ingredient.setID(rs.getInt("productID"));
+        ingredient.setName(rs.getString("Name"));
+        ingredient.setPrice(rs.getDouble("Price"));
+        ingredient.setFoodCost(rs.getDouble("FoodCost"));
+        ingredient.setTimeCost(rs.getInt("TimeCost"));
+        ingredient.setWarnings(rs.getString("warnings"));
+        ingredient.setComment(rs.getString("comment"));
+        ingredient.setCategoryID(rs.getInt("categoryID"));
+        ingredient.setNutrientInformation(rs.getString("nutrientinformation"));
+        ingredient.setDescription(rs.getString("description"));
 
-        return product;
-
+        return ingredient;
     }
 
     public static void main(String[] args) {

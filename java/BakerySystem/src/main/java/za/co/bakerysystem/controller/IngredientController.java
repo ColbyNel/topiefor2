@@ -87,21 +87,7 @@ public class IngredientController {
         }
     }
 
-    @GET
-    @Path("/ingredient_products/{ingredientID}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getRelatedProducts(@PathParam("ingredientID") int ingredientID) {
-
-        List<Product> allProduct = ingredientService.getRelatedProducts(ingredientID);
-//        List<Ingredient> allIngredients = ingredientService.getIngredients();
-
-        if (allProduct != null && !allProduct.isEmpty()) {
-            return Response.ok(allProduct).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).entity("No ingredients found").build();
-        }
-    }
-    
+  
     @GET
     @Path("/ingredients_to_be_ordered")
     @Produces(MediaType.APPLICATION_JSON)

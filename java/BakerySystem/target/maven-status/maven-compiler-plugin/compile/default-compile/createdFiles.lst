@@ -4,6 +4,7 @@ za\co\bakerysystem\dao\PaymentDAO.class
 za\co\bakerysystem\controller\OrderDetailsController.class
 za\co\bakerysystem\dao\impl\AdminDAOImpl.class
 za\co\bakerysystem\dao\impl\ProductDAOImpl.class
+za\co\bakerysystem\exception\DuplicateCategory.class
 za\co\bakerysystem\service\SalesReportService.class
 za\co\bakerysystem\model\SalesReportDetails.class
 za\co\bakerysystem\service\IngredientService.class

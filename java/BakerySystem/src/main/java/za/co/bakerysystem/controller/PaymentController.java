@@ -33,6 +33,19 @@ public class PaymentController {
         }
     }
 
+    @GET
+    @Path("/order_payment/{orderId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOrderPayment(@PathParam("orderId") int orderId) {
+        List<Payment> orderPayments = paymentService.getOrderPayment(orderId);
+
+        if (orderPayments != null && !orderPayments.isEmpty()) {
+            return Response.ok(orderPayments).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("No payment information found for the order").build();
+        }
+    }
+
     @DELETE
     @Path("/delete/{orderID}")
     public Response deletePayment(@PathParam("orderID") int orderID) {

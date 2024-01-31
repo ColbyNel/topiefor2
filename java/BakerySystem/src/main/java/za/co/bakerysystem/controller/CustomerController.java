@@ -106,18 +106,7 @@ public class CustomerController {
         }
     }
 
-    @GET
-    @Path("/customer_orders/{customerID}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getCustomerOrder(@PathParam("customerID") int customerId) {
-        List<Order> allCustomerOrder = customerService.getCustomerOrders(customerId);
 
-        if (allCustomerOrder != null && !allCustomerOrder.isEmpty()) {
-            return Response.ok(allCustomerOrder).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).entity("No orders for this customers").build();
-        }
-    }
 
     @GET
     @Path("/keyword/{keyword}")
@@ -145,18 +134,7 @@ public class CustomerController {
         }
     }
 
-    @GET
-    @Path("/order_number/{customerID}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getNumOrders(@PathParam("customerID") int customerId) {
-        int count = customerService.getNumOrders(customerId);
-
-        if (count > 0) {
-            return Response.ok(count).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).entity("No orders for this customers").build();
-        }
-    }
+   
 
     @GET
     @Path("/get_by_email/{email}")
@@ -170,17 +148,6 @@ public class CustomerController {
         }
     }
 
-    @GET
-    @Path("/favorite_products/{customerID}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getFavoriteProducts(@PathParam("customerID") int customerID) {
-        List<Product> favoriteProducts = customerService.getFavoriteProducts(customerID);
-
-        if (favoriteProducts != null && !favoriteProducts.isEmpty()) {
-            return Response.ok(favoriteProducts).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-    }
+   
 
 }
