@@ -1,6 +1,5 @@
 import AdminHead from "@/components/AdminHead";
 import AdminMenu from "@/components/AdminMenu";
-import ChartThree from "@/components/ChartThree";
 
 const productData = [
     {
@@ -18,7 +17,7 @@ const analytics = () => {
           <AdminMenu />
         </div>
         <div className="admin-content">
-        <ChartThree />
+        
         </div>
       </div>
     </>

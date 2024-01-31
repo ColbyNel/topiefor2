@@ -8,10 +8,7 @@ import Footer from "@/components/Footer";
 import Register from "./register/page";
 import Modal from "@/components/Modal";
 
-const inter = Chicle({
-  subsets: ["latin"],
-  weight: "400",
-});
+
 
 export default function Home() {
   return (

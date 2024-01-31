@@ -241,6 +241,24 @@ export const getAllOrders = async () => {
   return await req.json();
 }
 
+export const getOrderById = async (orderId: any) => {
+  const req = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/orders/get_order/${orderId}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      next: {
+        revalidate: 10,
+        tags: ["orders", "orderbyid"],
+      },
+    }
+  )
+  return await req.json();
+}
+
+
 export const deleteProduct = async (productId: number) => {
   const req = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/products/delete_product/${productId}`,
@@ -268,3 +286,19 @@ export const getProductsFromCart = async (cartId: number) => {
   )
   return req.json();
 }
+
+export const deleteProductFromCart = async (cartId:number,id:number) => {
+  const req = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/shopping_carts/remove_product/${cartId}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type":"application/json", 
+      },
+      body: JSON.stringify(id),
+    }
+  )
+  const responseData = await req;
+  return responseData.text();
+}
+

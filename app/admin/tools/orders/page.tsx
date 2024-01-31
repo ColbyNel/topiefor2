@@ -1,8 +1,9 @@
-"use client";
 import AdminHead from "@/components/AdminHead";
 import AdminMenu from "@/components/AdminMenu";
 import OrderFilter from "@/components/OrderFilter";
 import OrderList from "@/components/OrderList";
+
+
 
 const orders = () => {
   return (
