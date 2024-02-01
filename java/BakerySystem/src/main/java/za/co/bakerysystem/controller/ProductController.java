@@ -8,7 +8,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import za.co.bakerysystem.dao.ProductDAO;
 import za.co.bakerysystem.dao.impl.ProductDAOImpl;
-import za.co.bakerysystem.exception.DuplicateProduct;
+import za.co.bakerysystem.exception.DuplicateProductException;
 import za.co.bakerysystem.model.Product;
 import za.co.bakerysystem.service.ProductService;
 import za.co.bakerysystem.service.impl.ProductServiceImpl;
@@ -31,7 +31,7 @@ public class ProductController {
             if (productService.createProduct(product)) {
                 return Response.status(Response.Status.CREATED).entity("Product added successfully").build();
             }
-        } catch (DuplicateProduct ex) {
+        } catch (DuplicateProductException ex) {
             return Response.status(Response.Status.FORBIDDEN).entity(ex.getMessage()).build();
         }
 

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import za.co.bakerysystem.dao.OrderDAO;
 import za.co.bakerysystem.dao.impl.OrderDAOImpl;
+import za.co.bakerysystem.exception.OrderNotFoundException;
 import za.co.bakerysystem.model.Order;
 import za.co.bakerysystem.model.OrderDetails;
 import za.co.bakerysystem.service.OrderService;
@@ -108,7 +109,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order getOrder(int orderID) {
+    public Order getOrder(int orderID) throws OrderNotFoundException {
+
         return orderDAO.getOrder(orderID);
     }
 
@@ -145,8 +147,7 @@ public class OrderServiceImpl implements OrderService {
 //        orderDetails.setQuantity(2);
 //        orderDetails.setComment("Ordered");
         //Test getOrderByID
-        System.out.println(orderService.getOrder(2));
-
+//        System.out.println(orderService.getOrder(2));
         // Test creating an order
         //System.out.println("Creating Order: " + orderService.createOrder(order));
 //        // Test fulfilling an order

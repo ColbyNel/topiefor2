@@ -7,7 +7,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import za.co.bakerysystem.dao.RecipeDAO;
 import za.co.bakerysystem.dao.impl.RecipeDAOImpl;
-import za.co.bakerysystem.exception.DuplicateRecipe;
+import za.co.bakerysystem.exception.DuplicateRecipeException;
 import za.co.bakerysystem.model.Recipe;
 import za.co.bakerysystem.service.RecipeService;
 import za.co.bakerysystem.service.impl.RecipeServiceImpl;
@@ -32,7 +32,7 @@ public class RecipeController {
                 return Response.status(Response.Status.CREATED).entity("Recipe created successfully").build();
             }
 
-        } catch (DuplicateRecipe ex) {
+        } catch (DuplicateRecipeException ex) {
             return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
         }
 

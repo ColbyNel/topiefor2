@@ -1,7 +1,7 @@
 package za.co.bakerysystem.service;
 
 import java.util.List;
-import za.co.bakerysystem.exception.DuplicateProduct;
+import za.co.bakerysystem.exception.DuplicateProductException;
 import za.co.bakerysystem.model.Product;
 
 public interface ProductService {
@@ -30,5 +30,5 @@ public interface ProductService {
 
     boolean deleteProduct(int productID);
 
-    boolean exists(String name) throws DuplicateProduct;
+    boolean exists(String name) throws DuplicateProductException;
 }

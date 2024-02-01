@@ -3,7 +3,7 @@ package za.co.bakerysystem.service.impl;
 import java.util.List;
 import za.co.bakerysystem.dao.PaymentTypeDAO;
 import za.co.bakerysystem.dao.impl.PaymentTypeDAOImpl;
-import za.co.bakerysystem.exception.DuplicatePaymentType;
+import za.co.bakerysystem.exception.DuplicatePaymentTypeException;
 import za.co.bakerysystem.model.PaymentType;
 import za.co.bakerysystem.service.PaymentTypeService;
 
@@ -42,9 +42,9 @@ public class PaymentTypeServiceImpl implements PaymentTypeService {
     }
 
     @Override
-    public boolean exists(String payment_type) throws DuplicatePaymentType {
+    public boolean exists(String payment_type) throws DuplicatePaymentTypeException {
         if (paymentTypeDAO.getAll().stream().anyMatch(paymentType -> paymentType.getType().equalsIgnoreCase(payment_type.toLowerCase()))) {
-            throw new DuplicatePaymentType("Payment Type Already available");
+            throw new DuplicatePaymentTypeException("Payment Type Already available");
         }
 
         return false;
@@ -76,7 +76,7 @@ public class PaymentTypeServiceImpl implements PaymentTypeService {
 //        System.out.println("Deleting Payment Type: " + paymentTypeDeleted);
 
             System.out.println(paymentTypeService.exists("cash"));
-        } catch (DuplicatePaymentType ex) {
+        } catch (DuplicatePaymentTypeException ex) {
             System.out.println(ex.getMessage());
         }
     }

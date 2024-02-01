@@ -6,7 +6,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import za.co.bakerysystem.dao.CategoryDAO;
 import za.co.bakerysystem.dao.impl.CategoryDAOImpl;
-import za.co.bakerysystem.exception.DuplicateCategory;
+import za.co.bakerysystem.exception.DuplicateCategoryExcpetion;
 import za.co.bakerysystem.model.Category;
 import za.co.bakerysystem.service.CategoryService;
 import za.co.bakerysystem.service.impl.CategoryServiceImpl;
@@ -31,7 +31,7 @@ public class CategoryController {
                 return Response.status(Response.Status.CREATED).entity(message).build();
             }
 
-        } catch (DuplicateCategory ex) {
+        } catch (DuplicateCategoryExcpetion ex) {
             return Response.status(Response.Status.FORBIDDEN).entity(ex.getMessage()).build();
         }
 

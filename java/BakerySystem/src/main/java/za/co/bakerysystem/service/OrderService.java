@@ -2,6 +2,7 @@ package za.co.bakerysystem.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import za.co.bakerysystem.exception.OrderNotFoundException;
 import za.co.bakerysystem.model.Order;
 import za.co.bakerysystem.model.OrderDetails;
 
@@ -43,7 +44,7 @@ public interface OrderService {
 
     List<Order> getOrdersByRange(String startDate, String endDate, String keyWord);
 
-    Order getOrder(int orderID);
+    Order getOrder(int orderID) throws OrderNotFoundException;
 
     boolean deleteOrder(int orderID);
 

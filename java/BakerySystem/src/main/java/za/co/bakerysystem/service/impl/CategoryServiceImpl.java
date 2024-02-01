@@ -3,7 +3,7 @@ package za.co.bakerysystem.service.impl;
 import java.util.List;
 import za.co.bakerysystem.dao.CategoryDAO;
 import za.co.bakerysystem.dao.impl.CategoryDAOImpl;
-import za.co.bakerysystem.exception.DuplicateCategory;
+import za.co.bakerysystem.exception.DuplicateCategoryExcpetion;
 import za.co.bakerysystem.model.Category;
 import za.co.bakerysystem.service.CategoryService;
 
@@ -42,10 +42,10 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public boolean exists(String description) throws DuplicateCategory {
+    public boolean exists(String description) throws DuplicateCategoryExcpetion {
 
         if (categoryDAO.getAllCategory().stream().anyMatch(category -> category.getDescription().equalsIgnoreCase(description))) {
-            throw new DuplicateCategory("Category provided already exist");
+            throw new DuplicateCategoryExcpetion("Category provided already exist");
         }
         return false;
     }

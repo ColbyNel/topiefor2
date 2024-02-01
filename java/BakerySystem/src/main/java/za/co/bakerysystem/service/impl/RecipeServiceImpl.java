@@ -6,7 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import za.co.bakerysystem.dao.RecipeDAO;
 import za.co.bakerysystem.dao.impl.RecipeDAOImpl;
-import za.co.bakerysystem.exception.DuplicateRecipe;
+import za.co.bakerysystem.exception.DuplicateRecipeException;
 import za.co.bakerysystem.model.Recipe;
 import za.co.bakerysystem.service.RecipeService;
 
@@ -43,9 +43,9 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public boolean exists(int productID) throws DuplicateRecipe {
+    public boolean exists(int productID) throws DuplicateRecipeException {
         if (recipeDAO.getRecipes().stream().anyMatch(recipe -> recipe.getProductID() == productID)) {
-            throw new DuplicateRecipe("Recipe already exist");
+            throw new DuplicateRecipeException("Recipe already exist");
         }
         return false;
 
@@ -82,7 +82,7 @@ public class RecipeServiceImpl implements RecipeService {
 //        }
 //Test Exist
             System.out.println(recipeService.exists(2));
-        } catch (DuplicateRecipe ex) {
+        } catch (DuplicateRecipeException ex) {
             System.out.println(ex.getMessage());
         }
 

@@ -6,6 +6,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import za.co.bakerysystem.dao.OrderDAO;
 import za.co.bakerysystem.dao.impl.OrderDAOImpl;
+import za.co.bakerysystem.exception.OrderNotFoundException;
 import za.co.bakerysystem.model.Order;
 import za.co.bakerysystem.model.OrderDetails;
 import za.co.bakerysystem.service.OrderService;
@@ -105,13 +106,17 @@ public class OrderController {
     @Path("/get_order/{orderId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getOrderOrder(@PathParam("orderId") int orderId) {
-        Order order = orderService.getOrder(orderId);
-
-        if (order != null) {
-            return Response.ok(order).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).entity("No orders found").build();
+        Order order;
+        try {
+            order = orderService.getOrder(orderId);
+            if (orderService.getOrder(orderId) != null) {
+                return Response.ok(order).build();
+            }
+        } catch (OrderNotFoundException ex) {
+            return Response.status(Response.Status.FORBIDDEN).entity("No order found for ID: " + orderId).build();
         }
+
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("No order found for ID: " + orderId).build();
     }
 
     @GET
@@ -169,13 +174,14 @@ public class OrderController {
     @Path("/order/{orderId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getOrder(@PathParam("orderId") int orderId) {
-        Order order = orderService.getOrder(orderId);
-
-        if (order != null) {
+        Order order;
+        try {
+            order = orderService.getOrder(orderId);
             return Response.ok(order).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).entity("Order not found").build();
+        } catch (OrderNotFoundException ex) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Order not found for Order ID:" + orderId).build();
         }
+
     }
 
     @DELETE
@@ -200,7 +206,7 @@ public class OrderController {
             return Response.status(Response.Status.NOT_FOUND).entity("No orders placed currently").build();
         }
     }
-    
+
     @GET
     @Path("/orders_delivered")
     @Produces(MediaType.APPLICATION_JSON)

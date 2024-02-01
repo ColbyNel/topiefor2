@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import za.co.bakerysystem.dao.PaymentTypeDAO;
 import za.co.bakerysystem.dao.impl.PaymentTypeDAOImpl;
-import za.co.bakerysystem.exception.DuplicatePaymentType;
+import za.co.bakerysystem.exception.DuplicatePaymentTypeException;
 import za.co.bakerysystem.model.PaymentType;
 import za.co.bakerysystem.service.PaymentTypeService;
 import za.co.bakerysystem.service.impl.PaymentTypeServiceImpl;
@@ -31,7 +31,7 @@ public class PaymentTypeController {
                 return Response.status(Response.Status.CREATED).entity("Payment type saved successfully").build();
             }
 
-        } catch (DuplicatePaymentType ex) {
+        } catch (DuplicatePaymentTypeException ex) {
             return Response.status(Response.Status.FORBIDDEN).entity(ex.getMessage()).build();
         }
 
