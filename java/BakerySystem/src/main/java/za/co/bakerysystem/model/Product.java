@@ -25,8 +25,6 @@ public class Product {
         this.Warnings = Warnings;
         this.CategoryID = CategoryID;
     }
-    
-    
 
     public Product(String name, double price, double foodCost, int timeCost, String comment, String Description, String NutrientInformation, String Warnings, int CategoryID) {
         this.name = name;
@@ -74,7 +72,6 @@ public class Product {
     public void setCategoryID(int CategoryID) {
         this.CategoryID = CategoryID;
     }
-    
 
     public int getID() {
         return ID;

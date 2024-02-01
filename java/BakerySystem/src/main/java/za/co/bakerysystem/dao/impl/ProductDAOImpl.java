@@ -231,7 +231,7 @@ public class ProductDAOImpl implements ProductDAO {
 
     @Override
     public Product getProduct(int productID) {
-        Product product = new Product();
+        Product product = null;
         db = DbManager.getInstance();
         connection = db.getConnection();
         try {

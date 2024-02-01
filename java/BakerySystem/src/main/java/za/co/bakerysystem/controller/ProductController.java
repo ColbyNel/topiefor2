@@ -1,14 +1,13 @@
 package za.co.bakerysystem.controller;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import za.co.bakerysystem.dao.ProductDAO;
 import za.co.bakerysystem.dao.impl.ProductDAOImpl;
 import za.co.bakerysystem.exception.DuplicateProductException;
+import za.co.bakerysystem.exception.ProductNotFoundException;
 import za.co.bakerysystem.model.Product;
 import za.co.bakerysystem.service.ProductService;
 import za.co.bakerysystem.service.impl.ProductServiceImpl;
@@ -56,11 +55,17 @@ public class ProductController {
     @Path("/get_product/{productId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProductById(@PathParam("productId") int productId) {
-        if (productService.getProduct(productId) != null) {
-            return Response.ok(productService.getProduct(productId)).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).entity("Product not found").build();
+        try {
+            if (productService.getProduct(productId) != null) {
+                return Response.ok(productService.getProduct(productId)).build();
+            }
+
+        } catch (ProductNotFoundException ex) {
+            return Response.status(Response.Status.NOT_FOUND).entity(ex.getMessage()).build();
         }
+
+        return Response.status(Response.Status.NOT_FOUND).entity("Internal Server Error").build();
+
     }
 
     @DELETE

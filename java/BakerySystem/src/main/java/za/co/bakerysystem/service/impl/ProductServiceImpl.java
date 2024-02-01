@@ -7,6 +7,7 @@ import za.co.bakerysystem.service.ProductService;
 import java.util.List;
 import za.co.bakerysystem.dao.impl.ProductDAOImpl;
 import za.co.bakerysystem.exception.DuplicateProductException;
+import za.co.bakerysystem.exception.ProductNotFoundException;
 
 public class ProductServiceImpl implements ProductService {
 
@@ -66,8 +67,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product getProduct(int productID) {
+    public Product getProduct(int productID) throws ProductNotFoundException {
+
+        if (productDAO.getProduct(productID) == null) {
+            throw new ProductNotFoundException("Product " + productID + " not found");
+
+        }
         return productDAO.getProduct(productID);
+
     }
 
     @Override
@@ -85,7 +92,6 @@ public class ProductServiceImpl implements ProductService {
         if (productDAO.getProducts().stream().anyMatch(product -> product.getName().equalsIgnoreCase(name.toLowerCase()))) {
             throw new DuplicateProductException("Product already exist");
         }
-
         return false;
     }
 
@@ -123,6 +129,7 @@ public class ProductServiceImpl implements ProductService {
 //        System.out.println(productService.getProductQuantity());
 //Test product for shopping cart
 //System.out.println(productService.getProductsForShoppingCart(1));
+        System.out.println(productDAO.getProduct(100));
     }
 
 }

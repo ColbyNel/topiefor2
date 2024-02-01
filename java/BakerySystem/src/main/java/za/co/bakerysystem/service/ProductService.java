@@ -2,6 +2,7 @@ package za.co.bakerysystem.service;
 
 import java.util.List;
 import za.co.bakerysystem.exception.DuplicateProductException;
+import za.co.bakerysystem.exception.ProductNotFoundException;
 import za.co.bakerysystem.model.Product;
 
 public interface ProductService {
@@ -24,7 +25,7 @@ public interface ProductService {
 
     List<Product> getProductsForShoppingCart(int cartID);
 
-    Product getProduct(int productID);
+    Product getProduct(int productID) throws ProductNotFoundException;
 
     int getProductQuantity();
 

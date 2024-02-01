@@ -1,5 +1,8 @@
 package za.co.bakerysystem.service.impl;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import za.co.bakerysystem.dao.CustomerDAO;
 import za.co.bakerysystem.dao.impl.CustomerDAOImpl;
@@ -18,6 +21,10 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public boolean createCustomer(Customer customer) {
+        // Encrypt the password using SHA-256
+        String hashedPassword = hashPasswordSHA256(customer.getPassword());
+        // Set the encrypted password back to the customer object
+        customer.setPassword(hashedPassword);
         return customerDAO.createCustomer(customer);
     }
 
@@ -85,6 +92,27 @@ public class CustomerServiceImpl implements CustomerService {
             throw new DuplicateIdException("ID/Passport Number provided already exists");
         }
         return false;
+    }
+
+    private String hashPasswordSHA256(String password) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hashBytes = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+
+            StringBuilder hexString = new StringBuilder();
+            for (byte hashByte : hashBytes) {
+                String hex = Integer.toHexString(0xff & hashByte);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            // Handle the exception appropriately (e.g., log, throw a custom exception)
+            System.out.println("Error:" + e.getMessage());
+            return null;
+        }
     }
 
     //--------------------------------------------------------------------------------------------------

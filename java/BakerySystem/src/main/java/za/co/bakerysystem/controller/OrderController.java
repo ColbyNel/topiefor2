@@ -106,17 +106,18 @@ public class OrderController {
     @Path("/get_order/{orderId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getOrderOrder(@PathParam("orderId") int orderId) {
-        Order order;
+
         try {
-            order = orderService.getOrder(orderId);
             if (orderService.getOrder(orderId) != null) {
-                return Response.ok(order).build();
+                return Response.ok(orderService.getOrder(orderId)).build();
             }
+
         } catch (OrderNotFoundException ex) {
-            return Response.status(Response.Status.FORBIDDEN).entity("No order found for ID: " + orderId).build();
+            return Response.status(Response.Status.NOT_FOUND).entity(ex.getMessage()).build();
         }
 
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("No order found for ID: " + orderId).build();
+        return Response.status(Response.Status.NOT_FOUND).entity("Internal Server Error").build();
+
     }
 
     @GET

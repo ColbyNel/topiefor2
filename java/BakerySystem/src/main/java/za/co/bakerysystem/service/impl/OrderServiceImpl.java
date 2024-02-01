@@ -111,7 +111,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order getOrder(int orderID) throws OrderNotFoundException {
 
-        return orderDAO.getOrder(orderID);
+        if (orderDAO.getOrder(orderID) != null) {
+            return orderDAO.getOrder(orderID);
+        }
+        throw new OrderNotFoundException("Order " + orderID + " not found");
+
     }
 
     @Override
@@ -180,5 +184,6 @@ public class OrderServiceImpl implements OrderService {
 //        System.out.println("Report: Orders Delivered");
 //        List<Order> ordersDelivered = orderService.getOrdersDelivered("2022-01-01", "2025-12-31", "alphabetical");
 //        System.out.println(ordersDelivered);
+       
     }
 }

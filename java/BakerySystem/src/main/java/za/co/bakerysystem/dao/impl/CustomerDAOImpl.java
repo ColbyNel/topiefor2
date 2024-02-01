@@ -48,14 +48,7 @@ public class CustomerDAOImpl implements CustomerDAO {
             ps.setString(8, customer.getZip());
             ps.setString(9, customer.getComment());
             ps.setString(10, customer.getEmail());
-
-            // Encrypt the password using SHA-256
-            String hashedPassword = hashPasswordSHA256(customer.getPassword());
-
-            // Set the encrypted password back to the customer object
-            customer.setPassword(hashedPassword);
-
-            ps.setString(11, hashedPassword);
+            ps.setString(11, customer.getPassword());
 
             int affectedRows = ps.executeUpdate();
 
@@ -76,28 +69,6 @@ public class CustomerDAOImpl implements CustomerDAO {
         } catch (SQLException ex) {
             System.out.println("Error: " + ex.getMessage());
             return false; // Return false if an exception occurs during customer creation
-        }
-    }
-
-    private String hashPasswordSHA256(String password) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hashBytes = digest.digest(password.getBytes(StandardCharsets.UTF_8));
-
-            StringBuilder hexString = new StringBuilder();
-            for (byte hashByte : hashBytes) {
-                String hex = Integer.toHexString(0xff & hashByte);
-                if (hex.length() == 1) {
-                    hexString.append('0');
-                }
-                hexString.append(hex);
-            }
-
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            // Handle the exception appropriately (e.g., log, throw a custom exception)
-            e.printStackTrace();
-            return null;
         }
     }
 

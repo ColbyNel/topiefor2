@@ -16,6 +16,7 @@ za\co\bakerysystem\dao\impl\ShoppingCartDAOImpl.class
 za\co\bakerysystem\exception\DuplicateRecipeException.class
 za\co\bakerysystem\service\impl\RecipeIngredientServiceImpl.class
 za\co\bakerysystem\dao\ShoppingCartDAO.class
+za\co\bakerysystem\exception\ProductNotFoundException.class
 za\co\bakerysystem\dao\impl\RecipeDAOImpl.class
 za\co\bakerysystem\model\Order.class
 za\co\bakerysystem\dao\CategoryDAO.class
