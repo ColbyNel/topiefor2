@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import za.co.bakerysystem.dao.PaymentDAO;
 import za.co.bakerysystem.dao.ProductDAO;
+import za.co.bakerysystem.dao.RecipeIngredientDAO;
 import za.co.bakerysystem.dbmanager.DbManager;
 import za.co.bakerysystem.model.Payment;
 import za.co.bakerysystem.model.PaymentType;
@@ -23,6 +24,7 @@ public class PaymentDAOImpl implements PaymentDAO {
     private ResultSet rs;
     private ProductDAO productDAO;
     private CallableStatement cs;
+    private RecipeIngredientDAO recipeIngredientDAO;
 
     //--------------------------------------------------------------------------------------------------
     @Override
@@ -72,35 +74,10 @@ public class PaymentDAOImpl implements PaymentDAO {
         }
     }
 
-    private List<RecipeIngredient> getRecipeIngredients(Product product) {
-
-        try {
-            connection = db.getConnection();
-            String query = "SELECT * FROM recipe_ingredient WHERE recipe_id = ?";
-            ps = connection.prepareStatement(query);
-            ps.setInt(1, product.getID());
-
-            rs = ps.executeQuery();
-
-            List<RecipeIngredient> recipeIngredients = new ArrayList<>();
-
-            while (rs.next()) {
-                int ingredientID = rs.getInt("ingredient_id");
-                int quantity = rs.getInt("quantity");
-
-                RecipeIngredient recipeIngredient = new RecipeIngredient(product.getID(), ingredientID, quantity);
-                recipeIngredients.add(recipeIngredient);
-            }
-
-            return recipeIngredients;
-        } catch (SQLException e) {
-            System.err.println("SQL Exception: " + e.getMessage());
-            return null; // Handle the error appropriately
-        }
-    }
-
+    //HELPER METHOD
     private void subtractIngredientQuantityForProduct(Product product) {
-        List<RecipeIngredient> recipeIngredients = getRecipeIngredients(product);
+        recipeIngredientDAO = new RecipeIngredientDAOImpl();
+        List<RecipeIngredient> recipeIngredients = recipeIngredientDAO.getRecipeIngredients(product);
 
         try {
             connection = db.getConnection();
@@ -219,7 +196,7 @@ public class PaymentDAOImpl implements PaymentDAO {
         // Test createPayment method
         Payment newPayment = new Payment();
         newPayment.setOrderID(5);
-        newPayment.setPaymentTypeID(1);
+        newPayment.setPaymentTypeID(4);
         newPayment.setAmount(50.0);
 
         boolean createPaymentSuccess = paymentDAO.createPayment(newPayment);
