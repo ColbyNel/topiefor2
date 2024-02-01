@@ -2,6 +2,8 @@
 import { validateLogin } from "@/actions";
 import Failed from "@/components/login/Failed";
 import Successful from "@/components/login/Successful";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -11,6 +13,7 @@ interface MyFormData {
 }
 
 export default function Example() {
+    const pathname = usePathname();
   const [loginSuccess, setLoginSuccess] = useState(false);
   const [formData, setFormData] = useState<MyFormData>({
     email: "",
@@ -42,7 +45,7 @@ export default function Example() {
 
   return (
     <div className="flex items-center justify-center h-screen">
-      <div className="rounded-lg border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+      <div className="rounded-lg border border-stroke border-primary bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="border-b border-stroke rounded-t-lg bg-primary py-4 px-6.5 dark:border-strokedark">
           <h3 className="font-medium text-white dark:text-white text-center">
             Log In
@@ -91,6 +94,14 @@ export default function Example() {
           >
             Log In
           </button>
+          <Link href={pathname}>
+          <button
+            type="button"
+            className="button-hover flex w-full justify-center rounded bg-transparent p-3 mt-3 -mb-9 font-medium text-primary"
+          >
+            Close
+          </button>
+          </Link>
         </form>
         {!loginSuccess && <Failed />}
         {loginSuccess && <Successful />}

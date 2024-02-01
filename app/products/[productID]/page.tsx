@@ -92,9 +92,9 @@ const product = async ({ params: { productID } }: any) => {
               <div className="flex items-center justify-center mt-4 ">
                 <div className="pt-6 pb-2">
                   <button
-                    onClick={async () => {
+                    onClick={ () => {
                       try {
-                        const result = await addItemToCart(1, 3, product.id);
+                        const result =  addItemToCart(1, 3, product.id);
                         console.log("Add to Cart result:", result);
                       } catch (error) {
                         console.error("Error adding to cart:", error);

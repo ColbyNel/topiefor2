@@ -12,7 +12,7 @@ const Footer = () => {
            Menu 
         </Link>
         <span className="text-white">|</span>
-        <Link href="/login" className="btn btn-link text-white hover:text-black px-4">
+        <Link href="?modal=true" className="btn btn-link text-white hover:text-black px-4">
            Log In
         </Link>
         <p className="text-black py-2">Copyright © 2024, To Pie For Ltd. All Rights Reserved </p>

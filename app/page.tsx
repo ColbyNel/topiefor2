@@ -7,8 +7,7 @@ import About from "@/components/About";
 import Footer from "@/components/Footer";
 import Register from "./register/page";
 import Modal from "@/components/Modal";
-
-
+import Link from "next/link";
 
 export default function Home() {
   return (

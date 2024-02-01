@@ -11,7 +11,7 @@ const navigation = [
   { name: "Menu", href: "/categories", current: false },
   { name: "About", href: "/", current: false },
   { name: "Sign Up", href: "/register", current: false },
-  { name: "Log In", href: "/login", current: false },
+  { name: "Log In", href: "?modal=true", current: false },
 ];
 
 function classNames(...classes: string[]) {

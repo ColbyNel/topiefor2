@@ -8,12 +8,11 @@ export default async function SinglePage({ params: { customerIDNo } }:any) {
   const customer = await getSingleCustomer(customerIDNo);
   const address:String = (customer?.addressOne || '') + ' ' + (customer?.addressTwo || '') + ', ' + (customer?.city || '') + ', ' + (customer?.zip || '')
   const date:String = (customer?.joinDate?.dayOfMonth || '') + ' ' + (customer?.joinDate?.month) + ' ' + (customer?.joinDate?.year)
-
   // const getAllOrders = async (customerIDNo) =>{
   //   const req = await fetch(
   //     `${process.env.NEXT_PUBLIC_API_URL}/`
   //   )
-  // }
+  // } 
 
 
   return (
@@ -100,7 +99,7 @@ export default async function SinglePage({ params: { customerIDNo } }:any) {
                   <a
                     className="inline-block rounded border bg-slate-600 px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none active:text-white  active:bg-slate-800"
                     href="/admin/tools/customermgmt"
-                    // onClick={deleteCustomer(customer.customerIDNo)}
+                    // onClick={() => deleteCustomer(customer.customerIDNo)}
                   >
                     Back
                   </a>
