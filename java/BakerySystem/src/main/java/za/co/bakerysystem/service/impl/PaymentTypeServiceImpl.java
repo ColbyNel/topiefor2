@@ -3,6 +3,7 @@ package za.co.bakerysystem.service.impl;
 import java.util.List;
 import za.co.bakerysystem.dao.PaymentTypeDAO;
 import za.co.bakerysystem.dao.impl.PaymentTypeDAOImpl;
+import za.co.bakerysystem.exception.DuplicatePaymentType;
 import za.co.bakerysystem.model.PaymentType;
 import za.co.bakerysystem.service.PaymentTypeService;
 
@@ -16,6 +17,7 @@ public class PaymentTypeServiceImpl implements PaymentTypeService {
 
     @Override
     public boolean create(PaymentType paymentType) {
+
         return paymentTypeDAO.create(paymentType);
     }
 
@@ -38,33 +40,45 @@ public class PaymentTypeServiceImpl implements PaymentTypeService {
     public boolean delete(int id) {
         return paymentTypeDAO.delete(id);
     }
-    
+
+    @Override
+    public boolean exists(String payment_type) throws DuplicatePaymentType {
+        if (paymentTypeDAO.getAll().stream().anyMatch(paymentType -> paymentType.getType().equalsIgnoreCase(payment_type.toLowerCase()))) {
+            throw new DuplicatePaymentType("Payment Type Already available");
+        }
+
+        return false;
+    }
+
     //-----------------------------------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------
-    
     public static void main(String[] args) {
         // Replace these mock objects with your actual DAO implementations
         PaymentTypeDAO paymentTypeDAO = new PaymentTypeDAOImpl();
         PaymentTypeServiceImpl paymentTypeService = new PaymentTypeServiceImpl(paymentTypeDAO);
 
-//        // Test save
+        try {
+            //        // Test save
 //        PaymentType newPaymentType = new PaymentType("Online Transfer");
 //        boolean paymentTypeSaved = paymentTypeService.save(newPaymentType);
 //        System.out.println("Saving Payment Type: " + paymentTypeSaved);
-
-        // Test findById
+// Test findById
 //        int paymentTypeId = 5; // Replace with a valid payment type ID
 //        PaymentType foundPaymentType = paymentTypeService.findById(paymentTypeId);
 //        System.out.println("Found Payment Type: " + foundPaymentType);
-
 //        // Test findAll
 //        List<PaymentType> allPaymentTypes = paymentTypeService.findAll();
 //        System.out.println("All Payment Types: " + allPaymentTypes);
 //
-
 //        // Test delete
 //        boolean paymentTypeDeleted = paymentTypeService.delete(paymentTypeId);
 //        System.out.println("Deleting Payment Type: " + paymentTypeDeleted);
+
+            System.out.println(paymentTypeService.exists("cash"));
+        } catch (DuplicatePaymentType ex) {
+            System.out.println(ex.getMessage());
+        }
     }
+
 }

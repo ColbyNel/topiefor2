@@ -1,4 +1,3 @@
-
 package za.co.bakerysystem.model;
 
 public class Ingredient {
@@ -19,7 +18,6 @@ public class Ingredient {
         this.UnitID = UnitID;
     }
 
-    
     public Ingredient(String name, double pricePerKG, String note, int quantity, int UnitID) {
         this.name = name;
         this.pricePerKG = pricePerKG;
@@ -31,7 +29,6 @@ public class Ingredient {
     public Ingredient() {
     }
 
-    
     public int getID() {
         return ID;
     }
@@ -80,6 +77,9 @@ public class Ingredient {
         this.UnitID = UnitID;
     }
 
-    
-   
+    @Override
+    public String toString() {
+        return "Ingredient{" + "ID=" + ID + ", name=" + name + ", pricePerKG=" + pricePerKG + ", note=" + note + ", quantity=" + quantity + ", UnitID=" + UnitID + '}';
+    }
+
 }

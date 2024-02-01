@@ -77,6 +77,7 @@ public class PaymentController {
         }
     }
 
+    
     @GET
     @Path("/payment_types")
     @Produces(MediaType.APPLICATION_JSON)

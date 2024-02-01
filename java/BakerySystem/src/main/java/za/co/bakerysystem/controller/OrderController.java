@@ -8,8 +8,6 @@ import za.co.bakerysystem.dao.OrderDAO;
 import za.co.bakerysystem.dao.impl.OrderDAOImpl;
 import za.co.bakerysystem.model.Order;
 import za.co.bakerysystem.model.OrderDetails;
-import za.co.bakerysystem.model.Payment;
-import za.co.bakerysystem.model.Product;
 import za.co.bakerysystem.service.OrderService;
 import za.co.bakerysystem.service.impl.OrderServiceImpl;
 
@@ -195,6 +193,22 @@ public class OrderController {
             @QueryParam("endDate") String endDate,
             @QueryParam("sortOrder") String sortOrder) {
         List<Order> ordersByRange = orderService.getOrdersPlaced(startDate, endDate, sortOrder);
+
+        if (ordersByRange != null && !ordersByRange.isEmpty()) {
+            return Response.ok(ordersByRange).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("No orders placed currently").build();
+        }
+    }
+    
+    @GET
+    @Path("/orders_delivered")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOrdersDelivered(
+            @QueryParam("startDate") String startDate,
+            @QueryParam("endDate") String endDate,
+            @QueryParam("sortOrder") String sortOrder) {
+        List<Order> ordersByRange = orderService.getOrdersDelivered(startDate, endDate, sortOrder);
 
         if (ordersByRange != null && !ordersByRange.isEmpty()) {
             return Response.ok(ordersByRange).build();

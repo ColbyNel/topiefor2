@@ -7,7 +7,6 @@ import javax.ws.rs.core.Response;
 import za.co.bakerysystem.dao.IngredientDAO;
 import za.co.bakerysystem.dao.impl.IngredientDAOImpl;
 import za.co.bakerysystem.model.Ingredient;
-import za.co.bakerysystem.model.Product;
 import za.co.bakerysystem.service.IngredientService;
 import za.co.bakerysystem.service.impl.IngredientServiceImpl;
 
@@ -32,8 +31,10 @@ public class IngredientController {
     @GET
     @Path("/get_ingredient/{ingredientID}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getItemById(@PathParam("ingredientID") int ingredientID) {
-        if (ingredientService.getIngredient(ingredientID) != null) {
+    public Response getIngredientByID(@PathParam("ingredientID") int ingredientID) {
+        Ingredient ingredient = ingredientService.getIngredient(ingredientID);
+
+        if (ingredient != null) {
             return Response.ok(ingredientService.getIngredient(ingredientID)).build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).entity("Ingredient not found").build();
@@ -87,7 +88,6 @@ public class IngredientController {
         }
     }
 
-  
     @GET
     @Path("/ingredients_to_be_ordered")
     @Produces(MediaType.APPLICATION_JSON)

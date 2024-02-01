@@ -1,6 +1,8 @@
 package za.co.bakerysystem.service;
 
 import java.util.List;
+import za.co.bakerysystem.exception.DuplicateRecipe;
+import za.co.bakerysystem.model.Recipe;
 
 public interface RecipeService {
 
@@ -9,4 +11,8 @@ public interface RecipeService {
     List<String> getRecipe(int productID);
 
     boolean deleteRecipeDetail(int recipeID);
+
+    List<Recipe> getRecipes();
+
+    boolean exists(int productID) throws DuplicateRecipe;
 }

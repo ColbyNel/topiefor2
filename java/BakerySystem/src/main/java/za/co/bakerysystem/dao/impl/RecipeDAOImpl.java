@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import za.co.bakerysystem.dao.RecipeDAO;
 import za.co.bakerysystem.dbmanager.DbManager;
+import za.co.bakerysystem.model.Recipe;
 
 public class RecipeDAOImpl implements RecipeDAO {
 
@@ -27,7 +28,7 @@ public class RecipeDAOImpl implements RecipeDAO {
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                recipe.add(rs.getString("ingredient"));
+                recipe.add(rs.getString("recipe"));
             }
 
         } catch (SQLException e) {
@@ -74,6 +75,40 @@ public class RecipeDAOImpl implements RecipeDAO {
         }
     }
 
+    @Override
+    public List<Recipe> getRecipes() {
+        List<Recipe> recipes = new ArrayList<>();
+        db = DbManager.getInstance();
+
+        connection = db.getConnection();
+
+        try {
+
+            ps = connection.prepareStatement("SELECT * FROM Recipe");
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Recipe recipe = extractRecipeFromResultSet(rs);
+                recipes.add(recipe);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error:" + e.getMessage());
+
+        }
+
+        return recipes;
+    }
+
+    private Recipe extractRecipeFromResultSet(ResultSet rs) throws SQLException {
+        Recipe recipe = new Recipe();
+        recipe.setProductID(rs.getInt("product_id"));
+        recipe.setComment(rs.getString("comment"));
+
+        return recipe;
+    }
+
     //-----------------------------------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------
@@ -81,14 +116,21 @@ public class RecipeDAOImpl implements RecipeDAO {
         RecipeDAO recipeDAO = new RecipeDAOImpl();
 
         // Test createRecipe
-        boolean createRecipeSuccess = recipeDAO.createRecipe(1, "Test Recipe"); // make sure productid exists
-        System.out.println("Create Recipe success: " + createRecipeSuccess);
-        // Test createRecipeIngredient
-//        boolean createRecipeIngredientSuccess = recipeDAO.createRecipeIngredient(2, 2, 100);
-//        System.out.println("Create Recipe Ingredient success: " + createRecipeIngredientSuccess);
+//        boolean createRecipeSuccess = recipeDAO.createRecipe(1, "Test Recipe"); // make sure productid exists
+//        System.out.println("Create Recipe success: " + createRecipeSuccess);
+        // Test createRecipeRecipe
+//        boolean createRecipeRecipeSuccess = recipeDAO.createRecipeRecipe(2, 2, 100);
+//        System.out.println("Create Recipe Recipe success: " + createRecipeRecipeSuccess);
 //        // Test deleteRecipeDetail
-        boolean deleteRecipeDetailSuccess = recipeDAO.deleteRecipeDetail(15);
-        System.out.println("Delete Recipe Detail success: " + deleteRecipeDetailSuccess);
+//        boolean deleteRecipeDetailSuccess = recipeDAO.deleteRecipeDetail(15);
+//        System.out.println("Delete Recipe Detail success: " + deleteRecipeDetailSuccess);
+        //Test get All Recipe
+        List<Recipe> recipes = recipeDAO.getRecipes();
+
+        for (Recipe recipe : recipes) {
+            System.out.println(recipes);
+        }
+
     }
 
 }

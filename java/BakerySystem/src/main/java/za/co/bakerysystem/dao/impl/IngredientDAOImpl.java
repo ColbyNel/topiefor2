@@ -264,13 +264,13 @@ public class IngredientDAOImpl implements IngredientDAO {
         IngredientDAO ingredientDAO = new IngredientDAOImpl();
 //
 //        //test for add ingredient
-        if (ingredientDAO.createIngredient(ingredient)) {
-            System.out.println("Success");
-
-        } else {
-            System.out.println("Failed");
-
-        }
+//        if (ingredientDAO.createIngredient(ingredient)) {
+//            System.out.println("Success");
+//
+//        } else {
+//            System.out.println("Failed");
+//
+//        }
         //test for update ingredient
 //                if (ingredientDAO.updateIngredient(ingredient1)) {
 //                    System.out.println("Successfully updated ");
@@ -280,7 +280,7 @@ public class IngredientDAOImpl implements IngredientDAO {
 //        
 //                }
         //Test for getIngredient 
-        //System.out.println(ingredientDAO.getIngredient(1));
+        System.out.println(ingredientDAO.getIngredient(1));
         //Test for getIngredientsByKeyWord
 //        List<Ingredient> listOfIngredientByKeyWord = ingredientDAO.getIngredientsByKeyWord("powder");
 //

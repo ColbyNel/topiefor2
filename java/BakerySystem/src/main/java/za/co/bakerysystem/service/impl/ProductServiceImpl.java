@@ -6,6 +6,7 @@ import za.co.bakerysystem.service.ProductService;
 
 import java.util.List;
 import za.co.bakerysystem.dao.impl.ProductDAOImpl;
+import za.co.bakerysystem.exception.DuplicateProduct;
 
 public class ProductServiceImpl implements ProductService {
 
@@ -79,6 +80,15 @@ public class ProductServiceImpl implements ProductService {
         return productDAO.deleteProduct(productID);
     }
 
+    @Override
+    public boolean exists(String name) throws DuplicateProduct {
+        if (productDAO.getProducts().stream().anyMatch(product -> product.getName().equalsIgnoreCase(name.toLowerCase()))) {
+            throw new DuplicateProduct("Product already exist");
+        }
+
+        return false;
+    }
+
     //--------------------------------------------------------------------------------------------
     //--------------------------------------------------------------------------------------------
     //--------------------------------------------------------------------------------------------
@@ -110,7 +120,9 @@ public class ProductServiceImpl implements ProductService {
 //        // Test deleteProduct
 //        boolean productDeleted = productService.deleteProduct(productIdToGet);
 //        System.out.println("Deleting Product: " + productDeleted);
-        System.out.println(productService.getProductQuantity());
+//        System.out.println(productService.getProductQuantity());
+//Test product for shopping cart
+//System.out.println(productService.getProductsForShoppingCart(1));
     }
 
 }

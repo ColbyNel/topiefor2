@@ -1,8 +1,13 @@
 package za.co.bakerysystem.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import za.co.bakerysystem.dao.RecipeDAO;
 import za.co.bakerysystem.dao.impl.RecipeDAOImpl;
+import za.co.bakerysystem.exception.DuplicateRecipe;
+import za.co.bakerysystem.model.Recipe;
 import za.co.bakerysystem.service.RecipeService;
 
 public class RecipeServiceImpl implements RecipeService {
@@ -32,12 +37,26 @@ public class RecipeServiceImpl implements RecipeService {
         return recipeDAO.deleteRecipeDetail(recipeID);
     }
 
+    @Override
+    public List<Recipe> getRecipes() {
+        return recipeDAO.getRecipes();
+    }
+
+    @Override
+    public boolean exists(int productID) throws DuplicateRecipe {
+        if (recipeDAO.getRecipes().stream().anyMatch(recipe -> recipe.getProductID() == productID)) {
+            throw new DuplicateRecipe("Recipe already exist");
+        }
+        return false;
+
+    }
+
     //-------------------------------------------------------------------------------------------------
     //-------------------------------------------------------------------------------------------------
     //-------------------------------------------------------------------------------------------------
     public static void main(String[] args) {
         // Create an instance of RecipeServiceImpl
-//        RecipeService recipeService = new RecipeServiceImpl();
+        RecipeService recipeService = new RecipeServiceImpl();
 //
 //        // Test createRecipe method
 //        int productID = 5;
@@ -50,8 +69,8 @@ public class RecipeServiceImpl implements RecipeService {
 //        } else {
 //            System.out.println("Failed to create Recipe.");
 //        }
-
-//        // Test deleteRecipeDetail method
+        try {
+            //        // Test deleteRecipeDetail method
 //        int recipeIDToDelete = 1;
 //
 //        boolean deleteResult = recipeService.deleteRecipeDetail(recipeIDToDelete);
@@ -61,6 +80,12 @@ public class RecipeServiceImpl implements RecipeService {
 //        } else {
 //            System.out.println("Failed to delete Recipe detail.");
 //        }
+//Test Exist
+            System.out.println(recipeService.exists(2));
+        } catch (DuplicateRecipe ex) {
+            System.out.println(ex.getMessage());
+        }
+
     }
 
 }

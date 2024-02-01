@@ -1,10 +1,13 @@
 package za.co.bakerysystem.controller;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import za.co.bakerysystem.dao.RecipeDAO;
 import za.co.bakerysystem.dao.impl.RecipeDAOImpl;
+import za.co.bakerysystem.exception.DuplicateRecipe;
 import za.co.bakerysystem.model.Recipe;
 import za.co.bakerysystem.service.RecipeService;
 import za.co.bakerysystem.service.impl.RecipeServiceImpl;
@@ -22,11 +25,19 @@ public class RecipeController {
         int productID = recipe.getProductID();
         String comment = recipe.getComment();
 
-        if (recipeService.createRecipe(productID, comment)) {
-            return Response.status(Response.Status.CREATED).entity("Recipe created successfully").build();
-        } else {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Failed to create recipe").build();
+        try {
+            recipeService.exists(productID);
+
+            if (recipeService.createRecipe(productID, comment)) {
+                return Response.status(Response.Status.CREATED).entity("Recipe created successfully").build();
+            }
+
+        } catch (DuplicateRecipe ex) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
         }
+
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Failed to create recipe").build();
+
     }
 
     @DELETE

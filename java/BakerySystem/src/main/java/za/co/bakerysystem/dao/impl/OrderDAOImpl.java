@@ -16,8 +16,6 @@ import za.co.bakerysystem.dao.OrderDAO;
 import za.co.bakerysystem.dbmanager.DbManager;
 import za.co.bakerysystem.model.Order;
 import za.co.bakerysystem.model.OrderDetails;
-import za.co.bakerysystem.model.Payment;
-import za.co.bakerysystem.model.Product;
 
 public class OrderDAOImpl implements OrderDAO {
 

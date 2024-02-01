@@ -140,6 +140,7 @@ public class PaymentDAOImpl implements PaymentDAO {
         return payments;
     }
 
+    //Remember to delete this method
     @Override
     public List<Payment> getOrderPayment(int orderID) {
         List<Payment> payments = new ArrayList<>();
@@ -165,6 +166,7 @@ public class PaymentDAOImpl implements PaymentDAO {
         return payments;
     }
 
+    //Remember to delete this method
     @Override
     public List<PaymentType> getPaymentTypes() {
         List<PaymentType> paymentTypes = new ArrayList<>();

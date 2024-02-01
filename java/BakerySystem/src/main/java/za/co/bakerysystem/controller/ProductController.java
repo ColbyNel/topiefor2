@@ -1,11 +1,14 @@
 package za.co.bakerysystem.controller;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import za.co.bakerysystem.dao.ProductDAO;
 import za.co.bakerysystem.dao.impl.ProductDAOImpl;
+import za.co.bakerysystem.exception.DuplicateProduct;
 import za.co.bakerysystem.model.Product;
 import za.co.bakerysystem.service.ProductService;
 import za.co.bakerysystem.service.impl.ProductServiceImpl;
@@ -21,12 +24,19 @@ public class ProductController {
     @Path("/add_product")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addProduct(Product product) {
-        if (productService.createProduct(product)) {
-            return Response.status(Response.Status.CREATED).entity("Product added successfully").build();
-        } else {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Product was not added successfully").build();
 
+        try {
+            productService.exists(product.getName());
+
+            if (productService.createProduct(product)) {
+                return Response.status(Response.Status.CREATED).entity("Product added successfully").build();
+            }
+        } catch (DuplicateProduct ex) {
+            return Response.status(Response.Status.FORBIDDEN).entity(ex.getMessage()).build();
         }
+
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Product was not added successfully, check your server").build();
+
     }
 
     @GET
@@ -92,6 +102,19 @@ public class ProductController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProductsByKeyword(@PathParam("keyword") String keyword) {
         List<Product> allProducts = productService.getProductsByKeyWord(keyword);
+
+        if (allProducts != null && !allProducts.isEmpty()) {
+            return Response.ok(allProducts).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("No products found").build();
+        }
+    }
+
+    @GET
+    @Path("/get_product_cart/{productID}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getProductForShoppingCart(@PathParam("productID") int productID) {
+        List<Product> allProducts = productService.getProductsForShoppingCart(productID);
 
         if (allProducts != null && !allProducts.isEmpty()) {
             return Response.ok(allProducts).build();
