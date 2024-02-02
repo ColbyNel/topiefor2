@@ -11,6 +11,7 @@ export default async function SinglePage({ params: { categoryId } }:any) {
   //   const category = await getCategoryById(categoryId);
   const items = await getProductsByCategory(categoryId);
   const category = await getCategoryById(categoryId);
+  // setInterval(getProductsByCategory,2000)
   return (
     <>
       <Header />

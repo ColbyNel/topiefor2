@@ -1,6 +1,14 @@
 "use client";
 
+import { buttonVariants } from "@/components/ui/button";
+import Link from "next/link";
+
 const product = async ({ params: { productID } }: any) => {
+
+  const handleClick = () => {
+    console.log("Button Clicked")
+  }
+
   const getProductById = async (productId: any) => {
     const req = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/products/get_product/${productId}`,
@@ -11,18 +19,14 @@ const product = async ({ params: { productID } }: any) => {
         },
         next: {
           revalidate: 60,
-          tags: ["product" + productId],
+          tags: ["product"],
         },
       }
     );
     return await req.json();
   };
 
-  const addItemToCart = async (
-    cartId: number,
-    quantity: number,
-    id: number
-  ) => {
+  const addItemToCart = async (cartId: any, quantity: any, id: any) => {
     console.log(JSON.stringify(id));
     const req = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/shopping_carts/add_product/${cartId}?quantity=${quantity}`,
@@ -38,6 +42,7 @@ const product = async ({ params: { productID } }: any) => {
 
     return response.text();
   };
+  // setInterval(getProductById,2000)
 
   const product = await getProductById(productID);
 
@@ -91,18 +96,9 @@ const product = async ({ params: { productID } }: any) => {
 
               <div className="flex items-center justify-center mt-4 ">
                 <div className="pt-6 pb-2">
-                  <button
-                    onClick={ () => {
-                      try {
-                        const result =  addItemToCart(1, 3, product.id);
-                        console.log("Add to Cart result:", result);
-                      } catch (error) {
-                        console.error("Error adding to cart:", error);
-                      }
-                    }}
+                <button
+                    onClick={handleClick}
                     className="group flex items-center justify-between gap-4 rounded-lg border border-current px-5 py-3 text-white transition-colors hover:bg-secondary focus:outline-none focus:ring active:bg-secondary"
-
-                    // href={`/categories/${product.categoryID}`}
                   >
                     Add to Cart
                   </button>

@@ -13,7 +13,7 @@ interface MyFormData {
 }
 
 export default function Example() {
-    const pathname = usePathname();
+  const pathname = usePathname();
   const [loginSuccess, setLoginSuccess] = useState(false);
   const [formData, setFormData] = useState<MyFormData>({
     email: "",
@@ -95,12 +95,12 @@ export default function Example() {
             Log In
           </button>
           <Link href={pathname}>
-          <button
-            type="button"
-            className="button-hover flex w-full justify-center rounded bg-transparent p-3 mt-3 -mb-9 font-medium text-primary"
-          >
-            Close
-          </button>
+            <button
+              type="button"
+              className="button-hover flex w-full justify-center rounded bg-transparent p-3 mt-3 -mb-9 font-medium text-primary"
+            >
+              Close
+            </button>
           </Link>
         </form>
         {!loginSuccess && <Failed />}

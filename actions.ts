@@ -1,6 +1,7 @@
 "use server";
 
 import { Interface } from "readline";
+import { revalidateTag } from "next/cache";
 
 
 interface Category {
@@ -28,7 +29,7 @@ interface RegisterFormData {
 {
   /*GET CUSTOMER BY ID FROM DB*/
 }
-
+ 
 
 export const getSingleCustomer = async (customerId: string) => {
   const req = await fetch(
@@ -76,13 +77,16 @@ export const getProductsByCategory = async (id:number) => {
       "Content-Type": "application/json",
     },
     next: {
-      revalidate: 2,
-      tags: ["category", "productsbycategory"],
+      revalidate: 60,
+      tags: ["products", "getProducts"],
     },
   });
   // console.log(req)
+  // revalidateTag("getProductsByCategory")
   return await req.json();
 }
+
+// setInterval(getProductsByCategory, 20000)
 
 export const getCategoryById = async (
   categoryId: number

@@ -1,6 +1,5 @@
 import { getProductsFromCart } from "@/actions";
 import Header from "@/components/Header";
-import popup from "@/components/Popup";
 
 interface Product {
   id: number;
