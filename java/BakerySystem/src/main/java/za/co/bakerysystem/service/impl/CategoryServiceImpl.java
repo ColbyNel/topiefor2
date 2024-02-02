@@ -3,7 +3,7 @@ package za.co.bakerysystem.service.impl;
 import java.util.List;
 import za.co.bakerysystem.dao.CategoryDAO;
 import za.co.bakerysystem.dao.impl.CategoryDAOImpl;
-import za.co.bakerysystem.exception.DuplicateCategoryExcpetion;
+import za.co.bakerysystem.exception.category.DuplicateCategoryExcpetion;
 import za.co.bakerysystem.model.Category;
 import za.co.bakerysystem.service.CategoryService;
 

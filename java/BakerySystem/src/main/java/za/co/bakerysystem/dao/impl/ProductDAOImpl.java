@@ -240,6 +240,8 @@ public class ProductDAOImpl implements ProductDAO {
             rs = ps.executeQuery();
 
             if (rs.next()) {
+                product = new Product();
+
                 product.setID(rs.getInt("productID"));
                 product.setName(rs.getString("Name"));
                 product.setPrice(rs.getDouble("Price"));
@@ -396,7 +398,7 @@ public class ProductDAOImpl implements ProductDAO {
         return products;
     }
 
-        private Product extractProductFromResultSet(ResultSet rs) throws SQLException {
+    private Product extractProductFromResultSet(ResultSet rs) throws SQLException {
         Product ingredient = new Product();
         ingredient.setID(rs.getInt("productID"));
         ingredient.setName(rs.getString("Name"));
@@ -443,9 +445,9 @@ public class ProductDAOImpl implements ProductDAO {
 //
 //        }
         //Test for getProduct 
-//        System.out.println(productDAO.getProduct(6));
+        System.out.println(productDAO.getProduct(6));
         //Test for getProductQuantity
-        System.out.println(productDAO.getProductQuantity());
+//        System.out.println(productDAO.getProductQuantity());
 
         //Test for getProductsByKeyWord
 //        List<Product> listOfProductByCategory = productDAO.getAllProductByCategory(1);

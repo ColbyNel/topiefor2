@@ -6,8 +6,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import za.co.bakerysystem.dao.CustomerDAO;
 import za.co.bakerysystem.dao.impl.CustomerDAOImpl;
-import za.co.bakerysystem.exception.DuplicateEmailException;
-import za.co.bakerysystem.exception.DuplicateIdException;
+import za.co.bakerysystem.exception.customer.DuplicateEmailException;
+import za.co.bakerysystem.exception.customer.DuplicateIdException;
 import za.co.bakerysystem.model.Customer;
 import za.co.bakerysystem.service.CustomerService;
 

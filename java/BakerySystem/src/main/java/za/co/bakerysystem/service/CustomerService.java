@@ -1,8 +1,8 @@
 package za.co.bakerysystem.service;
 
 import java.util.List;
-import za.co.bakerysystem.exception.DuplicateEmailException;
-import za.co.bakerysystem.exception.DuplicateIdException;
+import za.co.bakerysystem.exception.customer.DuplicateEmailException;
+import za.co.bakerysystem.exception.customer.DuplicateIdException;
 import za.co.bakerysystem.model.Customer;
 
 public interface CustomerService {

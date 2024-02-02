@@ -633,11 +633,11 @@ public class OrderDAOImpl implements OrderDAO {
 //        boolean createOrderResult = orderDAO.createOrder(orderToCreate);
 //        System.out.println("Create Order Result: " + createOrderResult);
         // Test updateOrder
-//        Order orderToUpdate = orderDAO.getOrders().get(0); // Assuming there's an order in the database
-//        orderToUpdate.setComment("Get Comment");
+        Order orderToUpdate = orderDAO.getOrders().get(0); // Assuming there's an order in the database
+        orderToUpdate.setComment("Get Comment");
 
-//        boolean updateOrderResult = orderDAO.updateOrder(orderToCreate);
-//        System.out.println("Update Order Result: " + updateOrderResult);
+        boolean updateOrderResult = orderDAO.updateOrder(orderToUpdate);
+        System.out.println("Update Order Result: " + updateOrderResult);
         // Test fulfillOrder
 //        int orderIdToFulfill = orderDAO.getOrders().get(0).getID(); // Assuming there's an order in the database
 //        boolean fulfillOrderResult = orderDAO.fulfillOrder(orderIdToFulfill, true);

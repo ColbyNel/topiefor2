@@ -1,7 +1,7 @@
 package za.co.bakerysystem.service;
 
 import java.util.List;
-import za.co.bakerysystem.exception.DuplicateRecipeException;
+import za.co.bakerysystem.exception.recipe.DuplicateRecipeException;
 import za.co.bakerysystem.model.Recipe;
 
 public interface RecipeService {

@@ -6,8 +6,8 @@ import za.co.bakerysystem.service.ProductService;
 
 import java.util.List;
 import za.co.bakerysystem.dao.impl.ProductDAOImpl;
-import za.co.bakerysystem.exception.DuplicateProductException;
-import za.co.bakerysystem.exception.ProductNotFoundException;
+import za.co.bakerysystem.exception.product.DuplicateProductException;
+import za.co.bakerysystem.exception.product.ProductNotFoundException;
 
 public class ProductServiceImpl implements ProductService {
 

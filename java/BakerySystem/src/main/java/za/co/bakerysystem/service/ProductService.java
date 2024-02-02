@@ -1,8 +1,8 @@
 package za.co.bakerysystem.service;
 
 import java.util.List;
-import za.co.bakerysystem.exception.DuplicateProductException;
-import za.co.bakerysystem.exception.ProductNotFoundException;
+import za.co.bakerysystem.exception.product.DuplicateProductException;
+import za.co.bakerysystem.exception.product.ProductNotFoundException;
 import za.co.bakerysystem.model.Product;
 
 public interface ProductService {

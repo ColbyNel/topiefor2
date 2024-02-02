@@ -4,7 +4,9 @@ import java.time.LocalDate;
 import java.util.List;
 import za.co.bakerysystem.dao.OrderDAO;
 import za.co.bakerysystem.dao.impl.OrderDAOImpl;
-import za.co.bakerysystem.exception.OrderNotFoundException;
+import za.co.bakerysystem.exception.order.OrderDeletionException;
+import za.co.bakerysystem.exception.order.OrderNotFoundException;
+import za.co.bakerysystem.exception.order.OrderUpdateException;
 import za.co.bakerysystem.model.Order;
 import za.co.bakerysystem.model.OrderDetails;
 import za.co.bakerysystem.service.OrderService;
@@ -23,8 +25,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public boolean updateOrder(Order order) {
-        return orderDAO.updateOrder(order);
+    public boolean updateOrder(Order order) throws OrderUpdateException, OrderNotFoundException {
+//        throws OrderUpdateException, OrderNotFoundException 
+        try {
+            Order existingOrder = getOrder(order.getID());
+            return orderDAO.updateOrder(order);
+        } catch (OrderNotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new OrderUpdateException("Error updating order: " + e.getMessage());
+        }
+
     }
 
     @Override
@@ -119,8 +130,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public boolean deleteOrder(int orderID) {
-        return orderDAO.deleteOrder(orderID);
+    public boolean deleteOrder(int orderID) throws OrderDeletionException, OrderNotFoundException {
+
+        try {
+            Order order = getOrder(orderID);
+            return orderDAO.deleteOrder(orderID);
+        } catch (OrderNotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new OrderDeletionException("Error deleting order");
+        }
+
     }
 
     @Override
@@ -136,11 +156,13 @@ public class OrderServiceImpl implements OrderService {
         OrderServiceImpl orderService = new OrderServiceImpl(orderDAO);
 
 //        // Create a sample Order
-//        Order order = new Order();
-//        order.setCustomerID(2);
+        Order order = new Order();
+        order.setID(3);
+        order.setCustomerID(2);
 //        order.setDatePlaced(LocalDateTime.now());
-//        order.setFulfilled(0);
-//        order.setComment("Test Order");
+        order.setFulfilled(0);
+        order.setComment("Hello Order");
+        order.setStatus("Progress");
 //
 //        // Create a sample OrderDetail
 //        OrderDetails orderDetails = new OrderDetails();
@@ -150,21 +172,24 @@ public class OrderServiceImpl implements OrderService {
 //        orderDetails.setFoodCostAtSale(5.99);
 //        orderDetails.setQuantity(2);
 //        orderDetails.setComment("Ordered");
+//        try {
+        //Test Update the order
+//        orderService.updateOrder(order);
         //Test getOrderByID
 //        System.out.println(orderService.getOrder(2));
-        // Test creating an order
-        //System.out.println("Creating Order: " + orderService.createOrder(order));
+// Test creating an order
+//System.out.println("Creating Order: " + orderService.createOrder(order));
 //        // Test fulfilling an order
-        //  System.out.println("Fulfilling Order: " + orderService.fulfillOrder(6, 1));
-        // Test creating an order detail
-        //  System.out.println("Creating Order Detail: " + orderService.createOrderDetail(orderDetails));
+//  System.out.println("Fulfilling Order: " + orderService.fulfillOrder(6, 1));
+// Test creating an order detail
+//  System.out.println("Creating Order Detail: " + orderService.createOrderDetail(orderDetails));
 //        // Test getting orders
 //        List<Order> orders = orderService.getOrders();
 //        System.out.println("Orders: " + orders);
-        // Test getting order payment
+// Test getting order payment
 //        List<Payment> orderPayment = orderService.getOrderPayment(2);
 //        System.out.println("Order Payment: " + orderPayment);
-        // Test getting order product
+// Test getting order product
 //        List<Product> orderProduct = orderService.getOrderProduct(6);
 //        System.out.println("Order Product: " + orderProduct);
 //        // Test deleting an order
@@ -180,10 +205,14 @@ public class OrderServiceImpl implements OrderService {
 //        System.out.println("Report: Orders Outstanding");
 //        List<Order> ordersOutstanding = orderService.getOrdersOutstanding("2022-01-01", "2025-12-31", 1);
 //        System.out.println(ordersOutstanding);
-        // Test Orders Delivered
+// Test Orders Delivered
 //        System.out.println("Report: Orders Delivered");
 //        List<Order> ordersDelivered = orderService.getOrdersDelivered("2022-01-01", "2025-12-31", "alphabetical");
 //        System.out.println(ordersDelivered);
-       
+//        } catch (OrderUpdateException ex) {
+//            System.out.println(ex.toString());
+//        } catch (OrderNotFoundException ex) {
+//            System.out.println(ex.getMessage());
+//        }
     }
 }

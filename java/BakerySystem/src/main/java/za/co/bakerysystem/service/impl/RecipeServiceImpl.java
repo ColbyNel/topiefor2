@@ -6,7 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import za.co.bakerysystem.dao.RecipeDAO;
 import za.co.bakerysystem.dao.impl.RecipeDAOImpl;
-import za.co.bakerysystem.exception.DuplicateRecipeException;
+import za.co.bakerysystem.exception.recipe.DuplicateRecipeException;
 import za.co.bakerysystem.model.Recipe;
 import za.co.bakerysystem.service.RecipeService;
 

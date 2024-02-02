@@ -1,12 +1,16 @@
 package za.co.bakerysystem.controller;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import za.co.bakerysystem.dao.OrderDAO;
 import za.co.bakerysystem.dao.impl.OrderDAOImpl;
-import za.co.bakerysystem.exception.OrderNotFoundException;
+import za.co.bakerysystem.exception.order.OrderDeletionException;
+import za.co.bakerysystem.exception.order.OrderNotFoundException;
+import za.co.bakerysystem.exception.order.OrderUpdateException;
 import za.co.bakerysystem.model.Order;
 import za.co.bakerysystem.model.OrderDetails;
 import za.co.bakerysystem.service.OrderService;
@@ -72,21 +76,35 @@ public class OrderController {
     @Path("/update_order")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateOrders(Order updatedOrders) {
-        if (orderService.updateOrder(updatedOrders)) {
-            return Response.ok("Orders updated successfully").build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).entity("Orders not found").build();
+
+        try {
+            if (orderService.updateOrder(updatedOrders)) {
+                return Response.ok("Orders updated successfully").build();
+            }
+        } catch (OrderUpdateException | OrderNotFoundException ex) {
+            return Response.status(Response.Status.NOT_FOUND).entity(ex.getMessage()).build();
         }
+//
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Internal Server Error").build();
+
     }
 
     @DELETE
     @Path("/delete/{orderId}")
     public Response deleteOrder(@PathParam("orderId") int orderId) {
-        if (orderService.deleteOrder(orderId)) {
-            return Response.ok("Order deleted successfully").build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).entity("Order not found").build();
+        try {
+            if (orderService.deleteOrder(orderId)) {
+                return Response.ok("Order deleted successfully").build();
+            }
+
+        } catch (OrderDeletionException ex) {
+            return Response.status(Response.Status.FORBIDDEN).entity(ex.getMessage()).build();
+        } catch (OrderNotFoundException ex) {
+            return Response.status(Response.Status.NOT_FOUND).entity(ex.getMessage()).build();
         }
+
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Internal server error").build();
+
     }
 
     @GET
@@ -115,7 +133,6 @@ public class OrderController {
         } catch (OrderNotFoundException ex) {
             return Response.status(Response.Status.NOT_FOUND).entity(ex.getMessage()).build();
         }
-
         return Response.status(Response.Status.NOT_FOUND).entity("Internal Server Error").build();
 
     }

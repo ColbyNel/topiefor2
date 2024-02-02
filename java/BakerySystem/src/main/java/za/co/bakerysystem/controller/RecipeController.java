@@ -7,7 +7,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import za.co.bakerysystem.dao.RecipeDAO;
 import za.co.bakerysystem.dao.impl.RecipeDAOImpl;
-import za.co.bakerysystem.exception.DuplicateRecipeException;
+import za.co.bakerysystem.exception.recipe.DuplicateRecipeException;
 import za.co.bakerysystem.model.Recipe;
 import za.co.bakerysystem.service.RecipeService;
 import za.co.bakerysystem.service.impl.RecipeServiceImpl;
