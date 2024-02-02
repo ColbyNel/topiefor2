@@ -6,6 +6,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import za.co.bakerysystem.dao.CustomerDAO;
 import za.co.bakerysystem.dao.impl.CustomerDAOImpl;
+import za.co.bakerysystem.exception.customer.CustomerDeletionException;
+import za.co.bakerysystem.exception.customer.CustomerNotFoundException;
 import za.co.bakerysystem.model.Customer;
 import za.co.bakerysystem.service.CustomerService;
 import za.co.bakerysystem.service.impl.CustomerServiceImpl;
@@ -53,18 +55,16 @@ public class CustomerController {
     @Path("/get/{customerId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCustomersById(@PathParam("customerId") int customerId) {
-        //List<Customer> allCustomers = customerService.getAllCustomers();
+        try {
 
-//        try{
-//         return Response.ok(customerService.getCustomer(customerId)).build();
-//        }catch(UserNotFound ex){
-//             return Response.status(Response.Status.NOT_FOUND).entity("Customer not found").build();
-//        }
-        if (customerService.getCustomer(customerId) != null) {
-            return Response.ok(customerService.getCustomer(customerId)).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).entity("Customer not found").build();
+            if (customerService.getCustomer(customerId) != null) {
+                return Response.ok(customerService.getCustomer(customerId)).build();
+            }
+        } catch (CustomerNotFoundException ex) {
+            return Response.status(Response.Status.NOT_FOUND).entity(ex.getMessage()).build();
         }
+
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Internal server error.").build();
     }
 
     @PUT
@@ -81,11 +81,15 @@ public class CustomerController {
     @DELETE
     @Path("/delete/{customerId}")
     public Response deleteCustomer(@PathParam("customerId") int customerId) {
-        if (customerService.deleteCustomer(customerId)) {
-            return Response.ok("Customer deleted successfully").build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).entity("Customer not found").build();
+        try {
+            if (customerService.deleteCustomer(customerId)) {
+                return Response.ok("Customer deleted successfully").build();
+            }
+        } catch (CustomerNotFoundException | CustomerDeletionException ex) {
+            return Response.status(Response.Status.NOT_FOUND).entity(ex.getMessage()).build();
         }
+
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Internal Server Error").build();
     }
 
     @GET

@@ -6,6 +6,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import za.co.bakerysystem.dao.CustomerDAO;
 import za.co.bakerysystem.dao.impl.CustomerDAOImpl;
+import za.co.bakerysystem.exception.customer.CustomerDeletionException;
+import za.co.bakerysystem.exception.customer.CustomerNotFoundException;
 import za.co.bakerysystem.exception.customer.DuplicateEmailException;
 import za.co.bakerysystem.exception.customer.DuplicateIdException;
 import za.co.bakerysystem.model.Customer;
@@ -54,8 +56,12 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer getCustomer(int customerID) {
-        return customerDAO.getCustomer(customerID);
+    public Customer getCustomer(int customerID) throws CustomerNotFoundException {
+        if (customerDAO.getCustomer(customerID) != null) {
+            return customerDAO.getCustomer(customerID);
+
+        }
+        throw new CustomerNotFoundException("Customer Not found.");
     }
 
     @Override
@@ -73,7 +79,16 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public boolean deleteCustomer(int customerID) {
+    public boolean deleteCustomer(int customerID) throws CustomerNotFoundException, CustomerDeletionException {
+
+        try {
+            Customer customer = getCustomer(customerID);
+        } catch (CustomerNotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new CustomerDeletionException("Failed to delete customer " + customerID);
+        }
+
         return customerDAO.deleteCustomer(customerID);
     }
 
