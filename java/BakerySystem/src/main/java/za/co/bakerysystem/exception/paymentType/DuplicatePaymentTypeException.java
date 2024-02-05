@@ -1,4 +1,4 @@
-package za.co.bakerysystem.exception;
+package za.co.bakerysystem.exception.paymentType;
 
 public class DuplicatePaymentTypeException extends Exception {
 

@@ -138,14 +138,16 @@ public class CustomerServiceImpl implements CustomerService {
         CustomerService customerService = new CustomerServiceImpl(customerDAO);
 
         // Testing createCustomer
-        Customer newCustomer = new Customer("John", "84884", "09833", "add1", "add2", "city", "zip", "com", "john@example.com", "password");
-        boolean customerCreated = customerService.createCustomer(newCustomer);
-        System.out.println("Customer created: " + customerCreated);
-        // Testing login
-        //   String emailAddress = "john@example.com";
-        //      String password = "password";
-        //      Customer loggedInCustomer = customerService.login(emailAddress, password);
-//        System.out.println("Logged in customer: " + loggedInCustomer);
+        Customer newCustomer = new Customer("John", "12543", "09833", "add1", "add2", "city", "zip", "com", "i123@gmail.com", "password");
+//        boolean customerCreated = customerService.createCustomer(newCustomer);
+//        System.out.println("Customer created: " + customerCreated);
+//        
+
+//         Testing login
+        String emailAddress = "i123@gmail.com";
+        String password = "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8";
+        Customer loggedInCustomer = customerService.login(emailAddress, password);
+        System.out.println("Logged in customer: " + customerService.getCustomerByEmail(emailAddress));
 //        // Testing updateCustomer
 //        int customerIdToUpdate = loggedInCustomer.getID(); // Assuming customer with ID exists
 //      Customer updatedCustomer = new Customer(" updated John","84884","09833","add1","add2","city","zip","com","john@example.com", "password");

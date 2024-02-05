@@ -8,6 +8,8 @@ import za.co.bakerysystem.dao.CustomerDAO;
 import za.co.bakerysystem.dao.impl.CustomerDAOImpl;
 import za.co.bakerysystem.exception.customer.CustomerDeletionException;
 import za.co.bakerysystem.exception.customer.CustomerNotFoundException;
+import za.co.bakerysystem.exception.customer.DuplicateEmailException;
+import za.co.bakerysystem.exception.customer.DuplicateIdException;
 import za.co.bakerysystem.model.Customer;
 import za.co.bakerysystem.service.CustomerService;
 import za.co.bakerysystem.service.impl.CustomerServiceImpl;
@@ -33,7 +35,7 @@ public class CustomerController {
                 message = "Signup successful!";
                 return Response.status(Response.Status.CREATED).entity(message).build();
             }
-        } catch (Exception ex) {
+        } catch (DuplicateEmailException | DuplicateIdException ex) {
             return Response.status(Response.Status.FORBIDDEN).entity(ex.getMessage()).build();
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
@@ -42,10 +44,11 @@ public class CustomerController {
     @POST
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response login(Customer customer) {
         Customer loggedInCustomer = customerService.login(customer.getEmail(), customer.getPassword());
         if (loggedInCustomer != null) {
-            return Response.ok("Login successful!").build();
+            return Response.ok(customerService.getCustomerByEmail(customer.getEmail())).build();
         } else {
             return Response.status(Response.Status.UNAUTHORIZED).entity("Login failed. Invalid credentials.").build();
         }

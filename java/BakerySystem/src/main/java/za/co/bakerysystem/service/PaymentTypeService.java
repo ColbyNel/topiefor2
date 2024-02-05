@@ -1,7 +1,7 @@
 package za.co.bakerysystem.service;
 
 import java.util.List;
-import za.co.bakerysystem.exception.DuplicatePaymentTypeException;
+import za.co.bakerysystem.exception.paymentType.DuplicatePaymentTypeException;
 import za.co.bakerysystem.model.PaymentType;
 
 public interface PaymentTypeService {

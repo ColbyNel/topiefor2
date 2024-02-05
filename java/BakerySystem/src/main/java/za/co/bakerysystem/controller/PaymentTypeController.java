@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import za.co.bakerysystem.dao.PaymentTypeDAO;
 import za.co.bakerysystem.dao.impl.PaymentTypeDAOImpl;
-import za.co.bakerysystem.exception.DuplicatePaymentTypeException;
+import za.co.bakerysystem.exception.paymentType.DuplicatePaymentTypeException;
 import za.co.bakerysystem.model.PaymentType;
 import za.co.bakerysystem.service.PaymentTypeService;
 import za.co.bakerysystem.service.impl.PaymentTypeServiceImpl;

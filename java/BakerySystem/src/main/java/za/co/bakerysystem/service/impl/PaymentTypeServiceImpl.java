@@ -3,7 +3,7 @@ package za.co.bakerysystem.service.impl;
 import java.util.List;
 import za.co.bakerysystem.dao.PaymentTypeDAO;
 import za.co.bakerysystem.dao.impl.PaymentTypeDAOImpl;
-import za.co.bakerysystem.exception.DuplicatePaymentTypeException;
+import za.co.bakerysystem.exception.paymentType.DuplicatePaymentTypeException;
 import za.co.bakerysystem.model.PaymentType;
 import za.co.bakerysystem.service.PaymentTypeService;
 
