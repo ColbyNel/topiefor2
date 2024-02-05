@@ -4,6 +4,8 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import za.co.bakerysystem.dao.CustomerDAO;
 import za.co.bakerysystem.dao.impl.CustomerDAOImpl;
 import za.co.bakerysystem.exception.customer.CustomerDeletionException;
@@ -81,15 +83,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public boolean deleteCustomer(int customerID) throws CustomerNotFoundException, CustomerDeletionException {
 
-        try {
-            Customer customer = getCustomer(customerID);
-        } catch (CustomerNotFoundException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new CustomerDeletionException("Failed to delete customer " + customerID);
-        }
-
-        return customerDAO.deleteCustomer(customerID);
+        return customerDAO.deleteCustomer(getCustomer(customerID).getID());
     }
 
     @Override
@@ -138,16 +132,15 @@ public class CustomerServiceImpl implements CustomerService {
         CustomerService customerService = new CustomerServiceImpl(customerDAO);
 
         // Testing createCustomer
-        Customer newCustomer = new Customer("John", "12543", "09833", "add1", "add2", "city", "zip", "com", "i123@gmail.com", "password");
+//        Customer newCustomer = new Customer("John", "12543", "09833", "add1", "add2", "city", "zip", "com", "i123@gmail.com", "password");
 //        boolean customerCreated = customerService.createCustomer(newCustomer);
 //        System.out.println("Customer created: " + customerCreated);
 //        
-
 //         Testing login
-        String emailAddress = "i123@gmail.com";
-        String password = "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8";
-        Customer loggedInCustomer = customerService.login(emailAddress, password);
-        System.out.println("Logged in customer: " + customerService.getCustomerByEmail(emailAddress));
+//        String emailAddress = "i123@gmail.com";
+//        String password = "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8";
+//        Customer loggedInCustomer = customerService.login(emailAddress, password);
+//        System.out.println("Logged in customer: " + customerService.getCustomerByEmail(emailAddress));
 //        // Testing updateCustomer
 //        int customerIdToUpdate = loggedInCustomer.getID(); // Assuming customer with ID exists
 //      Customer updatedCustomer = new Customer(" updated John","84884","09833","add1","add2","city","zip","com","john@example.com", "password");
@@ -189,9 +182,15 @@ public class CustomerServiceImpl implements CustomerService {
 //        System.out.println("Orders fulfilled between " + startDate + " and " + endDate + ": " + ordersByRange);
 ////
         // Testing deleteCustomer
-//        int customerIdToDelete = 1; // Assuming customer with ID exists
-//        boolean customerDeleted = customerService.deleteCustomer(customerIdToDelete);
-//        System.out.println("Customer deleted: " + customerDeleted);
+        int customerIdToDelete = 1; // Assuming customer with ID exists
+        boolean customerDeleted;
+        try {
+            customerDeleted = customerService.deleteCustomer(customerIdToDelete);
+            System.out.println("success");
+        } catch (CustomerNotFoundException | CustomerDeletionException ex) {
+            Logger.getLogger(CustomerServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
 }

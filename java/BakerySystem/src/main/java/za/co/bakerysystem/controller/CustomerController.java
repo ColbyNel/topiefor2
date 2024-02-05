@@ -60,14 +60,14 @@ public class CustomerController {
     public Response getCustomersById(@PathParam("customerId") int customerId) {
         try {
 
-            if (customerService.getCustomer(customerId) != null) {
-                return Response.ok(customerService.getCustomer(customerId)).build();
-            }
+            return Response.ok(customerService.getCustomer(customerId)).build();
+
         } catch (CustomerNotFoundException ex) {
             return Response.status(Response.Status.NOT_FOUND).entity(ex.getMessage()).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Internal server error.").build();
         }
 
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Internal server error.").build();
     }
 
     @PUT
