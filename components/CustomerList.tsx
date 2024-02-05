@@ -11,7 +11,7 @@ const allCustomers = await getAllCustomers();
 const customerlist = () => {
   return (
     <>
-      <div className="bg-white flex min-h-screen flex-1 flex-col px-6 py-12 lg:px-8">
+      <div className="bg-white flex min-h-screen flex-1 flex-col px-6 py-12 lg:px-8" suppressHydrationWarning>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
           <div className="flex items-baseline justify-between border-b border-gray-200 pb-10 pt-24 ">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 pl-10 ">

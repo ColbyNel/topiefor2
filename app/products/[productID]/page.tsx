@@ -47,9 +47,9 @@ const product = async ({ params: { productID } }: any) => {
   // setInterval(getProductById,2000)
 
   const product = await getProductById(productID);
-
+  
   return (
-    <div className="flex items-center justify-center h-screen">
+    <div className="flex items-center justify-center h-screen" suppressHydrationWarning>
       <div className="flex flex-wrap items-center lg:justify-between justify-center">
         <div className="focus:outline-none mx-2 w-72 xl:mb-0 mb-8">
           <div>

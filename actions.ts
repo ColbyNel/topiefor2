@@ -306,3 +306,16 @@ export const deleteProductFromCart = async (cartId:number,id:number) => {
   return responseData.text();
 }
 
+export const deleteOrder = async (orderid:number) => {
+  const req = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/orders/delete/${orderid}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type":"application/json",
+      },
+      body: JSON.stringify(orderid),
+    }
+  )
+  return req.text();
+}

@@ -11,7 +11,7 @@ const customermgmt = () => {
         <div className="admin-sidebar">
           <AdminMenu />
         </div>
-        <div className="admin-content">
+        <div className="admin-content" suppressHydrationWarning>
           <CustomerList />
           
         </div>
