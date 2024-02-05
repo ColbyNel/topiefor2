@@ -3,28 +3,30 @@
 import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 
+const getProductById = async (productId: any) => {
+  const req = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/products/get_product/${productId}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      next: {
+        revalidate: 60,
+        tags: ["product"],
+      },
+    }
+  );
+  return await req.json();
+};
+
 const product = async ({ params: { productID } }: any) => {
 
   const handleClick = () => {
     console.log("Button Clicked")
   }
 
-  const getProductById = async (productId: any) => {
-    const req = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/products/get_product/${productId}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        next: {
-          revalidate: 60,
-          tags: ["product"],
-        },
-      }
-    );
-    return await req.json();
-  };
+  
 
   const addItemToCart = async (cartId: any, quantity: any, id: any) => {
     console.log(JSON.stringify(id));
@@ -97,7 +99,7 @@ const product = async ({ params: { productID } }: any) => {
               <div className="flex items-center justify-center mt-4 ">
                 <div className="pt-6 pb-2">
                 <button
-                    onClick={handleClick}
+                    // onClick={handleClick}
                     className="group flex items-center justify-between gap-4 rounded-lg border border-current px-5 py-3 text-white transition-colors hover:bg-secondary focus:outline-none focus:ring active:bg-secondary"
                   >
                     Add to Cart

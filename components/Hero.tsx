@@ -4,13 +4,11 @@ import Image from "next/image";
 import CustomButton from "./CustomButton";
 import Link from "next/link";
 import { useState } from 'react'
-import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import Popup from "./LoginDialog";
 
 
 const Hero = () => {
-  const handleScroll = () => {};
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   return (
     <div className="relative isolate overflow-hidden bg-gray-900 py-24 sm:py-32">
       <img
@@ -29,12 +27,7 @@ const Hero = () => {
               From sweet treats to savoury delights we have it all!
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
-              <a
-                href="?modal=true"
-                className="button-hover rounded-md bg-secondary px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary "
-              >
-                Log In
-              </a>
+              <Popup />
               <a href="/categories" className="button-hover text-sm font-semibold leading-6 text-white">
                 Menu <span aria-hidden="true">→</span>
               </a>
