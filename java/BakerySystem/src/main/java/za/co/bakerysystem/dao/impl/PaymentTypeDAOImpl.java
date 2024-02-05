@@ -13,9 +13,18 @@ import za.co.bakerysystem.model.PaymentType;
 public class PaymentTypeDAOImpl implements PaymentTypeDAO {
 
     private Connection connection;
-    private static final DbManager db = DbManager.getInstance();
+    private static DbManager db;
     private PreparedStatement ps;
     private ResultSet rs;
+
+    public PaymentTypeDAOImpl(Connection connection) {
+        this.connection = connection;
+    }
+
+    public PaymentTypeDAOImpl() {
+        db = DbManager.getInstance();
+        this.connection = db.getConnection();
+    }
 
     @Override
     public boolean create(PaymentType paymentType) {

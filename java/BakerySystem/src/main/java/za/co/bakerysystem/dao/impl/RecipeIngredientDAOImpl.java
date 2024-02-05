@@ -14,9 +14,18 @@ import za.co.bakerysystem.model.RecipeIngredient;
 public class RecipeIngredientDAOImpl implements RecipeIngredientDAO {
 
     private Connection connection;
-    private static final DbManager db = DbManager.getInstance();
+    private static DbManager db;
     private PreparedStatement ps;
     private ResultSet rs;
+
+    public RecipeIngredientDAOImpl(Connection connection) {
+        this.connection = connection;
+    }
+
+    public RecipeIngredientDAOImpl() {
+        db = DbManager.getInstance();
+        this.connection = db.getConnection();
+    }
 
     @Override
     public boolean createRecipeIngredient(int recipeID, int ingredientID, int quantity) {

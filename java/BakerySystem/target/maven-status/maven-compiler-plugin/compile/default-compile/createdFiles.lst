@@ -51,6 +51,7 @@ za\co\bakerysystem\controller\OrderDetailsController.class
 za\co\bakerysystem\dao\impl\AdminDAOImpl.class
 za\co\bakerysystem\dao\impl\ProductDAOImpl.class
 za\co\bakerysystem\model\SalesReportDetails.class
+za\co\bakerysystem\exception\order\OrderUpdateException.class
 za\co\bakerysystem\exception\category\DuplicateCategoryExcpetion.class
 za\co\bakerysystem\dbmanager\DbManager.class
 za\co\bakerysystem\exception\product\ProductNotFoundException.class
@@ -68,6 +69,7 @@ za\co\bakerysystem\service\impl\OrderDetailsServiceImpl.class
 za\co\bakerysystem\service\impl\RecipeServiceImpl.class
 za\co\bakerysystem\exception\InvalidDateFormatException.class
 za\co\bakerysystem\controller\ShoppingCartController.class
+za\co\bakerysystem\exception\customer\CustomerDeletionException.class
 za\co\bakerysystem\service\PaymentTypeService.class
 za\co\bakerysystem\service\impl\ProductServiceImpl.class
 za\co\bakerysystem\dao\RecipeDAO.class
@@ -77,6 +79,7 @@ za\co\bakerysystem\exception\order\OrderDeletionException.class
 za\co\bakerysystem\exception\customer\DuplicateIdException.class
 za\co\bakerysystem\dao\impl\OrderProfitDAOImpl.class
 za\co\bakerysystem\model\Customer.class
+za\co\bakerysystem\exception\customer\CustomerNotFoundException.class
 za\co\bakerysystem\dao\SalesReportDetailsDAO.class
 za\co\bakerysystem\exception\customer\DuplicateEmailException.class
 za\co\bakerysystem\service\CategoryService.class

@@ -12,9 +12,18 @@ import za.co.bakerysystem.dbmanager.DbManager;
 public class OrderProfitDAOImpl implements OrderProfitDAO {
 
     private Connection connection;
-    private static final DbManager db = DbManager.getInstance();
+    private static DbManager db;
     private PreparedStatement ps;
     private ResultSet rs;
+
+    public OrderProfitDAOImpl(Connection connection) {
+        this.connection = connection;
+    }
+
+    public OrderProfitDAOImpl() {
+        db = DbManager.getInstance();
+        this.connection = db.getConnection();
+    }
 
     @Override
     public List<Map<String, Object>> fetchOrderProfit() {
@@ -71,11 +80,7 @@ public class OrderProfitDAOImpl implements OrderProfitDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } //finally {
-           // closeResultSet(rs);
-           // closePreparedStatement(ps);
-           // closeConnection(connection);
-        //}
+        }
 
         try {
             connection = db.getConnection();
@@ -99,33 +104,9 @@ public class OrderProfitDAOImpl implements OrderProfitDAO {
 
         } catch (SQLException e) {
             handleSQLException(e);
-        }// finally {
-           // closeResultSet(rs);
-           // closePreparedStatement(ps);
-            //closeConnection(connection);
-        //}
+        }
 
         return resultList;
-    }
-
-    private void closePreparedStatement(PreparedStatement ps) {
-        try {
-            if (ps != null && !ps.isClosed()) {
-                ps.close();
-            }
-        } catch (SQLException e) {
-            handleSQLException(e);
-        }
-    }
-
-    private void closeResultSet(ResultSet rs) {
-        try {
-            if (rs != null && !rs.isClosed()) {
-                rs.close();
-            }
-        } catch (SQLException e) {
-            handleSQLException(e);
-        }
     }
 
     private void setParameters(PreparedStatement ps, Object... params) throws SQLException {
@@ -138,16 +119,6 @@ public class OrderProfitDAOImpl implements OrderProfitDAO {
         e.printStackTrace();
     }
 
-    private void closeConnection(Connection connection) {
-        try {
-            if (connection != null && !connection.isClosed()) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            handleSQLException(e);
-        }
-    }
-
     //------------------------------------------------------------------------------------------------
     //------------------------------------------------------------------------------------------------
     //------------------------------------------------------------------------------------------------
@@ -158,24 +129,20 @@ public class OrderProfitDAOImpl implements OrderProfitDAO {
 //        System.out.println("Order Profit:");
 //        List<Map<String, Object>> orderProfitList = orderProfitDAO.fetchOrderProfit();
 //        printResult(orderProfitList);
-
 //        // Test fetchOrderProfitLastMonth
 //        System.out.println("\nOrder Profit Last Month:");
 //        List<Map<String, Object>> orderProfitLastMonthList = orderProfitDAO.fetchOrderProfitLastMonth();
 //        printResult(orderProfitLastMonthList);
-
 //        // Test fetchSaleProfit
 //        System.out.println("\nSale Profit:");
 //        List<Map<String, Object>> saleProfitList = orderProfitDAO.fetchSaleProfit();
 //        printResult(saleProfitList);
-
 //        // Test fetchSaleProfitLastMonth
 //        System.out.println("\nSale Profit Last Month:");
 //        List<Map<String, Object>> saleProfitLastMonthList = orderProfitDAO.fetchSaleProfitLastMonth();
 //        printResult(saleProfitLastMonthList);
-
         // Test fetchOrderProfitInRange
- //       System.out.println("\nOrder Profit in Range:");
+        //       System.out.println("\nOrder Profit in Range:");
         LocalDate startDate = LocalDate.of(2022, 1, 1);
         LocalDate endDate = LocalDate.of(2025, 12, 31);
 //        List<Map<String, Object>> orderProfitInRangeList = orderProfitDAO.fetchOrderProfitInRange(startDate, endDate);
@@ -185,7 +152,7 @@ public class OrderProfitDAOImpl implements OrderProfitDAO {
 //        System.out.println("\nSale Profit in Range:");
 //        List<Map<String, Object>> saleProfitInRangeList = orderProfitDAO.fetchSaleProfitInRange(startDate, endDate);
 //        printResult(saleProfitInRangeList);
-   }
+    }
 
     private static void printResult(List<Map<String, Object>> resultList) {
         for (Map<String, Object> row : resultList) {

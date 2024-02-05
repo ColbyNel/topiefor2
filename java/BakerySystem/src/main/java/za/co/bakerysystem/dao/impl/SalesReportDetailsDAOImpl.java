@@ -17,6 +17,15 @@ public class SalesReportDetailsDAOImpl implements SalesReportDetailsDAO {
     private PreparedStatement ps;
     private ResultSet rs;
 
+    public SalesReportDetailsDAOImpl(Connection connection) {
+        this.connection = connection;
+    }
+
+    public SalesReportDetailsDAOImpl() {
+        db = DbManager.getInstance();
+        this.connection = db.getConnection();
+    }
+
     @Override
     public boolean createSaleDetail(SalesReportDetails salesReportDetails) {
         boolean creationSuccessful = false;
@@ -42,28 +51,9 @@ public class SalesReportDetailsDAOImpl implements SalesReportDetailsDAO {
         } catch (SQLException e) {
             // Handle the exception if needed
             e.printStackTrace();
-        } finally {
-            // Close resources in the finally block
-            closeResources(ps, null, connection);
         }
 
         return creationSuccessful;
-    }
-
-    private void closeResources(PreparedStatement ps, ResultSet rs, Connection connection) {
-        try {
-            if (ps != null) {
-                ps.close();
-            }
-            if (rs != null) {
-                rs.close();
-            }
-            if (connection != null) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -88,9 +78,6 @@ public class SalesReportDetailsDAOImpl implements SalesReportDetailsDAO {
         } catch (SQLException e) {
             // Handle the exception if needed
             e.printStackTrace();
-        } finally {
-            // Close resources in the finally block
-            closeResources(ps, null, connection);
         }
 
         return updateSuccessful;
@@ -125,9 +112,6 @@ public class SalesReportDetailsDAOImpl implements SalesReportDetailsDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            // Close resources in the finally block
-            closeResources(ps, rs, connection);
         }
 
         return salesDetails;
@@ -148,16 +132,12 @@ public class SalesReportDetailsDAOImpl implements SalesReportDetailsDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
-        } finally {
-            // Close resources in the finally block
-            closeResources(ps, null, connection);
         }
     }
-    
+
     //----------------------------------------------------------------------------------------------
     //----------------------------------------------------------------------------------------------
     //----------------------------------------------------------------------------------------------
-    
     public static void main(String[] args) {
         // Create an instance of the DAO
         SalesReportDetailsDAO salesReportDetailsDAO = new SalesReportDetailsDAOImpl();
@@ -175,12 +155,10 @@ public class SalesReportDetailsDAOImpl implements SalesReportDetailsDAO {
         // Test createSaleDetail method
         //boolean creationResult = salesReportDetailsDAO.createSaleDetail(salesReportDetails);
         //System.out.println("Creation Result: " + creationResult);
-
         // Test updateSaleDetail method
 //        salesReportDetails.setQuantitySold(25);
 //        boolean updateResult = salesReportDetailsDAO.updateSaleDetail(salesReportDetails);
 //        System.out.println("Update Result: " + updateResult);
-
         // Test getSalesDetails method
         int saleID = 1;
         List<SalesReportDetails> salesDetailsList = salesReportDetailsDAO.getSalesDetails(saleID);

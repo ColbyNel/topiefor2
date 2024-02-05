@@ -1,8 +1,5 @@
 package za.co.bakerysystem.dao.impl;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;

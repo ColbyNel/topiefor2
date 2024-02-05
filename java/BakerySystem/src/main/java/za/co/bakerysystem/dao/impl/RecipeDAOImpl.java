@@ -17,6 +17,15 @@ public class RecipeDAOImpl implements RecipeDAO {
     private static DbManager db;
     private ResultSet rs;
 
+    public RecipeDAOImpl(Connection connection) {
+        this.connection = connection;
+    }
+
+    public RecipeDAOImpl() {
+        db = DbManager.getInstance();
+        this.connection = db.getConnection();
+    }
+
     @Override
     public List<String> getRecipe(int productID) {
         List<String> recipe = new ArrayList<>();

@@ -21,6 +21,10 @@ public class ProductDAOImpl implements ProductDAO {
     private ResultSet rs;
     private CallableStatement cs;
 
+    public ProductDAOImpl(Connection connection) {
+        this.connection = connection;
+    }
+
     public ProductDAOImpl() {
         db = DbManager.getInstance();
         this.connection = db.getConnection();

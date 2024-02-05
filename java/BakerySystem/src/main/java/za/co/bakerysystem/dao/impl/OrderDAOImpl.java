@@ -25,6 +25,15 @@ public class OrderDAOImpl implements OrderDAO {
     private ResultSet rs;
     private CallableStatement callableStatement;
 
+    public OrderDAOImpl(Connection connection) {
+        this.connection = connection;
+    }
+
+    public OrderDAOImpl() {
+        db = DbManager.getInstance();
+        this.connection = db.getConnection();
+    }
+
     @Override
     public int getNumOrders(int customerID) {
         db = DbManager.getInstance();

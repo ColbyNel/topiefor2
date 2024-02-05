@@ -17,6 +17,14 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
     private PreparedStatement ps;
     private ResultSet rs;
 
+    public OrderDetailsDAOImpl(Connection connection) {
+        this.connection = connection;
+    }
+
+    public OrderDetailsDAOImpl() {
+        this.connection = db.getConnection();
+    }
+
     @Override
     public boolean create(OrderDetails orderDetails) {
         connection = db.getConnection();
@@ -167,15 +175,15 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
 //        newOrderDetails.setPriceAtSale(10.99);
 //        newOrderDetails.setFoodCostAtSale(5.99);
 //
-        boolean saveSuccess = orderDetailsDAO.create(newOrderDetails);
-        System.out.println("Save success: " + saveSuccess);
+   //     boolean saveSuccess = orderDetailsDAO.create(newOrderDetails);
+   //     System.out.println("Save success: " + saveSuccess);
 //        // Test findById method
 //        OrderDetails foundOrderDetails = orderDetailsDAO.findById(6, 2);
 //        System.out.println("Found OrderDetails: " + foundOrderDetails);
 //
 //        // Test findAll method
 
-        //       System.out.println("All OrderDetails: " + orderDetailsDAO.findAll());
+ //              System.out.println("All OrderDetails: " + orderDetailsDAO.getAll());
 //        // Test update method
 //        newOrderDetails.setQuantity(3);
 //        boolean updateSuccess = orderDetailsDAO.update(newOrderDetails);

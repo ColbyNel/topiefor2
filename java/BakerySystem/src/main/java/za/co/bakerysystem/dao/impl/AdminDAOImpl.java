@@ -16,6 +16,10 @@ public class AdminDAOImpl implements AdminDAO {
     private ResultSet rs;
     ResultSet generatedKeys;
 
+    public AdminDAOImpl(Connection connection) {
+        this.connection = connection;
+    }
+
     public AdminDAOImpl() {
         db = DbManager.getInstance();
         this.connection = db.getConnection();
@@ -103,13 +107,10 @@ public class AdminDAOImpl implements AdminDAO {
 
         return new Admin(adminID, emailAddress, password);
     }
-    
-    
+
     //---------------------------------------------------------------------------------------------------
     //---------------------------------------------------------------------------------------------------
     //---------------------------------------------------------------------------------------------------
-    
-    
     public static void main(String[] args) {
         testAdminDAO();
     }
@@ -129,7 +130,6 @@ public class AdminDAOImpl implements AdminDAO {
 //        } else {
 //            System.out.println("Failed to create admin.");
 //        }
-
         // Test getAdminById
 //        int adminIDToRetrieve = 1;
 //        Admin retrievedAdmin = adminDAO.getAdminById(adminIDToRetrieve);
@@ -139,7 +139,6 @@ public class AdminDAOImpl implements AdminDAO {
 //        } else {
 //            System.out.println("Failed to retrieve admin with ID: " + adminIDToRetrieve);
 //        }
-
         // Test login
 //        String loginEmail = "test@example.com";
 //        String loginPassword = "testPassword";

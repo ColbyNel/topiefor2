@@ -1,30 +1,31 @@
-
 package za.co.bakerysystem.dbmanager;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.apache.commons.dbcp2.BasicDataSource;
 
 public class DbManager {
 
     private static DbManager instance = null;
-    private Connection con = null;
+    private BasicDataSource dataSource = null;
 
     private DbManager() {
-        String url = "jdbc:mysql://localhost:3306/bakery?useSSL=false";
-        String user = "root";
-        String password = "root";
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection(url, user, password);
-            System.out.println("Got a connection");
-        } catch (SQLException | ClassNotFoundException se) {
-            System.err.println("Could not connect: " + se.getMessage());
-        }
+        dataSource = new BasicDataSource();
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/bakery?useSSL=false");
+        dataSource.setUsername("root");
+        dataSource.setPassword("root");
 
+        // Set additional connection pool properties
+        dataSource.setMaxTotal(20); // Maximum number of active connections
+        dataSource.setMaxIdle(10); // Maximum number of idle connections
+        dataSource.setMinIdle(5); // Minimum number of idle connections
+        dataSource.setMaxWaitMillis(10000); // Maximum time to wait for a connection
     }
 
-    //singleton
+    // Singleton
     public static DbManager getInstance() {
         if (instance == null) {
             instance = new DbManager();
@@ -33,22 +34,23 @@ public class DbManager {
     }
 
     public Connection getConnection() {
-        return con;
+        try {
+            return dataSource.getConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(DbManager.class.getName()).log(Level.SEVERE, "Error getting connection: " + ex.getMessage(), ex);
+            return null;
+        }
     }
 
     public boolean closeConnection() {
-        boolean retVal = false;
-        if (con != null) {
+        if (dataSource != null) {
             try {
-                con.close();
-                retVal = true;
+                dataSource.close();
+                return true;
             } catch (SQLException ex) {
-                System.out.println("Error closing connection: " + ex.getMessage());
-            } finally {
-                con = null;
+                Logger.getLogger(DbManager.class.getName()).log(Level.SEVERE, "Error getting connection: " + ex.getMessage(), ex);
             }
         }
-        return retVal;
+        return false;
     }
 }
-

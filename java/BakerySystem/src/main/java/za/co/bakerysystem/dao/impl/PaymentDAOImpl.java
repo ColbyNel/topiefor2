@@ -19,12 +19,21 @@ import za.co.bakerysystem.model.RecipeIngredient;
 public class PaymentDAOImpl implements PaymentDAO {
 
     private Connection connection;
-    private static final DbManager db = DbManager.getInstance();
+    private static DbManager db;
     private PreparedStatement ps;
     private ResultSet rs;
     private ProductDAO productDAO;
     private CallableStatement cs;
     private RecipeIngredientDAO recipeIngredientDAO;
+
+    public PaymentDAOImpl(Connection connection) {
+        this.connection = connection;
+    }
+
+    public PaymentDAOImpl() {
+        db = DbManager.getInstance();
+        this.connection = db.getConnection();
+    }
 
     //--------------------------------------------------------------------------------------------------
     @Override

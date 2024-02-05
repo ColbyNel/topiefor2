@@ -15,6 +15,10 @@ public class IngredientDAOImpl implements IngredientDAO {
     private PreparedStatement ps;
     private ResultSet rs;
 
+    public IngredientDAOImpl(Connection connection) {
+        this.connection = connection;
+    }
+
     public IngredientDAOImpl() {
         db = DbManager.getInstance();
         this.connection = db.getConnection();

@@ -1,7 +1,6 @@
 package za.co.bakerysystem.dao.impl;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 import za.co.bakerysystem.dao.ProductDAO;
 import za.co.bakerysystem.dao.ShoppingCartDAO;

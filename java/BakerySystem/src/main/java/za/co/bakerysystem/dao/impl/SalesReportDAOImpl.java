@@ -22,6 +22,15 @@ public class SalesReportDAOImpl implements SalesReportDAO {
     private ResultSet rs;
     private CallableStatement cs;
 
+    public SalesReportDAOImpl(Connection connection) {
+        this.connection = connection;
+    }
+
+    public SalesReportDAOImpl() {
+        db = DbManager.getInstance();
+        this.connection = db.getConnection();
+    }
+
     @Override
     public int getSaleQuantity(int productID) {
         int saleQuantity = 0;
