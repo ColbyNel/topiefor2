@@ -1,5 +1,8 @@
 package za.co.bakerysystem.dao.impl;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,6 +12,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import za.co.bakerysystem.dao.ProductDAO;
 import za.co.bakerysystem.dbmanager.DbManager;
 import za.co.bakerysystem.model.Product;
@@ -100,7 +105,7 @@ public class ProductDAOImpl implements ProductDAO {
                 product.setPrice(rs.getDouble("Price"));
                 product.setFoodCost(rs.getDouble("FoodCost"));
                 product.setTimeCost(rs.getInt("TimeCost"));
-                product.setComment(rs.getString("Comment"));
+                product.setPicture(rs.getBytes("Picture"));
                 product.setDescription(rs.getString("Description"));
                 product.setNutrientInformation(rs.getString("NutrientInformation"));
                 product.setWarnings(rs.getString("Warnings"));
@@ -141,13 +146,13 @@ public class ProductDAOImpl implements ProductDAO {
         connection = db.getConnection();
 
         try {
-            ps = connection.prepareStatement("INSERT INTO Product (Name, Price, FoodCost, TimeCost, Comment, Description, NutrientInformation, Warnings, CategoryID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            ps = connection.prepareStatement("INSERT INTO Product (Name, Price, FoodCost, TimeCost, Picture, Description, NutrientInformation, Warnings, CategoryID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, product.getName());
             ps.setDouble(2, product.getPrice());
             ps.setDouble(3, product.getFoodCost());
             ps.setInt(4, product.getTimeCost());
-            ps.setString(5, product.getComment());
+            ps.setBytes(5, product.getPicture());
             ps.setString(6, product.getDescription());
             ps.setString(7, product.getNutrientInformation());
             ps.setString(8, product.getWarnings());
@@ -179,13 +184,13 @@ public class ProductDAOImpl implements ProductDAO {
         connection = db.getConnection();
         PreparedStatement ps;
         try {
-            ps = connection.prepareStatement("UPDATE Product SET Name=?, Price=?, FoodCost=?, TimeCost=?, Comment=?, Description=?, NutrientInformation=?, Warnings=?, CategoryID=? WHERE productID=?");
+            ps = connection.prepareStatement("UPDATE Product SET Name=?, Price=?, FoodCost=?, TimeCost=?, Picture=?, Description=?, NutrientInformation=?, Warnings=?, CategoryID=? WHERE productID=?");
 
             ps.setString(1, product.getName());
             ps.setDouble(2, product.getPrice());
             ps.setDouble(3, product.getFoodCost());
             ps.setInt(4, product.getTimeCost());
-            ps.setString(5, product.getComment());
+            ps.setBytes(5, product.getPicture());
             ps.setString(6, product.getDescription());
             ps.setString(7, product.getNutrientInformation());
             ps.setString(8, product.getWarnings());
@@ -218,7 +223,7 @@ public class ProductDAOImpl implements ProductDAO {
                 product.setPrice(rs.getDouble("Price"));
                 product.setFoodCost(rs.getDouble("FoodCost"));
                 product.setTimeCost(rs.getInt("TimeCost"));
-                product.setComment(rs.getString("Comment"));
+                product.setPicture(rs.getBytes("Picture"));
                 product.setDescription(rs.getString("Description"));
                 product.setNutrientInformation(rs.getString("NutrientInformation"));
                 product.setWarnings(rs.getString("Warnings"));
@@ -251,7 +256,7 @@ public class ProductDAOImpl implements ProductDAO {
                 product.setPrice(rs.getDouble("Price"));
                 product.setFoodCost(rs.getDouble("FoodCost"));
                 product.setTimeCost(rs.getInt("TimeCost"));
-                product.setComment(rs.getString("Comment"));
+                product.setPicture(rs.getBytes("Picture"));
                 product.setDescription(rs.getString("Description"));
                 product.setNutrientInformation(rs.getString("NutrientInformation"));
                 product.setWarnings(rs.getString("Warnings"));
@@ -319,7 +324,7 @@ public class ProductDAOImpl implements ProductDAO {
                 product.setPrice(rs.getDouble("Price"));
                 product.setFoodCost(rs.getDouble("FoodCost"));
                 product.setTimeCost(rs.getInt("TimeCost"));
-                product.setComment(rs.getString("Comment"));
+                product.setPicture(rs.getBytes("Picture"));
                 product.setWarnings(rs.getString("warnings"));
                 product.setCategoryID(rs.getInt("categoryID"));
                 product.setNutrientInformation(rs.getString("nutrientinformation"));
@@ -352,13 +357,13 @@ public class ProductDAOImpl implements ProductDAO {
                 double price = rs.getDouble("price");
                 double foodCost = rs.getDouble("foodcost");
                 int timeCost = rs.getInt("timecost");
-                String comment = rs.getString("comment");
+                byte[] picture = rs.getBytes("picture");
                 String description = rs.getString("description");
                 String nutrientInformation = rs.getString("nutrientinformation");
                 String warnings = rs.getString("warnings");
                 int categoryID = rs.getInt("categoryid");
 
-                Product product = new Product(productID, name, price, foodCost, timeCost, comment, description, nutrientInformation, warnings, categoryID);
+                Product product = new Product(productID, name, price, foodCost, timeCost, picture, description, nutrientInformation, warnings, categoryID);
                 products.add(product);
             }
 
@@ -386,7 +391,7 @@ public class ProductDAOImpl implements ProductDAO {
                 product.setPrice(rs.getDouble("Price"));
                 product.setFoodCost(rs.getDouble("FoodCost"));
                 product.setTimeCost(rs.getInt("TimeCost"));
-                product.setComment(rs.getString("Comment"));
+                product.setPicture(rs.getBytes("Picture"));
                 product.setWarnings(rs.getString("warnings"));
                 product.setCategoryID(rs.getInt("categoryID"));
                 product.setNutrientInformation(rs.getString("nutrientinformation"));
@@ -410,7 +415,7 @@ public class ProductDAOImpl implements ProductDAO {
         ingredient.setFoodCost(rs.getDouble("FoodCost"));
         ingredient.setTimeCost(rs.getInt("TimeCost"));
         ingredient.setWarnings(rs.getString("warnings"));
-        ingredient.setComment(rs.getString("comment"));
+        ingredient.setPicture(rs.getBytes("picture"));
         ingredient.setCategoryID(rs.getInt("categoryID"));
         ingredient.setNutrientInformation(rs.getString("nutrientinformation"));
         ingredient.setDescription(rs.getString("description"));
@@ -420,27 +425,20 @@ public class ProductDAOImpl implements ProductDAO {
 
     public static void main(String[] args) {
         ProductDAO productDAO = new ProductDAOImpl();
-        Product product = new Product("Yellow Cake", 54.99, 8.50, 3, "Delicious cake baked by our own chefs.", "High in chocolate", "fibre and calcium", "none", 1);
-        // test for add product
-//        if (productDAO.createProduct(product)) {
-//            System.out.println("Success");
+//        File imageFile = new File("C:\\Users\\Train\\Downloads\\draft3.webp");
+//        try {
+//            byte[] pictureData = Files.readAllBytes(imageFile.toPath());
+//            Product product = new Product("Yellow Cake", 54.99, 8.50, 3, pictureData, "High in chocolate", "fibre and calcium", "none", 1);
+//            // test for add product
+//            if (productDAO.createProduct(product)) {
+//                System.out.println("Success");
 //
-//        } else {
-//            System.out.println("Failed");
+//            } else {
+//                System.out.println("Failed");
 //
-//        }
-        // ProductDAO productDAO = new ProductDAOImpl();
-        // Product product = new Product(3, "Black Cake", 54.99, 8.50, 3, "Delicious cake baked by our own chefs.", "High in chocolate", "fibre and calcium", "none", 1);
-        // test for add product
-//                if (productDAO.createProduct(product)) {
-//                    System.out.println("Success");
-//        
-//                } else {
-//                    System.out.println("Failed");
-//        
-//                }
+//            }
 
-        //test for update product
+//test for update product
 //        if (productDAO.updateProduct(product)) {
 //            System.out.println("Successfully updated ");
 //
@@ -448,17 +446,20 @@ public class ProductDAOImpl implements ProductDAO {
 //            System.out.println("Failed");
 //
 //        }
-        //Test for getProduct 
-        System.out.println(productDAO.getProduct(6));
-        //Test for getProductQuantity
+//Test for getProduct
+        System.out.println(productDAO.getProduct(17));
+//byte[] pictureData = product.getPicture();
+//Test for getProductQuantity
 //        System.out.println(productDAO.getProductQuantity());
-
-        //Test for getProductsByKeyWord
+//Test for getProductsByKeyWord
 //        List<Product> listOfProductByCategory = productDAO.getAllProductByCategory(1);
 //        listOfProductByCategory.forEach(product1 -> {
 //            System.out.println(product1);
 //        });
 //        
+        //  } catch (IOException ex) {
+        //     Logger.getLogger(ProductDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        // }
     }
 
 }

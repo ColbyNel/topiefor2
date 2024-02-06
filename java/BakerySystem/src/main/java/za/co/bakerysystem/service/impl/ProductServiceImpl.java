@@ -1,10 +1,15 @@
 package za.co.bakerysystem.service.impl;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import za.co.bakerysystem.dao.ProductDAO;
 import za.co.bakerysystem.model.Product;
 import za.co.bakerysystem.service.ProductService;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import za.co.bakerysystem.dao.impl.ProductDAOImpl;
 import za.co.bakerysystem.exception.product.DuplicateProductException;
 import za.co.bakerysystem.exception.product.ProductNotFoundException;
@@ -99,14 +104,23 @@ public class ProductServiceImpl implements ProductService {
     //--------------------------------------------------------------------------------------------
     //--------------------------------------------------------------------------------------------
     public static void main(String[] args) {
-        ProductDAO productDAO = new ProductDAOImpl();
-        ProductServiceImpl productService = new ProductServiceImpl(productDAO);
+        try {
+            ProductDAO productDAO = new ProductDAOImpl();
+            ProductServiceImpl productService = new ProductServiceImpl(productDAO);
 
-        // Test createProduct
-//        Product newProduct = new Product("Bread", 7.99, 2.0, 5, "Delicious bread", "High in fiber", "Nutrient info", "No warnings", 1);
-//        boolean productCreated = productService.createProduct(newProduct);
-//        System.out.println("Creating Product: " + productCreated);
-        // Test updateProduct
+            File imageFile = new File("C:\\Users\\Train\\Downloads\\draft3.webp");
+
+            byte[] pictureData = Files.readAllBytes(imageFile.toPath());
+            Product product = new Product("Yellow Cake", 54.99, 8.50, 3, pictureData, "High in chocolate", "fibre and calcium", "none", 1);
+            // test for add product
+            if (productService.createProduct(product)) {
+                System.out.println("Success");
+
+            } else {
+                System.out.println("Failed");
+
+            }
+            // Test updateProduct
 //        int productIdToUpdate = 8; // Replace with a valid product ID
 //        Product productToUpdate = productService.getProduct(productIdToUpdate);
 //        if (productToUpdate != null) {
@@ -119,7 +133,7 @@ public class ProductServiceImpl implements ProductService {
 //        // Test getProducts
 //        List<Product> allProducts = productService.getProducts();
 //        System.out.println("All Products: " + allProducts);
-        // Test getProduct
+// Test getProduct
 //        int productIdToGet = 6; // Replace with a valid product ID
 //        Product retrievedProduct = productService.getProduct(productIdToGet);
 //        System.out.println("Retrieved Product: " + retrievedProduct);
@@ -129,7 +143,10 @@ public class ProductServiceImpl implements ProductService {
 //        System.out.println(productService.getProductQuantity());
 //Test product for shopping cart
 //System.out.println(productService.getProductsForShoppingCart(1));
-        System.out.println(productDAO.getProduct(100));
+           // System.out.println(productDAO.getProduct(100));
+        } catch (IOException ex) {
+            Logger.getLogger(ProductServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

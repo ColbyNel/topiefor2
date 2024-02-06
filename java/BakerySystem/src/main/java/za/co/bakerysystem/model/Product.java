@@ -7,31 +7,31 @@ public class Product {
     private double price;
     private double foodCost;
     private int timeCost;
-    private String comment;
+    private byte[] picture;
     private String Description;
     private String NutrientInformation;
     private String Warnings;
     private int CategoryID;
 
-    public Product(int ID, String name, double price, double foodCost, int timeCost, String comment, String Description, String NutrientInformation, String Warnings, int CategoryID) {
+    public Product(int ID, String name, double price, double foodCost, int timeCost, byte[] picture, String Description, String NutrientInformation, String Warnings, int CategoryID) {
         this.ID = ID;
         this.name = name;
         this.price = price;
         this.foodCost = foodCost;
         this.timeCost = timeCost;
-        this.comment = comment;
+        this.picture = picture;
         this.Description = Description;
         this.NutrientInformation = NutrientInformation;
         this.Warnings = Warnings;
         this.CategoryID = CategoryID;
     }
 
-    public Product(String name, double price, double foodCost, int timeCost, String comment, String Description, String NutrientInformation, String Warnings, int CategoryID) {
+    public Product(String name, double price, double foodCost, int timeCost, byte[] picture, String Description, String NutrientInformation, String Warnings, int CategoryID) {
         this.name = name;
         this.price = price;
         this.foodCost = foodCost;
         this.timeCost = timeCost;
-        this.comment = comment;
+        this.picture = picture;
         this.Description = Description;
         this.NutrientInformation = NutrientInformation;
         this.Warnings = Warnings;
@@ -93,6 +93,14 @@ public class Product {
         return price;
     }
 
+    public byte[] getPicture() {
+        return picture;
+    }
+
+    public void setPicture(byte[] picture) {
+        this.picture = picture;
+    }
+
     public void setPrice(double price) {
         this.price = price;
     }
@@ -113,17 +121,9 @@ public class Product {
         this.timeCost = timeCost;
     }
 
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
     @Override
     public String toString() {
-        return "Product{" + "ID=" + ID + ", name=" + name + ", price=" + price + ", foodCost=" + foodCost + ", timeCost=" + timeCost + ", comment=" + comment + '}';
+        return "Product{" + "ID=" + ID + ", name=" + name + ", price=" + price + ", foodCost=" + foodCost + ", timeCost=" + timeCost + ", picture=" + picture + ", Description=" + Description + ", NutrientInformation=" + NutrientInformation + ", Warnings=" + Warnings + ", CategoryID=" + CategoryID + '}';
     }
 
 }

@@ -1,5 +1,6 @@
 package za.co.bakerysystem.dao.impl;
 
+import java.io.File;
 import java.sql.*;
 import java.util.List;
 import za.co.bakerysystem.dao.ProductDAO;
@@ -203,10 +204,10 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
         String warnings = rs.getString("warnings");
         String nutrientInfo = rs.getString("nutrientInfoRMATION");
         int timecost = rs.getInt("timecost");
-        String comment = rs.getString("comment");
+        byte[] picture = rs.getBytes("picture");
         double price = rs.getDouble("price");
 
-        return new Product(ID, name, price, foodcost, timecost, comment, description, nutrientInfo, warnings, categoryID);
+        return new Product(ID, name, price, foodcost, timecost, picture, description, nutrientInfo, warnings, categoryID);
     }
 
     public static void main(String[] args) {
@@ -219,8 +220,19 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
         ProductDAOImpl productDAO = new ProductDAOImpl();
 
         try {
-            Product newProduct = new Product("Freshh", 4.99, 6.7, 2, "GOOD BREAD", "HIGH IN carbo", "fibre", "none", 2);
-            productDAO.createProduct(newProduct);
+   //         File imageFile = new File("C:\\Users\\Train\\Downloads\\draft3.webp");
+//        
+//            byte[] pictureData = Files.readAllBytes(imageFile.toPath());
+//            Product product = new Product("Yellow Cake", 54.99, 8.50, 3, pictureData, "High in chocolate", "fibre and calcium", "none", 1);
+//            // test for add product
+//            if (productDAO.createProduct(product)) {
+//                System.out.println("Success");
+//
+//            } else {
+//                System.out.println("Failed");
+//
+//            }
+
 
             // Get the newly added product from the database
             Product addedProduct = productDAO.getProductsByKeyWord("Freshh").get(0);
