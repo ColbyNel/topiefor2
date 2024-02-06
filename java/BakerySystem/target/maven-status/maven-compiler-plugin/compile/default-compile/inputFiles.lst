@@ -31,6 +31,7 @@ C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\controller\ProductController.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\service\OrderService.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\exception\customer\DuplicateEmailException.java
+C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\exception\paymentType\DuplicatePaymentTypeException.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\controller\ShoppingCartController.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\service\OrderDetailsService.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\dao\CategoryDAO.java
@@ -69,7 +70,6 @@ C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\service\PaymentTypeService.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\exception\product\ProductNotFoundException.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\dao\PaymentDAO.java
-C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\exception\DuplicatePaymentTypeException.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\dao\impl\PaymentDAOImpl.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\controller\RecipeController.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\service\SalesReportService.java

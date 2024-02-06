@@ -7,7 +7,7 @@ import za.co.bakerysystem.service.AdminService;
 
 public class AdminServiceImpl implements AdminService {
 
-    private AdminDAO adminDAO;
+    private final AdminDAO adminDAO;
 
     public AdminServiceImpl() {
         this.adminDAO = new AdminDAOImpl();
@@ -16,6 +16,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Admin getAdminById(int adminID) {
         return adminDAO.getAdminById(adminID);
+
     }
 
     @Override
@@ -26,6 +27,11 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public boolean createAdmin(Admin admin) {
         return adminDAO.createAdmin(admin);
+    }
+    
+     public boolean exists(int id) {
+
+        return false;
     }
 
     //-------------------------------------------------------------------------------------------------
@@ -52,7 +58,7 @@ public class AdminServiceImpl implements AdminService {
 //        }
 //
         // Testing login
-      //  String email = "newadmin@example.com"; // Change this to the actual email you want to use for login
+        //  String email = "newadmin@example.com"; // Change this to the actual email you want to use for login
 //        String password = "newpassword"; // Change this to the actual password you want to use for login
 //        Admin loggedInAdmin = adminService.login(email, password);
 //        if (loggedInAdmin != null) {
@@ -60,7 +66,6 @@ public class AdminServiceImpl implements AdminService {
 //        } else {
 //            System.out.println("Login failed. Incorrect email or password.");
 //        }
-
     }
 
 }
