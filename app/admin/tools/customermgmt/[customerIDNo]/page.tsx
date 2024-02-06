@@ -1,9 +1,27 @@
+// "use client"
 import React from "react";
 import { deleteCustomer, getSingleCustomer } from "@/actions";
 import AdminHead from "@/components/AdminHead";
 import AdminMenu from "@/components/AdminMenu";
 
 export default async function SinglePage({ params: { customerIDNo } }:any) {
+
+  // const getSingleCustomer = async (customerId: string) => {
+  //   const req = await fetch(
+  //     `${process.env.NEXT_PUBLIC_API_URL}/customers/get/${customerId}`,
+  //     {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       next: {
+  //         revalidate: 60,
+  //         tags: ["customers" + customerId],
+  //       },
+  //     }
+  //   );
+  //   return await req.json();
+  // };
 
   const customer = await getSingleCustomer(customerIDNo);
   const address:String = (customer?.addressOne || '') + ' ' + (customer?.addressTwo || '') + ', ' + (customer?.city || '') + ', ' + (customer?.zip || '')
@@ -13,6 +31,14 @@ export default async function SinglePage({ params: { customerIDNo } }:any) {
   //     `${process.env.NEXT_PUBLIC_API_URL}/`
   //   )
   // } 
+
+  // const [editMode, setEditMode] = useState(false);
+  // const [formData, setFormData] = useState({
+  //   customerName: customer?.customerName,
+  //   customerIDNo: customer?.customerIDNo,
+  //   customerEmail: customer?.email,
+  //   customerPhoneNo: customer?.phoneNumber,
+  // })
 
 
   return (
@@ -85,7 +111,7 @@ export default async function SinglePage({ params: { customerIDNo } }:any) {
                 <div className="px-4 py-6 flex justify-center space-x-4 ">
                   <a
                     className="inline-block rounded bg-secondary px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none active:bg-green-900"
-                    href="#"
+                    // onClick={() => setEditMode(!editMode)}
                   >
                     Edit Customer
                   </a>

@@ -1,4 +1,6 @@
+"use client"
 import Link from "next/link";
+import Popup from "./LoginDialog";
 
 const Footer = () => {
   return (
@@ -12,9 +14,7 @@ const Footer = () => {
            Menu 
         </Link>
         <span className="text-white">|</span>
-        <Link href="?modal=true" className="btn btn-link text-white hover:text-black px-4">
-           Log In
-        </Link>
+        <Popup button={false} />
         <p className="text-black py-2">Copyright © 2024, To Pie For Ltd. All Rights Reserved </p>
       </div>
     </div>

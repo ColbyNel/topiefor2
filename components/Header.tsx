@@ -13,13 +13,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import LoginDialog from "./LoginDialog";
+import Popup from "./LoginDialog";
+import SignUpDialog from "./SignUpDialog";
 
 const navigation = [
   { name: "Home", href: "/", current: true },
   { name: "Menu", href: "/categories", current: false },
   { name: "About", href: "/", current: false },
   { name: "Sign Up", href: "/register", current: false },
-  { name: "Log In", href: "?modal=true", current: false },
 ];
 
 function classNames(...classes: string[]) {
@@ -40,18 +42,21 @@ const Header = () => {
                     {navigation.map((item) => (
                       <a
                         key={item.name}
-                        href={item.href}
+                        href={item?.href}
                         className={classNames(
                           item.current
                             ? "bg-secondary text-white"
                             : "text-white hover:text-secondary",
-                          "rounded-md px-3 py-2 text-sm font-medium"
+                          "button-hover rounded-md px-3 py-2 text-sm font-medium"
                         )}
                         aria-current={item.current ? "page" : undefined}
                       >
                         {item.name}
                       </a>
                     ))}
+                    
+                      <Popup button={true} />
+                      <SignUpDialog button={false} />
                   </div>
                 </div>
               </div>
