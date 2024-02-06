@@ -93,7 +93,7 @@ const allProducts = async () => {
                   
                   <a
                     key={id}
-                    href={`/products/${id}`}
+                    // href={`/products/${id}`}
                     // onClick={() => ProductDialog(id)}
                     className="item-hover border-black group"
                   >

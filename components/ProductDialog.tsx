@@ -98,12 +98,12 @@ const ProductDialog: React.FC<ProductProps> = ( {productID}) => {
       return response.text();
     };
 
-
+  const 
   const ID = productID
-  // const product = await getProductById(ID);
+  const product = await getProductById(ID);
   return (
     <Dialog>
-      <DialogTrigger className="aspect-square w-100 overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7 hover:text-white"></DialogTrigger>
+      <DialogTrigger className="aspect-square w-100 overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7 hover:text-white">View</DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>This product</DialogTitle>
