@@ -101,4 +101,17 @@ public class IngredientController {
         }
     }
 
+    @GET
+    @Path("/ingredients_in_stock")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getIngredientsInStock() {
+        List<Ingredient> allIngredients = ingredientService.getIngredientsInStock();
+
+        if (allIngredients != null && !allIngredients.isEmpty()) {
+            return Response.ok(allIngredients).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("No ingredients found").build();
+        }
+    }
+
 }

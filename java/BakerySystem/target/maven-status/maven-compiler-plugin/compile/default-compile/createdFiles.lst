@@ -28,7 +28,6 @@ za\co\bakerysystem\service\impl\IngredientServiceImpl.class
 za\co\bakerysystem\dao\OrderProfitDAO.class
 za\co\bakerysystem\dao\impl\OrderDAOImpl.class
 za\co\bakerysystem\dao\impl\SalesReportDetailsDAOImpl.class
-.netbeans_automatic_build
 za\co\bakerysystem\service\impl\CustomerServiceImpl.class
 za\co\bakerysystem\service\CustomerService.class
 za\co\bakerysystem\dao\impl\CategoryDAOImpl.class
@@ -48,6 +47,7 @@ za\co\bakerysystem\service\OrderService.class
 za\co\bakerysystem\service\ShoppingCartService.class
 za\co\bakerysystem\exception\recipe\DuplicateRecipeException.class
 za\co\bakerysystem\dao\PaymentDAO.class
+za\co\bakerysystem\exception\admin\AdminNotFound.class
 za\co\bakerysystem\controller\OrderDetailsController.class
 za\co\bakerysystem\dao\impl\AdminDAOImpl.class
 za\co\bakerysystem\dao\impl\ProductDAOImpl.class

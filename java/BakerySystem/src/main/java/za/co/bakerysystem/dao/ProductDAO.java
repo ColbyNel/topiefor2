@@ -30,4 +30,6 @@ public interface ProductDAO {
     int getProductQuantity();
 
     boolean deleteProduct(int productID);
+    
+   
 }
