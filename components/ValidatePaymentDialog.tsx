@@ -1,116 +1,77 @@
-import { getProductsFromCart } from "@/actions";
-import Header from "@/components/Header";
-import { ValidatePaymentDialog } from "@/components/ValidatePaymentDialog";
+"use client";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  description: string;
-  comment: string; // Assuming comment is a valid image URL
+interface PopupProps {
+  paymentType: string;
+}
+
+async function delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+function approveTransaction ():boolean {
+    let approved = false
+    const likelihood = (Math.random()*100)
+    if (likelihood < 10){
+        approved = false
+    } else {
+        approved = true
+    }
+    return true
 }
 
 
-const checkout = async ({ params: { cartId } }: any) => {
-  const products = await getProductsFromCart(cartId);
-  const allProducts = products.products;
-  let totalPrice: number = 0;
-  const incrementPrice = (price: number) => {
-    totalPrice += price;
-    return price;
-  };
+// async function delayedApproveTransaction() {
+//     await delay(5000); // Delay for 5 seconds
+//     const transactionStatus = await approveTransaction();
+//     return transactionStatus
+//     console.log(transactionStatus)
+//   }
 
-
-
-
+export const ValidatePaymentDialog: React.FC<PopupProps> = ({
+  paymentType,
+}) => {
+    let transactionStatus = approveTransaction()
+    console.log(transactionStatus)
+    
   return (
-    <>
-      <div className="h-screen bg-gray-100 pt-20">
-        <h1 className="mb-10 text-center text-8xl font-chicle">Checkout</h1>
-        <div className="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0 ">
-          <div className="rounded-sm md:w-2/3 ">
-            {allProducts.map(({ name, price, comment }: Product) => (
-              <a key={name}>
-                <div className=" justify-between mb-2 rounded-lg bg-white p-6 sm:flex sm:justify-start">
-                  <div className="aspect-square w-28 overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-7 xl:aspect-w-7 ">
-                    <img
-                      src={comment}
-                      alt={name}
-                      className=" h-full w-full object-cover object-center transition duration-300 ease-in-out hover:scale-110"
-                    />
-                  </div>
-                  <div className="sm:ml-4 sm:flex sm:w-full sm:justify-between">
-                    <div className="mt-5 sm:mt-0">
-                      <h2 className="text-2xl font-bold text-gray-900">
-                        {name}
-                      </h2>
-                      <p>Quantity: 1</p>
-                    </div>
-                    <div className="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
-                      <div className="flex items-center border-gray-100"></div>
-                      <div className="flex items-center space-x-4">
-                        <p className="text-2xl">R{incrementPrice(price)}.00</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </a>
-            ))}
-            {/*Shipping Fee*/}
-            <div className=" justify-between mb-2 rounded-lg bg-white p-6 sm:flex sm:justify-start">
-              <div className="mt-5 mr-5 sm:mt-0">
-                <h2 className="text-xl font-bold text-gray-900">
-                  Shipping Fee
-                </h2>
-              </div>
-              <div className="mt-4 ml-96 flex justify-end sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
-                <div className="flex items-center space-x-4">
-                  <p className="text-2xl">R15.00</p>
-                </div>
-              </div>
-            </div>
-            <div className="justify-between mb-2 rounded-lg bg-white p-6 sm:flex sm:justify-start">
-              <div className="mt-5 mr-20 sm:mt-0">
-                <h2 className="text-3xl font-bold text-gray-900">Total</h2>
-              </div>
-              <div className="mt-4 ml-96 flex justify-end sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
-                <div className="flex items-center space-x-4">
-                  <p className="text-2xl font-bold">R{totalPrice}.00</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        {/*Total Amount Due*/}
-
-        {/*Payment Buttons*/}
-
-        <div className="flex items-center justify-center flex-col bg-slate-100">
-          {" "}
+    <Dialog>
+      {paymentType == "Apple Pay" ? (
+        <DialogTrigger>
           <button
             type="button"
-            className="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-800 dark:bg-white dark:border-gray-700 dark:text-gray-900 dark:hover:bg-gray-200 mr-2 mb-2 mt-6"
+            className="text-white bg-[#050708] hover:bg-[#050708]/80 focus:ring-4 focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-[#050708]/40 dark:focus:ring-gray-600 mr-2 mb-2"
           >
+            Check out with Apple Pay
             <svg
-              className="mr-2 -ml-1 w-10 h-3"
-              viewBox="0 0 660 203"
-              fill="none"
+              className="ml-2 -mr-1 w-5 h-5"
+              aria-hidden="true"
+              focusable="false"
+              data-prefix="fab"
+              data-icon="apple"
+              role="img"
               xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 384 512"
             >
               <path
-                d="M233.003 199.762L266.362 4.002H319.72L286.336 199.762H233.003V199.762ZM479.113 8.222C468.544 4.256 451.978 0 431.292 0C378.566 0 341.429 26.551 341.111 64.604C340.814 92.733 367.626 108.426 387.865 117.789C408.636 127.387 415.617 133.505 415.517 142.072C415.384 155.195 398.931 161.187 383.593 161.187C362.238 161.187 350.892 158.22 333.368 150.914L326.49 147.803L319.003 191.625C331.466 197.092 354.511 201.824 378.441 202.07C434.531 202.07 470.943 175.822 471.357 135.185C471.556 112.915 457.341 95.97 426.556 81.997C407.906 72.941 396.484 66.898 396.605 57.728C396.605 49.591 406.273 40.89 427.165 40.89C444.611 40.619 457.253 44.424 467.101 48.39L471.882 50.649L479.113 8.222V8.222ZM616.423 3.99899H575.193C562.421 3.99899 552.861 7.485 547.253 20.233L468.008 199.633H524.039C524.039 199.633 533.198 175.512 535.27 170.215C541.393 170.215 595.825 170.299 603.606 170.299C605.202 177.153 610.098 199.633 610.098 199.633H659.61L616.423 3.993V3.99899ZM551.006 130.409C555.42 119.13 572.266 75.685 572.266 75.685C571.952 76.206 576.647 64.351 579.34 57.001L582.946 73.879C582.946 73.879 593.163 120.608 595.299 130.406H551.006V130.409V130.409ZM187.706 3.99899L135.467 137.499L129.902 110.37C120.176 79.096 89.8774 45.213 56.0044 28.25L103.771 199.45L160.226 199.387L244.23 3.99699L187.706 3.996"
-                fill="#0E4595"
-              ></path>
-              <path
-                d="M86.723 3.99219H0.682003L0 8.06519C66.939 24.2692 111.23 63.4282 129.62 110.485L110.911 20.5252C107.682 8.12918 98.314 4.42918 86.725 3.99718"
-                fill="#F2AE14"
+                fill="currentColor"
+                d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"
               ></path>
             </svg>
-            Pay with Visa
           </button>
-          <ValidatePaymentDialog paymentType={"MasterCard"} />
-          {/* <button
+        </DialogTrigger>
+      ) : (
+        <DialogTrigger>
+          <button
             type="button"
+            
             className="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2"
           >
             <svg
@@ -145,44 +106,40 @@ const checkout = async ({ params: { cartId } }: any) => {
               ></path>
             </svg>
             Pay with MasterCard
-          </button> */}
-          <ValidatePaymentDialog paymentType="Apple Pay" />
-          {/* <button
-            type="button"
-            className="text-white bg-[#050708] hover:bg-[#050708]/80 focus:ring-4 focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-[#050708]/40 dark:focus:ring-gray-600 mr-2 mb-2"
-          >
-            Check out with Apple Pay
-            <svg
-              className="ml-2 -mr-1 w-5 h-5"
-              aria-hidden="true"
-              focusable="false"
-              data-prefix="fab"
-              data-icon="apple"
-              role="img"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 384 512"
-            >
-              <path
-                fill="currentColor"
-                d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"
-              ></path>
-            </svg>
-          </button> */}
-          <a
-            className="mt-5 mb-2 inline-block rounded border border-primary px-12 py-3 text-sm font-medium text-primary hover:bg-primary hover:text-white focus:outline-none active:bg-primary"
-            href={`/shoppingcart/${cartId}`}
-          >
-            Back to Cart
-          </a>
-          <a
-            className="mb-28 inline-block rounded border border-secondary px-12 py-3 text-sm font-medium text-secondary hover:bg-secondary hover:text-white focus:outline-none active:bg-secondary"
-            href="/categories"
-          >
-            Back to Menu
-          </a>
-        </div>
-      </div>
-    </>
+          </button>
+        </DialogTrigger>
+      )}
+      <DialogContent className="flex flex-col border rounded-lg">
+        <DialogHeader>
+          <DialogTitle className="flex justify-center mt-5 px-5">
+            Validating Payment
+          </DialogTitle>
+          <DialogDescription className="px-10">
+            Please hold on while we validate your payment...
+            <div role="status" className="flex justify-center p-10">
+              <svg
+                aria-hidden="true"
+                className="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                viewBox="0 0 100 101"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                  fill="currentColor"
+                />
+                <path
+                  d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                  fill="currentFill"
+                />
+              </svg>
+              <span className="sr-only">Loading...</span>
+            </div>
+
+
+          </DialogDescription>
+        </DialogHeader>
+      </DialogContent>
+    </Dialog>
   );
 };
-export default checkout;

@@ -90,23 +90,24 @@ const allProducts = async () => {
             {allProducts1.map(
               ({ id, name, price, comment, description, categoryID }: any) => (
                 <>
-                  
                   <a
                     key={id}
                     // href={`/products/${id}`}
                     // onClick={() => ProductDialog(id)}
                     className="item-hover border-black group"
                   >
-                    <ProductDialog productID={id} />
-                    <div className="aspect-square w-100 overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7 ">
+                    <div className="relative aspect-square w-100 overflow-hidden rounded-lg  xl:aspect-h-8 xl:aspect-w-7 ">
                       <img
                         src={comment}
                         alt={name}
-                        className="h-full w-full object-cover object-center transition duration-300 ease-in-out hover:scale-110"
+                        className="h-full w-full object-cover object-center hover:blur-sm"
                         style={{ maxHeight: "300px" }}
                       />
+                      <div className="absolute inset-0 flex items-center justify-center transition duration-300 ease-in-out hover:scale-110">
+                        <ProductDialog productID={id} />
+                      </div>
                     </div>
-                    
+
                     <h3 className="font-chicle mt-4 mb-3 text-2xl text-black">
                       {name}
                     </h3>
@@ -118,7 +119,6 @@ const allProducts = async () => {
                       R{price}
                     </p>
                   </a>
-
                 </>
               )
             )}

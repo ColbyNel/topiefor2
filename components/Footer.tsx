@@ -4,7 +4,7 @@ import Popup from "./LoginDialog";
 
 const Footer = () => {
   return (
-    <div id="section-footer" className="bg-primary">
+    <div id="section-footer" className="bg-destructive">
       <div className="text-center py-5 justify-items-center md:justify-items-center ">
         <Link href="/" className="btn btn-link text-white hover:text-black px-4">
            Home 

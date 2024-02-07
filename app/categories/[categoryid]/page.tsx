@@ -5,6 +5,7 @@ import {
 } from "@/actions";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import ProductDialog from "@/components/ProductDialog";
 import React from "react";
 
 export default async function SinglePage({ params: { categoryId } }:any) {
@@ -24,13 +25,16 @@ export default async function SinglePage({ params: { categoryId } }:any) {
           <div className="grid grid-cols-3 gap-x-10 gap-y-10 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
             {items.map(({ id, name, price, comment,description }:any) => (
               <a key={id} href={`/products/${id}`} className="item-hover border-black group">
-                <div className="aspect-square w-100 overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7 ">
+                <div className="relative aspect-square w-100 overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7 ">
                   <img
                     src={comment}
                     alt={name}
                     className="h-full w-full object-cover object-center transition duration-300 ease-in-out hover:scale-110"
                     style={{ maxHeight: '300px' }} 
                   />
+                  <div className="absolute inset-0 flex items-center justify-center transition duration-300 ease-in-out hover:scale-110">
+                        <ProductDialog productID={id} />
+                      </div>
                 </div>
                 <h3 className="mt-4 text-2xl font-bold text-black">{name}</h3>
                 <p className="mt-3 text-lg text-slate-500">{description}</p>

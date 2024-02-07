@@ -1,9 +1,48 @@
-import { getOrderById } from "@/actions";
+"use client"
 import AdminHead from "@/components/AdminHead";
 import AdminMenu from "@/components/AdminMenu";
+import { useState } from "react";
 
-export default async function SinglePage({ params: { orderId } }: any) {
-  const order = await getOrderById(orderId);
+const getOrderById = async (orderId: any) => {
+  const req = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/orders/get_order/${orderId}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      next: {
+        revalidate: 10,
+        tags: ["orders", "orderbyid"],
+      },
+    }
+  )
+  return await req.json();
+}
+
+const getMyOrder  = async(id:number) => {
+  const thisOrder = await getOrderById(id)
+  return thisOrder
+}
+
+
+export default function SinglePage({ params: { orderId } }: any) {
+  const order = getMyOrder(orderId);
+  const [editable, setEditable] = useState(false);
+  const [editedOrder, setEditedOrder] = useState(order);
+
+  // Function to handle changes in editable fields
+  const handleFieldChange = (fieldName: string, value: string) => {
+    setEditedOrder((prevState: any) => ({
+      ...prevState,
+      [fieldName]: value,
+    }));
+  };
+
+  const handleSubmit = () => {
+    console.log(editedOrder);
+    setEditable(false);
+  };
 
   return (
     <>
@@ -21,6 +60,30 @@ export default async function SinglePage({ params: { orderId } }: any) {
             </div>
             <div className="mt-6 border-t border-gray-100">
               <dl className="divide-y divide-gray-100">
+                {Object.entries(editedOrder).map(([key, value]) => (
+                  <div
+                    key={key}
+                    className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
+                  >
+                    <dt className="text-base font-medium leading-6 text-secondary">
+                      {key}
+                    </dt>
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                      {editable ? (
+                        <input
+                          type="text"
+                          value={value}
+                          onChange={(e) =>
+                            handleFieldChange(key, e.target.value)
+                          }
+                          className="border border-gray-300 px-3 py-1 rounded-md focus:outline-none focus:border-primary"
+                        />
+                      ) : (
+                        <span>{value}</span>
+                      )}
+                    </dd>
+                  </div>
+                ))}
                 <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                   <dt className="text-base font-medium leading-6 text-secondary">
                     Order ID
@@ -66,12 +129,21 @@ export default async function SinglePage({ params: { orderId } }: any) {
                   </dd>
                 </div>
                 <div className="px-4 py-6 flex justify-center space-x-4 ">
-                  <a
-                    className="inline-block rounded bg-secondary px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none active:bg-green-900"
-                    href="#"
-                  >
-                    Edit Order
-                  </a>
+                  {editable ? (
+                    <a
+                      className="inline-block rounded bg-secondary px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none active:bg-green-900"
+                      onClick={handleSubmit}
+                    >
+                      Submit
+                    </a>
+                  ) : (
+                    <a
+                      className="inline-block rounded bg-secondary px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none active:bg-green-900"
+                      onClick={() => setEditable(true)}
+                    >
+                      Edit Order
+                    </a>
+                  )}
                   <a
                     className="inline-block rounded border border-primary px-8 py-3 text-sm font-medium text-primary transition hover:scale-110 hover:shadow-xl focus:outline-none active:text-white active:border-red-700 active:bg-red-700"
                     href="/admin/tools/customermgmt"

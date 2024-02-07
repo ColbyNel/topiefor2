@@ -8,7 +8,7 @@ const Categories = async () => {
   return (
     <>
       <Header />
-      <div className="bg-slate-100 flex min-h-screen">
+      <div className="bg-white flex min-h-screen">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl py-8 sm:py-24 lg:max-w-none lg:py-32">
             <h2 className="text-5xl font-bold text-slate-600 text-center pb-12">

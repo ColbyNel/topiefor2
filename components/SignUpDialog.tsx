@@ -78,9 +78,16 @@ const SignUpDialog: React.FC<PopupProps> = ({ button }) => {
 
   return (
     <Dialog>
+      {button ? (
       <DialogTrigger className="text-white hover:text-secondary button-hover rounded-md px-3 py-2 text-sm font-medium ">
         Sign Up
       </DialogTrigger>
+      ): (
+        <DialogTrigger className="button-hover rounded-md bg-primary px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-red-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ">
+          Sign Up
+        </DialogTrigger>
+      )
+      }
       <DialogContent className="border rounded-xl">
         <DialogHeader>
           <DialogTitle className="flex justify-center pt-5 text-5xl font-chicle">

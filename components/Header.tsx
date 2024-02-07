@@ -16,12 +16,12 @@ import {
 import LoginDialog from "./LoginDialog";
 import Popup from "./LoginDialog";
 import SignUpDialog from "./SignUpDialog";
+import CartDialog from "./CartDialog";
 
 const navigation = [
   { name: "Home", href: "/", current: true },
   { name: "Menu", href: "/categories", current: false },
   { name: "About", href: "/", current: false },
-  { name: "Sign Up", href: "/register", current: false },
 ];
 
 function classNames(...classes: string[]) {
@@ -30,7 +30,7 @@ function classNames(...classes: string[]) {
 
 const Header = () => {
   return (
-    <Disclosure as="nav" className="bg-primary">
+    <Disclosure as="nav" className="bg-destructive bg-opacity-70 shadow-sm rounded-3xl mx-72 mt-10">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -38,7 +38,7 @@ const Header = () => {
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden"></div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="hidden sm:ml-6 sm:block">
-                  <div className="flex space-x-4">
+                  <div className="flex items-center space-x-4">
                     {navigation.map((item) => (
                       <a
                         key={item.name}
@@ -56,7 +56,7 @@ const Header = () => {
                     ))}
                     
                       <Popup button={true} />
-                      <SignUpDialog button={false} />
+                      <SignUpDialog button={true} />
                   </div>
                 </div>
               </div>
@@ -64,7 +64,7 @@ const Header = () => {
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
                   <div>
-                    <div className="relative flex text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                    {/* <div className="relative flex text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
 
                       <a href="/shoppingcart" className="button-hover">
                         <img
@@ -73,7 +73,8 @@ const Header = () => {
                           alt="Cart"
                         />
                       </a>
-                    </div>
+                    </div> */}
+                    <CartDialog link={false}  />
                   </div>
                 </Menu>
               </div>
