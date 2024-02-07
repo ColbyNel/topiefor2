@@ -1,11 +1,11 @@
 package za.co.bakerysystem.service;
 
 import java.util.List;
-<<<<<<< Updated upstream
+
 import za.co.bakerysystem.exception.category.CategoryNotFoundException;
-=======
+
 import java.util.Map;
->>>>>>> Stashed changes
+
 import za.co.bakerysystem.exception.category.DuplicateCategoryExcpetion;
 import za.co.bakerysystem.model.Category;
 

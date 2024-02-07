@@ -6,13 +6,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import za.co.bakerysystem.dao.AdminDAO;
 import za.co.bakerysystem.dao.impl.AdminDAOImpl;
-<<<<<<< Updated upstream
+
 import za.co.bakerysystem.exception.admin.AdminLoginException;
 import za.co.bakerysystem.exception.admin.AdminNotFoundException;
-=======
-import za.co.bakerysystem.exception.admin.AdminNotFound;
+
+
 import za.co.bakerysystem.exception.customer.DuplicateEmailException;
->>>>>>> Stashed changes
+
 import za.co.bakerysystem.model.Admin;
 import za.co.bakerysystem.service.AdminService;
 
@@ -25,17 +25,9 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-<<<<<<< Updated upstream
+
     public Admin getAdminById(int adminID) throws AdminNotFoundException{
         return adminDAO.getAdminById(adminID);
-=======
-    public Admin getAdminById(int adminID) throws AdminNotFound {
-        if (adminDAO.getAdminById(adminID) != null) {
-            return adminDAO.getAdminById(adminID);
-        }
-        throw new AdminNotFound("Admin not found");
->>>>>>> Stashed changes
-
     }
 
     @Override

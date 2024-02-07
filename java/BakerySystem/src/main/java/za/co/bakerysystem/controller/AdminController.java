@@ -12,13 +12,12 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import za.co.bakerysystem.dao.AdminDAO;
 import za.co.bakerysystem.dao.impl.AdminDAOImpl;
-<<<<<<< Updated upstream
+
 import za.co.bakerysystem.exception.admin.AdminLoginException;
 import za.co.bakerysystem.exception.admin.AdminNotFoundException;
-=======
-import za.co.bakerysystem.exception.admin.AdminNotFound;
+
 import za.co.bakerysystem.exception.customer.DuplicateEmailException;
->>>>>>> Stashed changes
+
 import za.co.bakerysystem.model.Admin;
 import za.co.bakerysystem.service.AdminService;
 import za.co.bakerysystem.service.impl.AdminServiceImpl;
@@ -33,20 +32,12 @@ public class AdminController {
     @Path("/{adminID}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAdminById(@PathParam("adminID") int adminID) {
-<<<<<<< Updated upstream
+
         try {
             Admin admin = adminService.getAdminById(adminID);
             return Response.ok(admin).build();
         } catch (AdminNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).entity("Admin not found for ID: " + adminID).build();
-=======
-        Admin admin;
-        try {
-            admin = adminService.getAdminById(adminID);
-            return Response.ok(admin).build();
-        } catch (AdminNotFound ex) {
-            return Response.status(Response.Status.NOT_FOUND).build();
->>>>>>> Stashed changes
         }
 
     }

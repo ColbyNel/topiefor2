@@ -10,10 +10,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-<<<<<<< Updated upstream
-=======
+
 import java.util.Map;
->>>>>>> Stashed changes
+
 import za.co.bakerysystem.dao.ProductDAO;
 import za.co.bakerysystem.dbmanager.DbManager;
 import za.co.bakerysystem.model.Product;
