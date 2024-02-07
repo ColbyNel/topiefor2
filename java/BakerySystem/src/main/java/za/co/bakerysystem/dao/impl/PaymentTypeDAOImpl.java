@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import za.co.bakerysystem.dao.PaymentTypeDAO;
 import za.co.bakerysystem.dbmanager.DbManager;
+import za.co.bakerysystem.exception.paymentType.PaymentTypeNotFoundException;
 import za.co.bakerysystem.model.PaymentType;
 
 public class PaymentTypeDAOImpl implements PaymentTypeDAO {
@@ -46,7 +47,7 @@ public class PaymentTypeDAOImpl implements PaymentTypeDAO {
     }
 
     @Override
-    public PaymentType getById(int id) {
+    public PaymentType getById(int id) throws PaymentTypeNotFoundException {
         PaymentType paymentType = null;
         connection = db.getConnection();
 
@@ -59,6 +60,8 @@ public class PaymentTypeDAOImpl implements PaymentTypeDAO {
                 paymentType = new PaymentType();
                 paymentType.setID(rs.getInt("Payment_Type_ID"));
                 paymentType.setType(rs.getString("Type"));
+            } else {
+                throw new PaymentTypeNotFoundException("Payment type not found for ID: " + id);
             }
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());

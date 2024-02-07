@@ -6,6 +6,7 @@ import java.util.List;
 import za.co.bakerysystem.dao.ProductDAO;
 import za.co.bakerysystem.dao.ShoppingCartDAO;
 import za.co.bakerysystem.dbmanager.DbManager;
+import za.co.bakerysystem.exception.shoppingcart.ShoppingCartNotFoundException;
 import za.co.bakerysystem.model.Product;
 import za.co.bakerysystem.model.ShoppingCart;
 
@@ -33,7 +34,7 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
     public static final String UPDATE_CART_TOTAL = "UPDATE ShoppingCart SET totalAmount = ? WHERE cartID = ?";
 
     @Override
-    public ShoppingCart getShoppingCartById(int cartID) {
+    public ShoppingCart getShoppingCartById(int cartID) throws ShoppingCartNotFoundException {
         db = DbManager.getInstance();
 
         try {
@@ -44,22 +45,13 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
 
             if (rs.next()) {
                 return extractShoppingCartFromResultSet(rs);
+            } else {
+                throw new ShoppingCartNotFoundException("Shopping cart not found for ID: " + cartID);
             }
         } catch (SQLException e) {
-            System.out.println("Error :" + e.getMessage());
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (ps != null) {
-                    ps.close();
-                }
-            } catch (SQLException e) {
-                System.out.println("Error :" + e.getMessage());
-            }
+            e.printStackTrace();
+            throw new ShoppingCartNotFoundException("Error retrieving shopping cart");
         }
-        return null;
     }
 
     @Override
@@ -220,7 +212,7 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
         ProductDAOImpl productDAO = new ProductDAOImpl();
 
         try {
-   //         File imageFile = new File("C:\\Users\\Train\\Downloads\\draft3.webp");
+            //         File imageFile = new File("C:\\Users\\Train\\Downloads\\draft3.webp");
 //        
 //            byte[] pictureData = Files.readAllBytes(imageFile.toPath());
 //            Product product = new Product("Yellow Cake", 54.99, 8.50, 3, pictureData, "High in chocolate", "fibre and calcium", "none", 1);
@@ -232,7 +224,6 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
 //                System.out.println("Failed");
 //
 //            }
-
 
             // Get the newly added product from the database
             Product addedProduct = productDAO.getProductsByKeyWord("Freshh").get(0);

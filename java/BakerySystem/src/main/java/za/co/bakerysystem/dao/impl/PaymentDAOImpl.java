@@ -7,10 +7,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import za.co.bakerysystem.dao.PaymentDAO;
 import za.co.bakerysystem.dao.ProductDAO;
 import za.co.bakerysystem.dao.RecipeIngredientDAO;
 import za.co.bakerysystem.dbmanager.DbManager;
+import za.co.bakerysystem.exception.recipeingredients.RecipeIngredientsNotFoundException;
 import za.co.bakerysystem.model.Payment;
 import za.co.bakerysystem.model.PaymentType;
 import za.co.bakerysystem.model.Product;
@@ -86,10 +89,11 @@ public class PaymentDAOImpl implements PaymentDAO {
     //HELPER METHOD
     private void subtractIngredientQuantityForProduct(Product product) {
         recipeIngredientDAO = new RecipeIngredientDAOImpl();
-        List<RecipeIngredient> recipeIngredients = recipeIngredientDAO.getRecipeIngredients(product);
 
         try {
             connection = db.getConnection();
+            List<RecipeIngredient> recipeIngredients = recipeIngredientDAO.getRecipeIngredients(product);
+
             for (RecipeIngredient recipeIngredient : recipeIngredients) {
                 int requiredQuantity = recipeIngredient.getQuantity();
 
@@ -102,6 +106,8 @@ public class PaymentDAOImpl implements PaymentDAO {
             }
         } catch (SQLException e) {
             System.err.println("SQL Exception: " + e.getMessage());
+        } catch (RecipeIngredientsNotFoundException ex) {
+            Logger.getLogger(PaymentDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

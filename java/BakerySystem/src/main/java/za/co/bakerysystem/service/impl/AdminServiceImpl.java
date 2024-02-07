@@ -2,6 +2,8 @@ package za.co.bakerysystem.service.impl;
 
 import za.co.bakerysystem.dao.AdminDAO;
 import za.co.bakerysystem.dao.impl.AdminDAOImpl;
+import za.co.bakerysystem.exception.admin.AdminLoginException;
+import za.co.bakerysystem.exception.admin.AdminNotFoundException;
 import za.co.bakerysystem.model.Admin;
 import za.co.bakerysystem.service.AdminService;
 
@@ -14,13 +16,13 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Admin getAdminById(int adminID) {
+    public Admin getAdminById(int adminID) throws AdminNotFoundException{
         return adminDAO.getAdminById(adminID);
 
     }
 
     @Override
-    public Admin login(String emailAddress, String password) {
+    public Admin login(String emailAddress, String password) throws AdminLoginException {
         return adminDAO.login(emailAddress, password);
     }
 

@@ -4,11 +4,10 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import za.co.bakerysystem.dao.PaymentTypeDAO;
 import za.co.bakerysystem.dao.impl.PaymentTypeDAOImpl;
 import za.co.bakerysystem.exception.paymentType.DuplicatePaymentTypeException;
+import za.co.bakerysystem.exception.paymentType.PaymentTypeNotFoundException;
 import za.co.bakerysystem.model.PaymentType;
 import za.co.bakerysystem.service.PaymentTypeService;
 import za.co.bakerysystem.service.impl.PaymentTypeServiceImpl;
@@ -22,7 +21,7 @@ public class PaymentTypeController {
     @POST
     @Path("/save")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response savePaymentType(PaymentType paymentType) {
+    public Response createPaymentType(PaymentType paymentType) {
 
         try {
             paymentTypeService.exists(paymentType.getType().toLowerCase());
@@ -41,24 +40,28 @@ public class PaymentTypeController {
     @GET
     @Path("get/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findPaymentTypeById(@PathParam("id") int id) {
-        if (id <= 0) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Payment type ID must be greater than 0").build();
-        }
+    public Response getPaymentTypeById(@PathParam("id") int id) {
+        try {
+            if (id <= 0) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("Payment type ID must be greater than 0").build();
+            }
 
-        PaymentType paymentType = paymentTypeService.getById(id);
+            PaymentType paymentType = paymentTypeService.getById(id);
 
-        if (paymentType != null) {
-            return Response.ok(paymentType).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).entity("Payment type not found").build();
+            if (paymentType != null) {
+                return Response.ok(paymentType).build();
+            } else {
+                return Response.status(Response.Status.NOT_FOUND).entity("Payment type not found").build();
+            }
+        } catch (PaymentTypeNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Payment type not found: " + e.getMessage()).build();
         }
     }
 
     @GET
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findAllPaymentTypes() {
+    public Response getAllPaymentTypes() {
         List<PaymentType> paymentTypes = paymentTypeService.getAll();
 
         if (paymentTypes != null && !paymentTypes.isEmpty()) {

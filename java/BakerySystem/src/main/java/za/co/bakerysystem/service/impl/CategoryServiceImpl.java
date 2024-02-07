@@ -3,6 +3,7 @@ package za.co.bakerysystem.service.impl;
 import java.util.List;
 import za.co.bakerysystem.dao.CategoryDAO;
 import za.co.bakerysystem.dao.impl.CategoryDAOImpl;
+import za.co.bakerysystem.exception.category.CategoryNotFoundException;
 import za.co.bakerysystem.exception.category.DuplicateCategoryExcpetion;
 import za.co.bakerysystem.model.Category;
 import za.co.bakerysystem.service.CategoryService;
@@ -16,7 +17,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category getCategoryById(int categoryID) {
+    public Category getCategoryById(int categoryID) throws CategoryNotFoundException{
         return categoryDAO.getCategoryById(categoryID);
     }
 

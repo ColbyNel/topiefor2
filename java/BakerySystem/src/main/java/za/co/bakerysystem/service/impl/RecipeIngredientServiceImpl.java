@@ -3,6 +3,7 @@ package za.co.bakerysystem.service.impl;
 import java.util.List;
 import za.co.bakerysystem.dao.RecipeIngredientDAO;
 import za.co.bakerysystem.dao.impl.RecipeIngredientDAOImpl;
+import za.co.bakerysystem.exception.recipeingredients.RecipeIngredientsNotFoundException;
 import za.co.bakerysystem.model.Product;
 import za.co.bakerysystem.model.RecipeIngredient;
 import za.co.bakerysystem.service.RecipeIngredientService;
@@ -21,7 +22,7 @@ public class RecipeIngredientServiceImpl implements RecipeIngredientService {
     }
 
     @Override
-    public List<RecipeIngredient> getRecipeIngredients(Product product) {
+    public List<RecipeIngredient> getRecipeIngredients(Product product) throws RecipeIngredientsNotFoundException{
         return recipeIngredientDAO.getRecipeIngredients(product);
     }
 

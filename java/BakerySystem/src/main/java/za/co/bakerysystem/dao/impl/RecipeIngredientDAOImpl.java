@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import za.co.bakerysystem.dao.RecipeIngredientDAO;
 import za.co.bakerysystem.dbmanager.DbManager;
+import za.co.bakerysystem.exception.recipeingredients.RecipeIngredientsNotFoundException;
 import za.co.bakerysystem.model.Product;
 import za.co.bakerysystem.model.RecipeIngredient;
 
@@ -48,8 +49,7 @@ public class RecipeIngredientDAOImpl implements RecipeIngredientDAO {
     }
 
     @Override
-    public List<RecipeIngredient> getRecipeIngredients(Product product) {
-
+    public List<RecipeIngredient> getRecipeIngredients(Product product) throws RecipeIngredientsNotFoundException {
         try {
             connection = db.getConnection();
             String query = "SELECT * FROM recipe_ingredient WHERE recipe_id = ?";
@@ -68,10 +68,14 @@ public class RecipeIngredientDAOImpl implements RecipeIngredientDAO {
                 recipeIngredients.add(recipeIngredient);
             }
 
+            if (recipeIngredients.isEmpty()) {
+                throw new RecipeIngredientsNotFoundException("Recipe ingredients not found for product ID: " + product.getID());
+            }
+
             return recipeIngredients;
         } catch (SQLException e) {
             System.err.println("SQL Exception: " + e.getMessage());
-            return null; // Handle the error appropriately
+            throw new RecipeIngredientsNotFoundException("Error retrieving recipe ingredients");
         }
     }
 

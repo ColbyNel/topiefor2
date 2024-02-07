@@ -2,6 +2,7 @@ package za.co.bakerysystem.service;
 
 import java.util.List;
 import za.co.bakerysystem.exception.customer.CustomerDeletionException;
+import za.co.bakerysystem.exception.customer.CustomerLoginException;
 import za.co.bakerysystem.exception.customer.CustomerNotFoundException;
 import za.co.bakerysystem.exception.customer.DuplicateEmailException;
 import za.co.bakerysystem.exception.customer.DuplicateIdException;
@@ -11,7 +12,7 @@ public interface CustomerService {
 
     boolean createCustomer(Customer customer);
 
-    Customer login(String emailAddress, String password);
+    Customer login(String emailAddress, String password) throws CustomerLoginException;
 
     List<Customer> getTopCustomers(int productID);
 
@@ -27,7 +28,7 @@ public interface CustomerService {
 
     int getCustomerPoints(int customerID);
 
-    Customer getCustomerByEmail(String email);
+    Customer getCustomerByEmail(String email) throws CustomerNotFoundException;
 
     boolean deleteCustomer(int customerIDs) throws CustomerNotFoundException, CustomerDeletionException;
 

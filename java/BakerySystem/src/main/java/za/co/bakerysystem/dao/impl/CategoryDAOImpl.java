@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import za.co.bakerysystem.dao.CategoryDAO;
 import za.co.bakerysystem.dbmanager.DbManager;
+import za.co.bakerysystem.exception.category.CategoryNotFoundException;
 import za.co.bakerysystem.model.Category;
 
 public class CategoryDAOImpl implements CategoryDAO {
@@ -35,8 +36,7 @@ public class CategoryDAOImpl implements CategoryDAO {
     private static final String DELETE_CATEGORY = "DELETE FROM Category WHERE categoryId = ?";
 
     @Override
-    public Category getCategoryById(int categoryId) {
-
+    public Category getCategoryById(int categoryId) throws CategoryNotFoundException {
         db = DbManager.getInstance();
 
         try {
@@ -47,13 +47,15 @@ public class CategoryDAOImpl implements CategoryDAO {
 
             if (rs.next()) {
                 return extractCategoryFromResultSet(rs);
+            } else {
+                throw new CategoryNotFoundException("Category not found with ID: " + categoryId);
             }
         } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            e.printStackTrace();
+            throw new CategoryNotFoundException("Error fetching category information");
         } finally {
             closeResources(ps, rs);
         }
-        return null;
     }
 
     @Override

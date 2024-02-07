@@ -6,6 +6,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import za.co.bakerysystem.dao.IngredientDAO;
 import za.co.bakerysystem.dao.impl.IngredientDAOImpl;
+import za.co.bakerysystem.exception.ingredient.IngredientNotFoundException;
 import za.co.bakerysystem.model.Ingredient;
 import za.co.bakerysystem.service.IngredientService;
 import za.co.bakerysystem.service.impl.IngredientServiceImpl;
@@ -32,12 +33,11 @@ public class IngredientController {
     @Path("/get_ingredient/{ingredientID}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getIngredientByID(@PathParam("ingredientID") int ingredientID) {
-        Ingredient ingredient = ingredientService.getIngredient(ingredientID);
-
-        if (ingredient != null) {
-            return Response.ok(ingredientService.getIngredient(ingredientID)).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).entity("Ingredient not found").build();
+        try {
+            Ingredient ingredient = ingredientService.getIngredient(ingredientID);
+            return Response.ok(ingredient).build();
+        } catch (IngredientNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Ingredient Not Found").build();
         }
     }
 

@@ -7,6 +7,7 @@ import javax.ws.rs.core.Response;
 import za.co.bakerysystem.dao.CustomerDAO;
 import za.co.bakerysystem.dao.impl.CustomerDAOImpl;
 import za.co.bakerysystem.exception.customer.CustomerDeletionException;
+import za.co.bakerysystem.exception.customer.CustomerLoginException;
 import za.co.bakerysystem.exception.customer.CustomerNotFoundException;
 import za.co.bakerysystem.exception.customer.DuplicateEmailException;
 import za.co.bakerysystem.exception.customer.DuplicateIdException;
@@ -46,10 +47,10 @@ public class CustomerController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(Customer customer) {
-        Customer loggedInCustomer = customerService.login(customer.getEmail(), customer.getPassword());
-        if (loggedInCustomer != null) {
+        try {
+            Customer loggedInCustomer = customerService.login(customer.getEmail(), customer.getPassword());
             return Response.ok(customerService.getCustomerByEmail(customer.getEmail())).build();
-        } else {
+        } catch (CustomerLoginException | CustomerNotFoundException e) {
             return Response.status(Response.Status.UNAUTHORIZED).entity("Login failed. Invalid credentials.").build();
         }
     }
@@ -138,10 +139,10 @@ public class CustomerController {
     @Path("/get_by_email/{email}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCustomerByEmail(@PathParam("email") String email) {
-        Customer customer = customerService.getCustomerByEmail(email);
-        if (customer != null) {
+        try {
+            Customer customer = customerService.getCustomerByEmail(email);
             return Response.ok(customer).build();
-        } else {
+        } catch (CustomerNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).entity("Customer not found for the provided email").build();
         }
     }

@@ -1,8 +1,5 @@
 package za.co.bakerysystem.dao.impl;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,8 +9,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import za.co.bakerysystem.dao.ProductDAO;
 import za.co.bakerysystem.dbmanager.DbManager;
 import za.co.bakerysystem.model.Product;

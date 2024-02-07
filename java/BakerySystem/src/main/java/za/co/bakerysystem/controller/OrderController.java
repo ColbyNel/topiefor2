@@ -192,14 +192,12 @@ public class OrderController {
     @Path("/order/{orderId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getOrder(@PathParam("orderId") int orderId) {
-        Order order;
         try {
-            order = orderService.getOrder(orderId);
+            Order order = orderService.getOrder(orderId);
             return Response.ok(order).build();
         } catch (OrderNotFoundException ex) {
             return Response.status(Response.Status.NOT_FOUND).entity("Order not found for Order ID:" + orderId).build();
         }
-
     }
 
     @DELETE

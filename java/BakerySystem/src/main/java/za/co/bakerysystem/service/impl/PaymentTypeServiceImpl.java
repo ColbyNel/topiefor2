@@ -4,6 +4,7 @@ import java.util.List;
 import za.co.bakerysystem.dao.PaymentTypeDAO;
 import za.co.bakerysystem.dao.impl.PaymentTypeDAOImpl;
 import za.co.bakerysystem.exception.paymentType.DuplicatePaymentTypeException;
+import za.co.bakerysystem.exception.paymentType.PaymentTypeNotFoundException;
 import za.co.bakerysystem.model.PaymentType;
 import za.co.bakerysystem.service.PaymentTypeService;
 
@@ -22,7 +23,7 @@ public class PaymentTypeServiceImpl implements PaymentTypeService {
     }
 
     @Override
-    public PaymentType getById(int id) {
+    public PaymentType getById(int id) throws PaymentTypeNotFoundException{
         return paymentTypeDAO.getById(id);
     }
 

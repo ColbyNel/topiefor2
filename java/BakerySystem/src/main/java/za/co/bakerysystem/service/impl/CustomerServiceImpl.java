@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import za.co.bakerysystem.dao.CustomerDAO;
 import za.co.bakerysystem.dao.impl.CustomerDAOImpl;
 import za.co.bakerysystem.exception.customer.CustomerDeletionException;
+import za.co.bakerysystem.exception.customer.CustomerLoginException;
 import za.co.bakerysystem.exception.customer.CustomerNotFoundException;
 import za.co.bakerysystem.exception.customer.DuplicateEmailException;
 import za.co.bakerysystem.exception.customer.DuplicateIdException;
@@ -33,7 +34,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer login(String emailAddress, String password) {
+    public Customer login(String emailAddress, String password) throws CustomerLoginException{
         return customerDAO.login(emailAddress, password);
     }
 
@@ -59,11 +60,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer getCustomer(int customerID) throws CustomerNotFoundException {
-        if (customerDAO.getCustomer(customerID) != null) {
             return customerDAO.getCustomer(customerID);
-
-        }
-        throw new CustomerNotFoundException("Customer Not found.");
     }
 
     @Override
@@ -72,17 +69,12 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer getCustomerByEmail(String email) {
-
-        //if(user not found){
-        // throw new UserNotFound("user not found");
-//        }
+    public Customer getCustomerByEmail(String email) throws CustomerNotFoundException{
         return customerDAO.getCustomerByEmail(email);
     }
 
     @Override
     public boolean deleteCustomer(int customerID) throws CustomerNotFoundException, CustomerDeletionException {
-
         return customerDAO.deleteCustomer(getCustomer(customerID).getID());
     }
 

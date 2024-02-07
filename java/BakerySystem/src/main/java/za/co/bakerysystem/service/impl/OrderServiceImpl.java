@@ -26,7 +26,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public boolean updateOrder(Order order) throws OrderUpdateException, OrderNotFoundException {
-//        throws OrderUpdateException, OrderNotFoundException 
         try {
             Order existingOrder = getOrder(order.getID());
             return orderDAO.updateOrder(order);
@@ -121,12 +120,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order getOrder(int orderID) throws OrderNotFoundException {
-
-        if (orderDAO.getOrder(orderID) != null) {
-            return orderDAO.getOrder(orderID);
-        }
-        throw new OrderNotFoundException("Order " + orderID + " not found");
-
+        return orderDAO.getOrder(orderID);
     }
 
     @Override

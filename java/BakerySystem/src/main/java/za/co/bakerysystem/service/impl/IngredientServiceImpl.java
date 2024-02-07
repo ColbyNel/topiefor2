@@ -3,6 +3,7 @@ package za.co.bakerysystem.service.impl;
 import java.util.List;
 import za.co.bakerysystem.dao.IngredientDAO;
 import za.co.bakerysystem.dao.impl.IngredientDAOImpl;
+import za.co.bakerysystem.exception.ingredient.IngredientNotFoundException;
 import za.co.bakerysystem.model.Ingredient;
 import za.co.bakerysystem.service.IngredientService;
 
@@ -45,7 +46,7 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public Ingredient getIngredient(int ingredientID) {
+    public Ingredient getIngredient(int ingredientID) throws IngredientNotFoundException {
         return ingredientDAO.getIngredient(ingredientID);
     }
 
@@ -85,9 +86,9 @@ public class IngredientServiceImpl implements IngredientService {
 //        List<Ingredient> ingredientsByKeyword = ingredientService.getIngredientsByKeyWord(keyword);
 //        System.out.println("Ingredients with keyword '" + keyword + "': " + ingredientsByKeyword);
 //        // Test getIngredient
-        int ingredientID = 1; // Replace with an existing ingredient ID
-        Ingredient retrievedIngredient = ingredientService.getIngredient(ingredientID);
-        System.out.println("Ingredient with ID " + ingredientID + ": " + retrievedIngredient);
+       //int ingredientID = 1; // Replace with an existing ingredient ID
+       // Ingredient retrievedIngredient = ingredientService.getIngredient(ingredientID);
+       // System.out.println("Ingredient with ID " + ingredientID + ": " + retrievedIngredient);
 //        // Test getIngredientQuantity
 //        int ingredientQuantity = ingredientService.getIngredientQuantity();
 //        System.out.println("Total ingredient quantity: " + ingredientQuantity);

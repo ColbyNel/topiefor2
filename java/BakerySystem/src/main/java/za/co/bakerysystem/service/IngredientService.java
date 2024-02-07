@@ -1,8 +1,8 @@
 package za.co.bakerysystem.service;
 
 import java.util.List;
+import za.co.bakerysystem.exception.ingredient.IngredientNotFoundException;
 import za.co.bakerysystem.model.Ingredient;
-import za.co.bakerysystem.model.Product;
 
 public interface IngredientService {
 
@@ -14,10 +14,9 @@ public interface IngredientService {
 
     List<Ingredient> getIngredientsByKeyWord(String keyWord);
 
-    Ingredient getIngredient(int ingredientID);
+    Ingredient getIngredient(int ingredientID) throws IngredientNotFoundException ;
 
     int getIngredientQuantity();
-
 
     List<Ingredient> getIngredientsInStock();
 

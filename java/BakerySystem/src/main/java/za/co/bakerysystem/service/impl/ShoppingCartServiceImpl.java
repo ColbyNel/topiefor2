@@ -11,6 +11,7 @@ import za.co.bakerysystem.dao.ShoppingCartDAO;
 import za.co.bakerysystem.dao.impl.ProductDAOImpl;
 import za.co.bakerysystem.dao.impl.ShoppingCartDAOImpl;
 import static za.co.bakerysystem.dao.impl.ShoppingCartDAOImpl.db;
+import za.co.bakerysystem.exception.shoppingcart.ShoppingCartNotFoundException;
 import za.co.bakerysystem.model.Product;
 import za.co.bakerysystem.model.RecipeIngredient;
 import za.co.bakerysystem.model.ShoppingCart;
@@ -33,7 +34,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public ShoppingCart getShoppingCartById(int cartID) {
+    public ShoppingCart getShoppingCartById(int cartID) throws ShoppingCartNotFoundException{
         return shoppingCartDAO.getShoppingCartById(cartID);
     }
 //---------------------------------------------------------------------------------------------------

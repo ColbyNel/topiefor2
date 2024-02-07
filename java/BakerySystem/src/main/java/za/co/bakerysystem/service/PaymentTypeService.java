@@ -2,13 +2,14 @@ package za.co.bakerysystem.service;
 
 import java.util.List;
 import za.co.bakerysystem.exception.paymentType.DuplicatePaymentTypeException;
+import za.co.bakerysystem.exception.paymentType.PaymentTypeNotFoundException;
 import za.co.bakerysystem.model.PaymentType;
 
 public interface PaymentTypeService {
 
     boolean create(PaymentType paymentType);
 
-    PaymentType getById(int id);
+    PaymentType getById(int id) throws PaymentTypeNotFoundException;
 
     List<PaymentType> getAll();
 

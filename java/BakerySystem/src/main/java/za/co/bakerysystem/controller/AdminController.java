@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package za.co.bakerysystem.controller;
 
 import javax.ws.rs.Consumes;
@@ -14,14 +10,12 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import za.co.bakerysystem.dao.AdminDAO;
 import za.co.bakerysystem.dao.impl.AdminDAOImpl;
+import za.co.bakerysystem.exception.admin.AdminLoginException;
+import za.co.bakerysystem.exception.admin.AdminNotFoundException;
 import za.co.bakerysystem.model.Admin;
 import za.co.bakerysystem.service.AdminService;
 import za.co.bakerysystem.service.impl.AdminServiceImpl;
 
-/**
- *
- * @author Train
- */
 @Path("admin")
 public class AdminController {
 
@@ -32,11 +26,11 @@ public class AdminController {
     @Path("/{adminID}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAdminById(@PathParam("adminID") int adminID) {
-        Admin admin = adminService.getAdminById(adminID);
-        if (admin != null) {
+        try {
+            Admin admin = adminService.getAdminById(adminID);
             return Response.ok(admin).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
+        } catch (AdminNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Admin not found for ID: " + adminID).build();
         }
     }
 
@@ -57,11 +51,11 @@ public class AdminController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(Admin admin) {
-        Admin authenticatedAdmin = adminService.login(admin.getEmailAddress(), admin.getPassword());
-        if (authenticatedAdmin != null) {
+        try {
+            Admin authenticatedAdmin = adminService.login(admin.getEmailAddress(), admin.getPassword());
             return Response.ok(authenticatedAdmin).entity("Login successful").build();
-        } else {
-            return Response.status(Response.Status.UNAUTHORIZED).build();
+        } catch (AdminLoginException e) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Login failed. Please check your email and password.").build();
         }
     }
 

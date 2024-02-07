@@ -9,6 +9,7 @@ C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\dao\impl\OrderDetailsDAOImpl.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\dao\ProductDAO.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\controller\PaymentController.java
+C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\exception\admin\AdminLoginException.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\service\ProductService.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\model\SalesReport.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\dao\impl\SalesReportDetailsDAOImpl.java
@@ -20,6 +21,7 @@ C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\service\AdminService.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\controller\OrderDetailsController.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\model\RecipeIngredient.java
+C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\exception\ingredient\IngredientNotFoundException.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\dao\impl\ProductDAOImpl.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\controller\PaymentTypeController.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\dao\impl\RecipeIngredientDAOImpl.java
@@ -39,7 +41,7 @@ C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\dao\CustomerDAO.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\service\impl\CategoryServiceImpl.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\exception\customer\CustomerDeletionException.java
-C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\exception\admin\AdminNotFound.java
+C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\exception\category\CategoryNotFoundException.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\exception\order\OrderDeletionException.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\controller\CustomerController.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\model\Admin.java
@@ -52,6 +54,7 @@ C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\dao\impl\CustomerDAOImpl.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\exception\category\DuplicateCategoryExcpetion.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\model\Payment.java
+C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\exception\customer\CustomerLoginException.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\exception\order\InvalidSortOrderException.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\service\impl\RecipeServiceImpl.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\service\RecipeIngredientService.java
@@ -60,6 +63,7 @@ C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\model\Recipe.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\dao\OrderDAO.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\dao\impl\ShoppingCartDAOImpl.java
+C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\exception\shoppingcart\ShoppingCartNotFoundException.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\model\OrderDetails.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\service\impl\RecipeIngredientServiceImpl.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\service\IngredientService.java
@@ -86,15 +90,18 @@ C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\dao\impl\RecipeDAOImpl.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\service\impl\ShoppingCartServiceImpl.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\service\PaymentService.java
+C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\exception\paymentType\PaymentTypeNotFoundException.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\service\impl\OrderProfitServiceImpl.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\dao\impl\AdminDAOImpl.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\controller\AdminController.java
+C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\exception\recipeingredients\RecipeIngredientsNotFoundException.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\service\impl\OrderServiceImpl.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\dbmanager\DbManager.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\model\Customer.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\exception\product\DuplicateProductException.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\controller\RecipeIngredientController.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\dao\impl\CategoryDAOImpl.java
+C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\exception\admin\AdminNotFoundException.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\model\Order.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\exception\order\OrderUpdateException.java
 C:\Users\Train\Documents\GitHub\topiefor2\java\BakerySystem\src\main\java\za\co\bakerysystem\controller\OrderController.java

@@ -1,11 +1,12 @@
 package za.co.bakerysystem.dao;
 
+import za.co.bakerysystem.exception.shoppingcart.ShoppingCartNotFoundException;
 import za.co.bakerysystem.model.Product;
 import za.co.bakerysystem.model.ShoppingCart;
 
 public interface ShoppingCartDAO {
 
-    ShoppingCart getShoppingCartById(int cartID);
+    ShoppingCart getShoppingCartById(int cartID) throws ShoppingCartNotFoundException;
 
     boolean addProductToCart(int cartID, Product product, int quantity);
 

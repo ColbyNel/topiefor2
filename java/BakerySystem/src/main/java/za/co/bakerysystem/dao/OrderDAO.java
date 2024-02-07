@@ -2,6 +2,7 @@ package za.co.bakerysystem.dao;
 
 import java.time.LocalDate;
 import java.util.List;
+import za.co.bakerysystem.exception.order.OrderNotFoundException;
 import za.co.bakerysystem.model.Order;
 import za.co.bakerysystem.model.OrderDetails;
 
@@ -37,7 +38,7 @@ public interface OrderDAO {
 
     List<Order> getOrdersByRange(String startDate, String endDate, String keyWord);
 
-    Order getOrder(int orderID);
+    Order getOrder(int orderID) throws OrderNotFoundException;
 
     List<Order> getOrdersPlaced(String startDate, String endDate, String sortOrder);
 

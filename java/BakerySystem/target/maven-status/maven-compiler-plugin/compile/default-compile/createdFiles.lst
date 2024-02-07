@@ -28,6 +28,7 @@ za\co\bakerysystem\service\impl\IngredientServiceImpl.class
 za\co\bakerysystem\dao\OrderProfitDAO.class
 za\co\bakerysystem\dao\impl\OrderDAOImpl.class
 za\co\bakerysystem\dao\impl\SalesReportDetailsDAOImpl.class
+za\co\bakerysystem\exception\paymentType\PaymentTypeNotFoundException.class
 za\co\bakerysystem\service\impl\CustomerServiceImpl.class
 za\co\bakerysystem\service\CustomerService.class
 za\co\bakerysystem\dao\impl\CategoryDAOImpl.class
@@ -47,7 +48,6 @@ za\co\bakerysystem\service\OrderService.class
 za\co\bakerysystem\service\ShoppingCartService.class
 za\co\bakerysystem\exception\recipe\DuplicateRecipeException.class
 za\co\bakerysystem\dao\PaymentDAO.class
-za\co\bakerysystem\exception\admin\AdminNotFound.class
 za\co\bakerysystem\controller\OrderDetailsController.class
 za\co\bakerysystem\dao\impl\AdminDAOImpl.class
 za\co\bakerysystem\dao\impl\ProductDAOImpl.class
@@ -55,6 +55,7 @@ za\co\bakerysystem\model\SalesReportDetails.class
 za\co\bakerysystem\exception\order\OrderUpdateException.class
 za\co\bakerysystem\exception\category\DuplicateCategoryExcpetion.class
 za\co\bakerysystem\dbmanager\DbManager.class
+za\co\bakerysystem\exception\customer\CustomerLoginException.class
 za\co\bakerysystem\exception\product\ProductNotFoundException.class
 za\co\bakerysystem\service\impl\PaymentTypeServiceImpl.class
 za\co\bakerysystem\service\RecipeIngredientService.class
@@ -65,13 +66,17 @@ za\co\bakerysystem\model\Admin.class
 za\co\bakerysystem\service\impl\OrderProfitServiceImpl.class
 za\co\bakerysystem\dao\impl\RecipeIngredientDAOImpl.class
 za\co\bakerysystem\dao\OrderDetailsDAO.class
+za\co\bakerysystem\exception\ingredient\IngredientNotFoundException.class
 za\co\bakerysystem\dao\impl\SalesReportDAOImpl.class
 za\co\bakerysystem\service\impl\OrderDetailsServiceImpl.class
 za\co\bakerysystem\service\impl\RecipeServiceImpl.class
+za\co\bakerysystem\exception\shoppingcart\ShoppingCartNotFoundException.class
 za\co\bakerysystem\exception\InvalidDateFormatException.class
 za\co\bakerysystem\controller\ShoppingCartController.class
 za\co\bakerysystem\exception\customer\CustomerDeletionException.class
 za\co\bakerysystem\service\PaymentTypeService.class
+za\co\bakerysystem\exception\recipeingredients\RecipeIngredientsNotFoundException.class
+za\co\bakerysystem\exception\admin\AdminLoginException.class
 za\co\bakerysystem\service\impl\ProductServiceImpl.class
 za\co\bakerysystem\dao\RecipeDAO.class
 za\co\bakerysystem\dao\IngredientDAO.class
@@ -80,6 +85,7 @@ za\co\bakerysystem\service\impl\SalesReportDetailsServiceImpl.class
 za\co\bakerysystem\exception\order\OrderDeletionException.class
 za\co\bakerysystem\exception\customer\DuplicateIdException.class
 za\co\bakerysystem\dao\impl\OrderProfitDAOImpl.class
+za\co\bakerysystem\exception\category\CategoryNotFoundException.class
 za\co\bakerysystem\model\Customer.class
 za\co\bakerysystem\exception\customer\CustomerNotFoundException.class
 za\co\bakerysystem\dao\SalesReportDetailsDAO.class
@@ -92,6 +98,7 @@ za\co\bakerysystem\service\PaymentService.class
 za\co\bakerysystem\service\RecipeService.class
 za\co\bakerysystem\service\OrderProfitService.class
 za\co\bakerysystem\service\AdminService.class
+za\co\bakerysystem\exception\admin\AdminNotFoundException.class
 za\co\bakerysystem\controller\CategoryController.class
 za\co\bakerysystem\model\Payment.class
 za\co\bakerysystem\model\Product.class

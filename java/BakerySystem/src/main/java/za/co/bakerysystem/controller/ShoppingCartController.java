@@ -8,6 +8,7 @@ import za.co.bakerysystem.dao.ProductDAO;
 import za.co.bakerysystem.dao.ShoppingCartDAO;
 import za.co.bakerysystem.dao.impl.ProductDAOImpl;
 import za.co.bakerysystem.dao.impl.ShoppingCartDAOImpl;
+import za.co.bakerysystem.exception.shoppingcart.ShoppingCartNotFoundException;
 import za.co.bakerysystem.model.Product;
 import za.co.bakerysystem.model.ShoppingCart;
 import za.co.bakerysystem.service.ShoppingCartService;
@@ -28,12 +29,11 @@ public class ShoppingCartController {
             return Response.status(Response.Status.BAD_REQUEST).entity("Cart ID must be greater than 0").build();
         }
 
-        ShoppingCart shoppingCart = shoppingCartService.getShoppingCartById(cartID);
-
-        if (shoppingCart != null) {
+        try {
+            ShoppingCart shoppingCart = shoppingCartService.getShoppingCartById(cartID);
             return Response.ok(shoppingCart).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).entity("Shopping cart not found").build();
+        } catch (ShoppingCartNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }
     }
 

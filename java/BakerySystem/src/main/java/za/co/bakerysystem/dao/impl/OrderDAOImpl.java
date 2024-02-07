@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import za.co.bakerysystem.dao.OrderDAO;
 import za.co.bakerysystem.dbmanager.DbManager;
+import za.co.bakerysystem.exception.order.OrderNotFoundException;
 import za.co.bakerysystem.model.Order;
 import za.co.bakerysystem.model.OrderDetails;
 
@@ -475,7 +476,7 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     @Override
-    public Order getOrder(int orderID) {
+    public Order getOrder(int orderID) throws OrderNotFoundException{
         Order order = null;
         db = DbManager.getInstance();
         connection = db.getConnection();
@@ -503,9 +504,12 @@ public class OrderDAOImpl implements OrderDAO {
                 order.setComment(rs.getString("Comment"));
                 order.setAmount(rs.getDouble("Amount"));
                 order.setStatus(rs.getString("Status"));
+            } else {
+                throw new OrderNotFoundException("Order not found with ID: " + orderID);
             }
         } catch (SQLException e) {
             System.out.println("Error getting order: " + e.getMessage());
+            throw new OrderNotFoundException("Error getting order: " + e.getMessage());
         }
         return order;
     }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import za.co.bakerysystem.dao.IngredientDAO;
 import za.co.bakerysystem.dbmanager.DbManager;
+import za.co.bakerysystem.exception.ingredient.IngredientNotFoundException;
 import za.co.bakerysystem.model.Ingredient;
 import za.co.bakerysystem.model.Product;
 
@@ -119,23 +120,24 @@ public class IngredientDAOImpl implements IngredientDAO {
     }
 
     @Override
-    public Ingredient getIngredient(int ingredientID) {
+    public Ingredient getIngredient(int ingredientID) throws IngredientNotFoundException {
         Ingredient ingredient = null;
         connection = db.getConnection();
 
         try {
-
             ps = connection.prepareCall("CALL fetch_ingredient_info(?)");
-
             ps.setInt(1, ingredientID);
             rs = ps.executeQuery();
+
             if (rs.next()) {
                 ingredient = extractIngredientFromResultSet(rs);
+            } else {
+                throw new IngredientNotFoundException("Ingredient not found with ID: " + ingredientID);
             }
 
         } catch (SQLException e) {
-            System.out.println("Error:" + e.getMessage());
-
+            e.printStackTrace();
+            throw new IngredientNotFoundException("Error fetching ingredient information");
         }
 
         return ingredient;
@@ -284,7 +286,7 @@ public class IngredientDAOImpl implements IngredientDAO {
 //        
 //                }
         //Test for getIngredient 
-        System.out.println(ingredientDAO.getIngredient(1));
+       // System.out.println(ingredientDAO.getIngredient(1));
         //Test for getIngredientsByKeyWord
 //        List<Ingredient> listOfIngredientByKeyWord = ingredientDAO.getIngredientsByKeyWord("powder");
 //

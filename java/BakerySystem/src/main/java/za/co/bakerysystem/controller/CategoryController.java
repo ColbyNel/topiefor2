@@ -6,6 +6,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import za.co.bakerysystem.dao.CategoryDAO;
 import za.co.bakerysystem.dao.impl.CategoryDAOImpl;
+import za.co.bakerysystem.exception.category.CategoryNotFoundException;
 import za.co.bakerysystem.exception.category.DuplicateCategoryExcpetion;
 import za.co.bakerysystem.model.Category;
 import za.co.bakerysystem.service.CategoryService;
@@ -42,10 +43,11 @@ public class CategoryController {
     @Path("/get_category/{categoryId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCategoryById(@PathParam("categoryId") int categoryId) {
-        if (categoryService.getCategoryById(categoryId) != null) {
-            return Response.ok(categoryService.getCategoryById(categoryId)).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).entity("Category not found").build();
+        try {
+            Category category = categoryService.getCategoryById(categoryId);
+            return Response.ok(category).build();
+        } catch (CategoryNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Category Not Found").build();
         }
     }
 

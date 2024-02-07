@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import za.co.bakerysystem.dao.AdminDAO;
 import za.co.bakerysystem.dbmanager.DbManager;
+import za.co.bakerysystem.exception.admin.AdminLoginException;
+import za.co.bakerysystem.exception.admin.AdminNotFoundException;
 import za.co.bakerysystem.model.Admin;
 
 public class AdminDAOImpl implements AdminDAO {
@@ -31,7 +33,7 @@ public class AdminDAOImpl implements AdminDAO {
     private static final String INSERT_ADMIN = "INSERT INTO Admin (emailAddress, password) VALUES (?, ?)";
 
     @Override
-    public Admin getAdminById(int adminID) {
+    public Admin getAdminById(int adminID) throws AdminNotFoundException {
         db = DbManager.getInstance();
 
         try {
@@ -42,11 +44,13 @@ public class AdminDAOImpl implements AdminDAO {
 
             if (rs.next()) {
                 return extractAdminFromResultSet(rs);
+            } else {
+                throw new AdminNotFoundException("Admin not found for ID: " + adminID);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new AdminNotFoundException("Error retrieving admin information for ID: " + adminID);
         }
-        return null;
     }
 
     @Override
@@ -81,7 +85,7 @@ public class AdminDAOImpl implements AdminDAO {
     }
 
     @Override
-    public Admin login(String emailAddress, String password) {
+    public Admin login(String emailAddress, String password) throws AdminLoginException {
         db = DbManager.getInstance();
 
         try {
@@ -93,11 +97,13 @@ public class AdminDAOImpl implements AdminDAO {
 
             if (rs.next()) {
                 return extractAdminFromResultSet(rs);
+            } else {
+                throw new AdminLoginException("Invalid email or password");
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new AdminLoginException("Error during login");
         }
-        return null;
     }
 
     private Admin extractAdminFromResultSet(ResultSet rs) throws SQLException {

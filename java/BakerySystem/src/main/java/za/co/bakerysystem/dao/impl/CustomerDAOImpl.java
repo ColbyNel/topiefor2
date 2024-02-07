@@ -7,6 +7,9 @@ import java.util.List;
 import za.co.bakerysystem.dao.CustomerDAO;
 import za.co.bakerysystem.dao.ProductDAO;
 import za.co.bakerysystem.dbmanager.DbManager;
+import za.co.bakerysystem.exception.customer.CustomerDeletionException;
+import za.co.bakerysystem.exception.customer.CustomerLoginException;
+import za.co.bakerysystem.exception.customer.CustomerNotFoundException;
 import za.co.bakerysystem.model.Customer;
 import za.co.bakerysystem.model.Product;
 
@@ -70,7 +73,7 @@ public class CustomerDAOImpl implements CustomerDAO {
     }
 
     @Override
-    public Customer login(String email, String password) {
+    public Customer login(String email, String password) throws CustomerLoginException {
         db = DbManager.getInstance();
         String sql = "SELECT * FROM customer WHERE email = ? AND password = ?";
         try {
@@ -81,11 +84,12 @@ public class CustomerDAOImpl implements CustomerDAO {
             rs = ps.executeQuery();
             if (rs.next()) {
                 return extractCustomerFromResultSet(rs);
+            } else {
+                throw new CustomerLoginException("Invalid email or password");
             }
         } catch (SQLException ex) {
-            System.out.println("Error: " + ex.getMessage());
+            throw new CustomerLoginException("Error during customer login: " + ex.getMessage());
         }
-        return null;
     }
 
     @Override
@@ -180,12 +184,11 @@ public class CustomerDAOImpl implements CustomerDAO {
             System.out.println("Error: " + ex.getMessage());
 
         }
-
         return customers;
     }
 
     @Override
-    public Customer getCustomer(int customerID) { // throws Us
+    public Customer getCustomer(int customerID) throws CustomerNotFoundException {
         db = DbManager.getInstance();
         connection = db.getConnection();
         try {
@@ -194,12 +197,12 @@ public class CustomerDAOImpl implements CustomerDAO {
             rs = ps.executeQuery();
             if (rs.next()) {
                 return extractCustomerFromResultSet(rs);
+            } else {
+                throw new CustomerNotFoundException("Customer not found with ID: " + customerID);
             }
         } catch (SQLException ex) {
-            System.out.println("Error: " + ex.getMessage());
+            throw new CustomerNotFoundException("Error fetching customer information");
         }
-        // throw new UserNotFound("User not found");
-        return null;
     }
 
     @Override
@@ -221,42 +224,47 @@ public class CustomerDAOImpl implements CustomerDAO {
             System.out.println("Error: " + ex.getMessage());
 
         }
-
         return total;
     }
 
     @Override
-    public boolean deleteCustomer(int customerID) {
+    public boolean deleteCustomer(int customerID) throws CustomerNotFoundException, CustomerDeletionException {
         db = DbManager.getInstance();
         connection = db.getConnection();
 
-        try (PreparedStatement ps = connection.prepareStatement("DELETE FROM Customer WHERE ID = ?")) {
+        try {
+            ps = connection.prepareStatement("DELETE FROM Customer WHERE ID = ?");
             ps.setInt(1, customerID);
             int affectedRows = ps.executeUpdate();
-            return affectedRows > 0;
+
+            if (affectedRows > 0) {
+                return true;
+            } else {
+                throw new CustomerNotFoundException("Customer not found with ID: " + customerID);
+            }
         } catch (SQLException ex) {
-            System.out.println("Error: " + ex.getMessage());
-            return false;
+            throw new CustomerDeletionException("Error deleting customer with ID: " + customerID);
         }
     }
 
     @Override
-    public Customer getCustomerByEmail(String email) {
+    public Customer getCustomerByEmail(String email) throws CustomerNotFoundException {
         db = DbManager.getInstance();
         connection = db.getConnection();
+
         try {
             ps = connection.prepareCall("CALL fetch_customer_email(?)");
             ps.setString(1, email);
             rs = ps.executeQuery();
+
             if (rs.next()) {
                 return extractCustomerFromResultSet(rs);
+            } else {
+                throw new CustomerNotFoundException("Customer not found with email: " + email);
             }
         } catch (SQLException ex) {
-            System.out.println("Error: " + ex.getMessage());
+            throw new CustomerNotFoundException("Error fetching customer by email: " + ex.getMessage());
         }
-
-        return null;
-
     }
 
     @Override
