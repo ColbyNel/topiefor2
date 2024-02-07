@@ -11,7 +11,9 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import za.co.bakerysystem.dao.OrderDAO;
 import za.co.bakerysystem.dbmanager.DbManager;
 import za.co.bakerysystem.exception.order.OrderNotFoundException;
@@ -515,6 +517,28 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     @Override
+    public List<Map<String, Object>> getTotalOrdersQuantityPerDay() {
+        List<Map<String, Object>> resultList = new ArrayList<>();
+
+        try {
+            connection = db.getConnection();
+            CallableStatement stmt = connection.prepareCall("{CALL GetOrdersPerDay()}");
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Map<String, Object> row = new HashMap<>();
+                row.put("DayOfWeek", rs.getString("DayOfWeek"));
+                row.put("OrdersCount", rs.getInt("OrdersCount"));
+                resultList.add(row);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        return resultList;
+    }
+
+    @Override
     public boolean deleteOrder(int orderID) {
         boolean retVal = false;
         db = DbManager.getInstance();
@@ -628,7 +652,20 @@ public class OrderDAOImpl implements OrderDAO {
     //------------------------------------------------------------------------------------------------
     public static void main(String[] args) {
         OrderDAOImpl orderDAO = new OrderDAOImpl();
-//
+
+        // Test getTotalOrdersQuantityPerDay
+        System.out.println("\nTotal Orders Quantity Per Day:");
+        List<Map<String, Object>> totalOrdersPerDayList = orderDAO.getTotalOrdersQuantityPerDay();
+        printResult(totalOrdersPerDayList);
+    }
+
+    private static void printResult(List<Map<String, Object>> resultList) {
+        for (Map<String, Object> row : resultList) {
+            for (Map.Entry<String, Object> entry : row.entrySet()) {
+                System.out.println(entry.getKey() + ": " + entry.getValue());
+            }
+            System.out.println("----------");
+        }
 ////        // Test createOrder
 //        Order orderToCreate = new Order();
 //        orderToCreate.setCustomerID(1);
@@ -639,6 +676,7 @@ public class OrderDAOImpl implements OrderDAO {
 //        orderToCreate.setAmount(90.0);
 //        orderToCreate.setStatus("Delivered");
 //        orderToCreate.setID(2);
+
 //
 ////
 //        boolean createOrderResult = orderDAO.createOrder(orderToCreate);
@@ -646,26 +684,24 @@ public class OrderDAOImpl implements OrderDAO {
 //        boolean createOrderResult = orderDAO.createOrder(orderToCreate);
 //        System.out.println("Create Order Result: " + createOrderResult);
         // Test updateOrder
-        Order orderToUpdate = orderDAO.getOrders().get(0); // Assuming there's an order in the database
-        orderToUpdate.setComment("Get Comment");
-
-        boolean updateOrderResult = orderDAO.updateOrder(orderToUpdate);
-        System.out.println("Update Order Result: " + updateOrderResult);
+//        Order orderToUpdate = orderDAO.getOrders().get(0); // Assuming there's an order in the database
+//        orderToUpdate.setComment("Get Comment");
+//        boolean updateOrderResult = orderDAO.updateOrder(orderToUpdate);
+//        System.out.println("Update Order Result: " + updateOrderResult);
         // Test fulfillOrder
 //        int orderIdToFulfill = orderDAO.getOrders().get(0).getID(); // Assuming there's an order in the database
 //        boolean fulfillOrderResult = orderDAO.fulfillOrder(orderIdToFulfill, true);
 //        System.out.println("Fulfill Order Result: " + fulfillOrderResult);
         // Test createOrderDetail
-        OrderDetails orderDetails = new OrderDetails();
+//        OrderDetails orderDetails = new OrderDetails();
 //        orderDetails.setOrderID(orderIdToFulfill);
-        orderDetails.setOrderID(4);
-        orderDetails.setProductID(2); // Assuming there's a product in the database
-        orderDetails.setPriceAtSale(20.0);
-        orderDetails.setFoodCostAtSale(15.0);
-        orderDetails.setQuantity(2);
-        orderDetails.setComment("Test Order Detail");
+//        orderDetails.setOrderID(4);
+//        orderDetails.setProductID(2); // Assuming there's a product in the database
+//        orderDetails.setPriceAtSale(20.0);
+//        orderDetails.setFoodCostAtSale(15.0);
+//        orderDetails.setQuantity(2);
+//        orderDetails.setComment("Test Order Detail");
 //
-
 //        OrderDetails orderDetails = new OrderDetails();
 //        //orderDetails.setOrderID(orderIdToFulfill);
 //        orderDetails.setOrderID(3);

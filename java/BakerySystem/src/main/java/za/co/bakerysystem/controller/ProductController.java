@@ -1,6 +1,7 @@
 package za.co.bakerysystem.controller;
 
 import java.util.List;
+import java.util.Map;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -83,6 +84,19 @@ public class ProductController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllProducts() {
         List<Product> allProducts = productService.getProducts();
+
+        if (allProducts != null && !allProducts.isEmpty()) {
+            return Response.ok(allProducts).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("No product found").build();
+        }
+    }
+
+    @GET
+    @Path("/popularity_product_per_category")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getPopularityOfProductsPerCategory() {
+        List<Map<String, Object>> allProducts = productService.getPopularityOfProductsPerCategory();
 
         if (allProducts != null && !allProducts.isEmpty()) {
             return Response.ok(allProducts).build();

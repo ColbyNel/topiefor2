@@ -2,6 +2,7 @@ package za.co.bakerysystem.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import za.co.bakerysystem.exception.order.OrderDeletionException;
 import za.co.bakerysystem.exception.order.OrderNotFoundException;
 import za.co.bakerysystem.exception.order.OrderUpdateException;
@@ -12,7 +13,7 @@ public interface OrderService {
 
     boolean createOrder(Order order);
 
-    boolean updateOrder(Order order)throws OrderUpdateException, OrderNotFoundException;
+    boolean updateOrder(Order order) throws OrderUpdateException, OrderNotFoundException;
 
     boolean fulfillOrder(int orderID, int fullFilled);
 
@@ -51,4 +52,7 @@ public interface OrderService {
     boolean deleteOrder(int orderID) throws OrderDeletionException, OrderNotFoundException;
 
     void deleteOrderDetail(int orderID);
+
+    public List<Map<String, Object>> getTotalOrdersQuantityPerDay();
+
 }

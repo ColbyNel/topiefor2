@@ -2,7 +2,11 @@ package za.co.bakerysystem.dao;
 
 import java.time.LocalDate;
 import java.util.List;
+<<<<<<< Updated upstream
 import za.co.bakerysystem.exception.order.OrderNotFoundException;
+=======
+import java.util.Map;
+>>>>>>> Stashed changes
 import za.co.bakerysystem.model.Order;
 import za.co.bakerysystem.model.OrderDetails;
 
@@ -49,5 +53,7 @@ public interface OrderDAO {
     boolean deleteOrder(int orderID);
 
     void deleteOrderDetail(int orderID);
+
+    public List<Map<String, Object>> getTotalOrdersQuantityPerDay();
 
 }

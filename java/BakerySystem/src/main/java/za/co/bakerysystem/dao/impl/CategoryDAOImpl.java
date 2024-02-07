@@ -1,12 +1,15 @@
 package za.co.bakerysystem.dao.impl;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import za.co.bakerysystem.dao.CategoryDAO;
 import za.co.bakerysystem.dbmanager.DbManager;
 import za.co.bakerysystem.exception.category.CategoryNotFoundException;
@@ -141,6 +144,28 @@ public class CategoryDAOImpl implements CategoryDAO {
         return categories;
     }
 
+    @Override
+    public List<Map<String, Object>> getCategoryPopularity() {
+        List<Map<String, Object>> resultList = new ArrayList<>();
+
+        try {
+            connection = db.getConnection();
+            CallableStatement stmt = connection.prepareCall("{CALL GetCategoryPopularity()}");
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Map<String, Object> row = new HashMap<>();
+                row.put("Category", rs.getString("Category"));
+                row.put("NumberOfOrders", rs.getInt("NumberOfOrders"));
+                resultList.add(row);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        return resultList;
+    }
+
     private Category extractCategoryFromResultSet(ResultSet rs) throws SQLException {
         int categoryId = rs.getInt("categoryId");
         String description = rs.getString("description");
@@ -166,14 +191,22 @@ public class CategoryDAOImpl implements CategoryDAO {
 
         CategoryDAO categoryDAO = new CategoryDAOImpl(connection);
 
-        Category category = new Category("Pies");
+        //Test getCategoryPopularity
+        List<Map<String, Object>> popularity = categoryDAO.getCategoryPopularity();
 
-        if (categoryDAO.addCategory(category)) {
-            System.out.println("Successfully added category");
-        } else {
-            System.out.println("not added category");
+//        for (Map<String, Object> map : popularity) {
+//            System.out.println(map);
+//
+//        }
 
-        }
+//        Category category = new Category("Pies");
+//
+//        if (categoryDAO.addCategory(category)) {
+//            System.out.println("Successfully added category");
+//        } else {
+//            System.out.println("not added category");
+//
+//        }
 //        List<Category> categories = categoryDAO.getAllCategory();
 //        for (Category category1 : categories) {
 //            System.out.println(category1); 

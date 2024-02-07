@@ -1,8 +1,7 @@
 package za.co.bakerysystem.controller;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Map;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -198,6 +197,20 @@ public class OrderController {
         } catch (OrderNotFoundException ex) {
             return Response.status(Response.Status.NOT_FOUND).entity("Order not found for Order ID:" + orderId).build();
         }
+    }
+
+    @GET
+    @Path("/orders_per_week")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTotalOrdersQuantityPerDay() {
+        List<Map<String, Object>> ordersPerWeek = orderService.getTotalOrdersQuantityPerDay();
+
+        if (ordersPerWeek != null && !ordersPerWeek.isEmpty()) {
+            return Response.ok(ordersPerWeek).build();
+        }
+
+        return Response.status(Response.Status.NOT_FOUND).entity("No orders found").build();
+
     }
 
     @DELETE

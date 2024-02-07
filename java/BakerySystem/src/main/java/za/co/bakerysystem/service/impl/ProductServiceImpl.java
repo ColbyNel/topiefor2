@@ -8,6 +8,7 @@ import za.co.bakerysystem.model.Product;
 import za.co.bakerysystem.service.ProductService;
 
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import za.co.bakerysystem.dao.impl.ProductDAOImpl;
@@ -93,6 +94,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Map<String, Object>> getPopularityOfProductsPerCategory() {
+        return productDAO.getPopularityOfProductsPerCategory();
+    }
+
+    @Override
     public boolean exists(String name) throws DuplicateProductException {
         if (productDAO.getProducts().stream().anyMatch(product -> product.getName().equalsIgnoreCase(name.toLowerCase()))) {
             throw new DuplicateProductException("Product already exist");
@@ -143,7 +149,7 @@ public class ProductServiceImpl implements ProductService {
 //        System.out.println(productService.getProductQuantity());
 //Test product for shopping cart
 //System.out.println(productService.getProductsForShoppingCart(1));
-           // System.out.println(productDAO.getProduct(100));
+            // System.out.println(productDAO.getProduct(100));
         } catch (IOException ex) {
             Logger.getLogger(ProductServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         }

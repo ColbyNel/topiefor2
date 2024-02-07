@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Popularity of Products per Category</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    </head>
+    <body>
+        <canvas id="myChart" height="400" width="800"></canvas>
+
+        <script>
+            // Fetch data asynchronously
+            fetch('http://localhost:8080/BakerySystem/api/products/popularity_product_per_category')
+                    .then(response => response.json())
+                    .then(data => {
+                        var ctx = document.getElementById("myChart");
+
+                        var myChart = new Chart(ctx, {
+                            type: "pie",
+                            data: {
+                                labels: data.map(item => item.CategoryName),
+                                datasets: [{
+                                        data: data.map(item => item.ItemCount),
+                                        backgroundColor: ["#003f5c", "#58508d", "#bc5090", "#ff6361", "#ffa600"],
+                                    }]
+                            },
+                            options: {
+                                title: {
+                                    display: true,
+                                    text: 'Popularity of Products per Category'
+                                }
+                            }
+                        });
+                    })
+                    .catch(error => console.error('Error fetching data:', error));
+        </script>
+    </body>
+</html>

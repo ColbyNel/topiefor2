@@ -1,6 +1,7 @@
 package za.co.bakerysystem.dao;
 
 import java.util.List;
+import java.util.Map;
 import za.co.bakerysystem.model.Product;
 
 public interface ProductDAO {
@@ -30,6 +31,7 @@ public interface ProductDAO {
     int getProductQuantity();
 
     boolean deleteProduct(int productID);
-    
-   
+
+    List<Map<String, Object>> getPopularityOfProductsPerCategory();
+
 }

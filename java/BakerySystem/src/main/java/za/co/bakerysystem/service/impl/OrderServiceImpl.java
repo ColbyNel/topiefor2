@@ -2,6 +2,7 @@ package za.co.bakerysystem.service.impl;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import za.co.bakerysystem.dao.OrderDAO;
 import za.co.bakerysystem.dao.impl.OrderDAOImpl;
 import za.co.bakerysystem.exception.order.OrderDeletionException;
@@ -124,6 +125,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<Map<String, Object>> getTotalOrdersQuantityPerDay() {
+        return orderDAO.getTotalOrdersQuantityPerDay();
+    }
+
+    @Override
     public boolean deleteOrder(int orderID) throws OrderDeletionException, OrderNotFoundException {
 
         try {
@@ -148,6 +154,14 @@ public class OrderServiceImpl implements OrderService {
     public static void main(String[] args) {
         OrderDAO orderDAO = new OrderDAOImpl();
         OrderServiceImpl orderService = new OrderServiceImpl(orderDAO);
+        
+        
+        //test getTotalOrdersQuantityPerDay
+        List<Map<String, Object>> totalOrdersPerDayList = orderService.getTotalOrdersQuantityPerDay();
+        
+        totalOrdersPerDayList.forEach(map -> {
+            System.out.println(map.toString());
+        });
 
 //        // Create a sample Order
         Order order = new Order();
@@ -209,4 +223,5 @@ public class OrderServiceImpl implements OrderService {
 //            System.out.println(ex.getMessage());
 //        }
     }
+
 }

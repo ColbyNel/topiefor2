@@ -1,6 +1,7 @@
 package za.co.bakerysystem.service.impl;
 
 import java.util.List;
+import java.util.Map;
 import za.co.bakerysystem.dao.CategoryDAO;
 import za.co.bakerysystem.dao.impl.CategoryDAOImpl;
 import za.co.bakerysystem.exception.category.CategoryNotFoundException;
@@ -40,6 +41,11 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public boolean deleteCategory(int categoryID) {
         return categoryDAO.deleteCategory(categoryID);
+    }
+
+    @Override
+    public List<Map<String, Object>> getCategoryPopularity() {
+        return categoryDAO.getCategoryPopularity();
     }
 
     @Override

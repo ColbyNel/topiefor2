@@ -8,7 +8,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+<<<<<<< Updated upstream
+=======
+import java.util.Map;
+>>>>>>> Stashed changes
 import za.co.bakerysystem.dao.ProductDAO;
 import za.co.bakerysystem.dbmanager.DbManager;
 import za.co.bakerysystem.model.Product;
@@ -370,6 +375,29 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
+    public List<Map<String, Object>> getPopularityOfProductsPerCategory() {
+        List<Map<String, Object>> popularityList = new ArrayList<>();
+        try {
+            ps = connection.prepareStatement("CALL GetPopularityOfProductsPerCategory()");
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Map<String, Object> item = new HashMap<>();
+                item.put("CategoryID", rs.getInt("CategoryID"));
+                item.put("CategoryName", rs.getString("CategoryName"));
+                item.put("ItemCount", rs.getInt("ItemCount"));
+                popularityList.add(item);
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println("Error:" + e.getMessage());
+        }
+        return popularityList;
+    }
+
+    @Override
     public List<Product> getAllProductByCategory(int categoryID) {
         List<Product> products = new ArrayList<>();
         db = DbManager.getInstance();
@@ -420,6 +448,14 @@ public class ProductDAOImpl implements ProductDAO {
 
     public static void main(String[] args) {
         ProductDAO productDAO = new ProductDAOImpl();
+
+        //Test getPopularityOfProductsPerCategory
+        List<Map<String, Object>> items = productDAO.getPopularityOfProductsPerCategory();
+
+        for (Map<String, Object> item : items) {
+            System.out.println(item);
+        }
+
 //        File imageFile = new File("C:\\Users\\Train\\Downloads\\draft3.webp");
 //        try {
 //            byte[] pictureData = Files.readAllBytes(imageFile.toPath());
@@ -432,7 +468,6 @@ public class ProductDAOImpl implements ProductDAO {
 //                System.out.println("Failed");
 //
 //            }
-
 //test for update product
 //        if (productDAO.updateProduct(product)) {
 //            System.out.println("Successfully updated ");
@@ -442,7 +477,7 @@ public class ProductDAOImpl implements ProductDAO {
 //
 //        }
 //Test for getProduct
-        System.out.println(productDAO.getProduct(17));
+//        System.out.println(productDAO.getProduct(17));
 //byte[] pictureData = product.getPicture();
 //Test for getProductQuantity
 //        System.out.println(productDAO.getProductQuantity());
