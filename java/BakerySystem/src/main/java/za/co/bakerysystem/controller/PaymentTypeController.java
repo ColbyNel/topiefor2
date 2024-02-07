@@ -19,7 +19,7 @@ public class PaymentTypeController {
     private final PaymentTypeService paymentTypeService = new PaymentTypeServiceImpl(paymentTypeDAO);
 
     @POST
-    @Path("/save")
+    @Path("/create")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createPaymentType(PaymentType paymentType) {
 
@@ -31,7 +31,7 @@ public class PaymentTypeController {
             }
 
         } catch (DuplicatePaymentTypeException ex) {
-            return Response.status(Response.Status.FORBIDDEN).entity(ex.getMessage()).build();
+            return Response.status(Response.Status.FORBIDDEN).entity("Payment already exists").build();
         }
 
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
