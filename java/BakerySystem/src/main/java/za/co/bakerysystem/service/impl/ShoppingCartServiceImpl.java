@@ -144,7 +144,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 //        Product newProduct = new Product("Blue", 4.99, 6.7, 2, "GOOD BREAD", "HIGH IN carbo", "fibre", "none", 2);
 //        productDAO.createProduct(newProduct);
         // Get the newly added product from the database
-        Product addedProduct = productDAO.getProductsByKeyWord("Black Cake").get(0);
+        Product addedProduct = productDAO.getProductsByKeyWord("White Bread").get(0);
 
         // Add the product to the cart
         boolean addProductResult = shoppingCartService.addProductToCart(2, addedProduct, 3);
