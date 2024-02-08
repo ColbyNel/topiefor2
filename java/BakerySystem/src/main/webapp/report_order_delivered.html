@@ -38,6 +38,16 @@
         </style>
     </head>
     <body>
+        <label for="startDate">Start Date:</label>
+        <input type="date" id="startDate">
+        <label for="endDate">End Date:</label>
+        <input type="date" id="endDate">
+        <label for="sortOrder">Sort Order:</label>
+        <select id="sortOrder">
+            <option value="alphabetical">Alphabetical</option>
+            <option value="reverse_alphabetical">Reverse Alphabetical</option>
+        </select>
+        <button id="fetchButton">Fetch Data</button>
         <table id="dataTable" class="tftable" border="1">
             <tr>
                 <th>Customer ID</th>
@@ -47,7 +57,7 @@
                 <th>Comment</th>
                 <th>Amount</th>
                 <th>Status</th>
-                <th>ID</th>
+               
             </tr>
         </table>
 
@@ -79,7 +89,7 @@
                         <td>${row.comment}</td>
                         <td>${row.amount}</td>
                         <td>${row.status}</td>
-                        <td>${row.id}</td>
+                        
                     `;
                     table.appendChild(tr);
                 });
@@ -97,9 +107,9 @@
 
             // Function to prompt user for query parameters and fetch data
             function promptQueryParams() {
-                var startDate = prompt("Enter start date (YYYY-MM-DD):");
-                var endDate = prompt("Enter end date (YYYY-MM-DD):");
-                var sortOrder = prompt("Enter sort order:");
+                var startDate = document.getElementById("startDate").value;
+                var endDate = document.getElementById("endDate").value;
+                var sortOrder = document.getElementById("sortOrder").value;
                 var isConfirmed = confirm(`Start Date: ${startDate}\nEnd Date: ${endDate}\nSort Order: ${sortOrder}\n\nAre these correct?`);
                 if (isConfirmed) {
                     fetchData(startDate, endDate, sortOrder);
@@ -109,7 +119,11 @@
             }
 
             // Call promptQueryParams function when the page loads
-            window.onload = promptQueryParams;
+            window.onload = function () {
+                document.getElementById("fetchButton").addEventListener("click", promptQueryParams);
+            };
         </script>
+
+
     </body>
 </html>
