@@ -34,7 +34,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public ShoppingCart getShoppingCartById(int cartID) throws ShoppingCartNotFoundException{
+    public ShoppingCart getShoppingCartById(int cartID) throws ShoppingCartNotFoundException {
         return shoppingCartDAO.getShoppingCartById(cartID);
     }
 //---------------------------------------------------------------------------------------------------
@@ -55,9 +55,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         for (RecipeIngredient recipeIngredient : recipeIngredients) {
             int requiredQuantity = recipeIngredient.getQuantity() * quantity;
             if (!hasEnoughIngredientStock(recipeIngredient.getIngredientID(), requiredQuantity)) {
-                // Display an error message or handle out-of-stock scenario
-                System.out.println("Product is out of stock. Ingredient ID: " + recipeIngredient.getIngredientID());
-                return false;
+                throw new IllegalStateException("Product is out of stock. Ingredient ID: " + recipeIngredient.getIngredientID());
             }
         }
 
@@ -146,7 +144,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 //        Product newProduct = new Product("Blue", 4.99, 6.7, 2, "GOOD BREAD", "HIGH IN carbo", "fibre", "none", 2);
 //        productDAO.createProduct(newProduct);
         // Get the newly added product from the database
-        Product addedProduct = productDAO.getProductsByKeyWord("Bread").get(0);
+        Product addedProduct = productDAO.getProductsByKeyWord("Black Cake").get(0);
 
         // Add the product to the cart
         boolean addProductResult = shoppingCartService.addProductToCart(2, addedProduct, 3);

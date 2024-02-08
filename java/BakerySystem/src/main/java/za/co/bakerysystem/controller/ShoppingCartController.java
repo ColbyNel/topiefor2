@@ -1,6 +1,5 @@
 package za.co.bakerysystem.controller;
 
-import java.util.List;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -48,12 +47,17 @@ public class ShoppingCartController {
             return Response.status(Response.Status.BAD_REQUEST).entity("Cart ID and quantity must be greater than 0").build();
         }
 
-        boolean success = shoppingCartService.addProductToCart(cartID, product, quantity);
+        try {
+            boolean success = shoppingCartService.addProductToCart(cartID, product, quantity);
 
-        if (success) {
-            return Response.status(Response.Status.CREATED).entity("Product added to cart successfully").build();
-        } else {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Failed to add product to cart").build();
+            if (success) {
+                return Response.status(Response.Status.CREATED).entity("Product added to cart successfully").build();
+            } else {
+                return Response.status(Response.Status.BAD_REQUEST).entity("Failed to add product to cart").build();
+            }
+        } catch (IllegalStateException e) {
+            //returning a response indicating that the product is out of stock
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }
 
