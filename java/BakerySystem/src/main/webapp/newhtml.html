@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Product Details</title>
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+            }
+
+            #productDetails {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+
+            img {
+                max-width: 100%;
+                height: auto;
+                margin-bottom: 20px;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <div id="productDetails"></div>
+
+        <script>
+            // Replace {productId} with the actual product ID
+            var productId = 21; // Change this to the desired product ID
+
+            // Fetch product details including the image
+            $.ajax({
+                url: '/api/products/get_product/' + productId,
+                type: 'GET',
+                success: function (product) {
+                    // Display product details
+                    $('#productDetails').html('<h2>' + product.name + '</h2>');
+
+                    // Display image using Base64-encoded data
+                    if (product.picture) {
+                        $('#productDetails').append('<img src="data:image/png;base64,' + product.picture + '" alt="' + product.name + '">');
+                    }
+
+                    // Add other product details as needed
+                    $('#productDetails').append('<p>Price: $' + product.price + '</p>');
+                    $('#productDetails').append('<p>Description: ' + product.Description + '</p>');
+                    // Add other product details...
+
+                },
+                error: function () {
+                    console.error('Error fetching product details');
+                }
+            });
+        </script>
+
+    </body>
+
+</html>
