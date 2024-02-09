@@ -65,7 +65,7 @@ const cart = ({ params: { cartId } }: any) => {
     "totalAmount": 119.96
   }
   const cartProducts = getProducts(2);
-  const allProducts =cartProducts.products;
+  // const allProducts =cartProducts.products;
   // console.log(cartProducts)
   const allProducts = demoProducts.products;
   const newValue: number = 1;
