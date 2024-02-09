@@ -1,10 +1,7 @@
 package za.co.bakerysystem.controller;
 
-import java.util.Base64;
 import java.util.List;
 import java.util.Map;
-import javax.json.Json;
-import javax.json.JsonObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -54,52 +51,23 @@ public class ProductController {
             return Response.status(Response.Status.NOT_FOUND).entity("No product information found for the order").build();
         }
     }
+    
 
     @GET
     @Path("/get_product/{productId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProductById(@PathParam("productId") int productId) {
         try {
-            Product product = productService.getProduct(productId);
-
-            // Convert the image data to Base64
-            String base64ImageData = Base64.getEncoder().encodeToString(product.getPicture());
-
-            // Construct a JSON object with Base64-encoded image data
-            JsonObject jsonResponse = Json.createObjectBuilder()
-                    .add("productID", product.getID())
-                    .add("name", product.getName())
-                    .add("price", product.getPrice())
-                    .add("foodCost", product.getFoodCost())
-                    .add("timeCost", product.getTimeCost())
-                    .add("picture", base64ImageData)
-                    .add("Description", product.getDescription())
-                    .add("NutrientInformation", product.getNutrientInformation())
-                    .add("Warnings", product.getWarnings())
-                    .add("CategoryID", product.getCategoryID())
-                    .build();
-
-            return Response.ok(jsonResponse).build();
+            if (productService.getProduct(productId) != null) {
+                return Response.ok(productService.getProduct(productId)).build();
+            }
 
         } catch (ProductNotFoundException ex) {
-            // Handle the exception and return a proper error response
-            JsonObject errorResponse = Json.createObjectBuilder()
-                    .add("error", ex.getMessage())
-                    .build();
-
-            return Response.status(Response.Status.NOT_FOUND)
-                    .entity(errorResponse)
-                    .build();
-        } catch (Exception e) {
-            // Handle other exceptions and return a generic error response
-            JsonObject errorResponse = Json.createObjectBuilder()
-                    .add("error", "Internal Server Error")
-                    .build();
-
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(errorResponse)
-                    .build();
+            return Response.status(Response.Status.NOT_FOUND).entity(ex.getMessage()).build();
         }
+
+        return Response.status(Response.Status.NOT_FOUND).entity("Internal Server Error").build();
+
     }
 
     @DELETE

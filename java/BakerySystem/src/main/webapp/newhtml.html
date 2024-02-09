@@ -5,59 +5,55 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Product Details</title>
-        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 20px;
-            }
-
-            #productDetails {
-                max-width: 600px;
-                margin: 0 auto;
-            }
-
-            img {
-                max-width: 100%;
-                height: auto;
-                margin-bottom: 20px;
-            }
-        </style>
     </head>
 
     <body>
-
+        <h1>Product Details</h1>
         <div id="productDetails"></div>
 
         <script>
-            // Replace {productId} with the actual product ID
-            var productId = 21; // Change this to the desired product ID
+            // Fetch product details
+            const productId = 23; // Specify the product ID here
+            const endpoint = `http://localhost:8080/BakerySystem/api/products/get_product/${productId}`;
 
-            // Fetch product details including the image
-            $.ajax({
-                url: '/api/products/get_product/' + productId,
-                type: 'GET',
-                success: function (product) {
-                    // Display product details
-                    $('#productDetails').html('<h2>' + product.name + '</h2>');
+            fetch(endpoint)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Create a Blob from the base64 encoded picture
+                        const byteCharacters = atob(data.picture);
+                        const byteNumbers = new Array(byteCharacters.length);
+                        for (let i = 0; i < byteCharacters.length; i++) {
+                            byteNumbers[i] = byteCharacters.charCodeAt(i);
+                        }
+                        const byteArray = new Uint8Array(byteNumbers);
+                        const blob = new Blob([byteArray], {type: 'image/png'});
 
-                    // Display image using Base64-encoded data
-                    if (product.picture) {
-                        $('#productDetails').append('<img src="data:image/png;base64,' + product.picture + '" alt="' + product.name + '">');
-                    }
+                        // Create a URL for the Blob
+                        const pictureUrl = URL.createObjectURL(blob);
+                        
+                        console.log(pictureUrl);
 
-                    // Add other product details as needed
-                    $('#productDetails').append('<p>Price: $' + product.price + '</p>');
-                    $('#productDetails').append('<p>Description: ' + product.Description + '</p>');
-                    // Add other product details...
+                        // Create HTML to display product details
+                        const productHtml = `
+                        <h2>${data.name}</h2>
+                        <p><strong>Description:</strong> ${data.description}</p>
+                        <p><strong>Price:</strong> $${data.price}</p>
+                        <p><strong>Food Cost:</strong> $${data.foodCost}</p>
+                        <p><strong>Time Cost:</strong> ${data.timeCost} minutes</p>
+                        <p><strong>Category ID:</strong> ${data.categoryID}</p>
+                        <p><strong>Nutrient Information:</strong> ${data.nutrientInformation}</p>
+                        <p><strong>Warnings:</strong> ${data.warnings}</p>
+                        <img src="${pictureUrl}" alt="${data.name} Picture" style="max-width: 200px; max-height: 200px;">
+                    `;
 
-                },
-                error: function () {
-                    console.error('Error fetching product details');
-                }
-            });
+                        // Display product details in the HTML
+                        document.getElementById('productDetails').innerHTML = productHtml;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching product:', error);
+                        document.getElementById('productDetails').innerHTML = '<p>Error fetching product. Please try again later.</p>';
+                    });
         </script>
-
     </body>
 
 </html>
