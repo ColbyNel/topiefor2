@@ -12,8 +12,38 @@ interface Product {
 
 
 const checkout = async ({ params: { cartId } }: any) => {
-  const products = await getProductsFromCart(cartId);
-  const allProducts = products.products;
+  // const products = await getProductsFromCart(cartId);
+  const demoProducts = {
+    "cardID": 1,
+    "products": [
+        {
+            "name": "Chocolate Cake",
+            "price": 54.99,
+            "foodCost": 8.5,
+            "timeCost": 3,
+            "picture": "/choccake.jpg",
+            "id": 2,
+            "warnings": "none",
+            "nutrientInformation": "fibre and calcium",
+            "description": "High in chocolate",
+            "categoryID": 1
+        },
+        {
+            "name": "Fresh Bread",
+            "price": 25.99,
+            "foodCost": 6.7,
+            "timeCost": 2,
+            "picture": "/loaf.jpg",
+            "id": 3,
+            "warnings": "none",
+            "nutrientInformation": "fibre",
+            "description": "HIGH IN carbo",
+            "categoryID": 2
+        }
+    ],
+    "totalAmount": 119.96
+  }
+  const allProducts = demoProducts.products;
   let totalPrice: number = 0;
   const incrementPrice = (price: number) => {
     totalPrice += price;
@@ -29,12 +59,12 @@ const checkout = async ({ params: { cartId } }: any) => {
         <h1 className="mb-10 text-center text-8xl font-chicle">Checkout</h1>
         <div className="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0 ">
           <div className="rounded-sm md:w-2/3 ">
-            {allProducts.map(({ name, price, comment }: Product) => (
+            {allProducts.map(({ name, price, picture }: any) => (
               <a key={name}>
                 <div className=" justify-between mb-2 rounded-lg bg-white p-6 sm:flex sm:justify-start">
                   <div className="aspect-square w-28 overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-7 xl:aspect-w-7 ">
                     <img
-                      src={comment}
+                      src={picture}
                       alt={name}
                       className=" h-full w-full object-cover object-center transition duration-300 ease-in-out hover:scale-110"
                     />
@@ -49,7 +79,7 @@ const checkout = async ({ params: { cartId } }: any) => {
                     <div className="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
                       <div className="flex items-center border-gray-100"></div>
                       <div className="flex items-center space-x-4">
-                        <p className="text-2xl">R{incrementPrice(price)}.00</p>
+                        <p className="text-2xl">R{incrementPrice(price)}</p>
                       </div>
                     </div>
                   </div>
@@ -75,7 +105,7 @@ const checkout = async ({ params: { cartId } }: any) => {
               </div>
               <div className="mt-4 ml-96 flex justify-end sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
                 <div className="flex items-center space-x-4">
-                  <p className="text-2xl font-bold">R{totalPrice}.00</p>
+                  <p className="text-2xl font-bold">R{totalPrice}</p>
                 </div>
               </div>
             </div>
@@ -85,29 +115,9 @@ const checkout = async ({ params: { cartId } }: any) => {
 
         {/*Payment Buttons*/}
 
-        <div className="flex items-center justify-center flex-col bg-slate-100">
+        <div className="flex items-center justify-center flex-col bg-slate-100 mt-8">
           {" "}
-          <button
-            type="button"
-            className="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-800 dark:bg-white dark:border-gray-700 dark:text-gray-900 dark:hover:bg-gray-200 mr-2 mb-2 mt-6"
-          >
-            <svg
-              className="mr-2 -ml-1 w-10 h-3"
-              viewBox="0 0 660 203"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M233.003 199.762L266.362 4.002H319.72L286.336 199.762H233.003V199.762ZM479.113 8.222C468.544 4.256 451.978 0 431.292 0C378.566 0 341.429 26.551 341.111 64.604C340.814 92.733 367.626 108.426 387.865 117.789C408.636 127.387 415.617 133.505 415.517 142.072C415.384 155.195 398.931 161.187 383.593 161.187C362.238 161.187 350.892 158.22 333.368 150.914L326.49 147.803L319.003 191.625C331.466 197.092 354.511 201.824 378.441 202.07C434.531 202.07 470.943 175.822 471.357 135.185C471.556 112.915 457.341 95.97 426.556 81.997C407.906 72.941 396.484 66.898 396.605 57.728C396.605 49.591 406.273 40.89 427.165 40.89C444.611 40.619 457.253 44.424 467.101 48.39L471.882 50.649L479.113 8.222V8.222ZM616.423 3.99899H575.193C562.421 3.99899 552.861 7.485 547.253 20.233L468.008 199.633H524.039C524.039 199.633 533.198 175.512 535.27 170.215C541.393 170.215 595.825 170.299 603.606 170.299C605.202 177.153 610.098 199.633 610.098 199.633H659.61L616.423 3.993V3.99899ZM551.006 130.409C555.42 119.13 572.266 75.685 572.266 75.685C571.952 76.206 576.647 64.351 579.34 57.001L582.946 73.879C582.946 73.879 593.163 120.608 595.299 130.406H551.006V130.409V130.409ZM187.706 3.99899L135.467 137.499L129.902 110.37C120.176 79.096 89.8774 45.213 56.0044 28.25L103.771 199.45L160.226 199.387L244.23 3.99699L187.706 3.996"
-                fill="#0E4595"
-              ></path>
-              <path
-                d="M86.723 3.99219H0.682003L0 8.06519C66.939 24.2692 111.23 63.4282 129.62 110.485L110.911 20.5252C107.682 8.12918 98.314 4.42918 86.725 3.99718"
-                fill="#F2AE14"
-              ></path>
-            </svg>
-            Pay with Visa
-          </button>
+          
           <ValidatePaymentDialog paymentType={"MasterCard"} />
           {/* <button
             type="button"

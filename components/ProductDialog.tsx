@@ -16,7 +16,7 @@ interface ProductProps {
 
 // interface addToCartProps {
 //   productId: number,
-//   quantity: 
+//   quantity:
 
 // }
 
@@ -28,21 +28,20 @@ interface Product {
   categoryID: number;
   nutrientInformation: string;
   price: number;
-  picture: string;
 }
 
-const exampleProduct = {
-  id: 1,
-  name: "Choc and Pecan Cookies",
-  description: "A delicious twist on a classic combo",
-  warnings: "Contains Nuts",
-  categoryID: 2,
-  nutrientInformation: "Protein 6g Fat 5g Sugar 8g",
-  price: 23, 
-  picture: "/2.jpg"
-}
+// const exampleProduct = {
+//   id: 1,
+//   name: "Choc and Pecan Cookies",
+//   description: "A delicious twist on a classic combo",
+//   warnings: "Contains Nuts",
+//   categoryID: 2,
+//   nutrientInformation: "Protein 6g Fat 5g Sugar 8g",
+//   price: 23,
+//   picture: "/2.jpg"
+// }
 
-const getProductById = async (productId: any) => {
+const getProductById = async (productId: number) => {
   const req = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/products/get_product/${productId}`,
     {
@@ -52,71 +51,69 @@ const getProductById = async (productId: any) => {
       },
       next: {
         revalidate: 60,
-        tags: ["product"],
+        tags: ["get_product"],
       },
     }
   );
   return await req.json();
 };
 
-
-
-
-
 const getProduct = async (id: any) => {
-  const product = await getProductById(id);
+  const product: Product = await getProductById(id);
   // console.log(product);
   return product;
 };
 
-const addItemToCart = async (cartId: number, quantity: number, id: number) => {
-  const thisproduct = getProduct(id)
-  console.log(JSON.stringify(id));
-  const req = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/shopping_carts/add_product/${cartId}?quantity=${quantity}`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(thisproduct),
-    }
-  );
-  const response = await req;
+const addItemToCart = async (cartId: any, quantity: any, id: any) => {
+  // const thisproduct = getProduct(id);
+  // console.log(JSON.stringify({ id: id }));
+  try {
+    const req = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/shopping_carts/add_product/${cartId}?quantity=${quantity}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: id }),
+      }
+    );
 
-  return response.text();
+    const responseText = await req.text();
+    // console.log(responseText);
+    return responseText;
+  } catch (error) {
+    return (
+      <div>
+        <h1>Unable to add product to cart</h1>
+      </div>
+    );
+  }
 };
 // setInterval(getProductById,2000)
 
-const handleClick = async (cartId:number, quantity: number, id: number) => {
-  const response =  await addItemToCart(cartId,quantity,id)
-  return response
+const handleClick = async (cartId: number, quantity: number, id: number) => {
+  const response = await addItemToCart(cartId, quantity, id);
+  return response;
 };
 
-const ProductDialog: React.FC<ProductProps> = ({ productID }) => {
-  // const [product, setProduct] = useState<any>(null);
+var universalProductId:number = 1;
+export const setUniversalProductId = (value:number) => {
+  universalProductId = value
+}
 
-  // useEffect(() => {
-  //   const fetchProduct = async () => {
-  //     try {
-  //       const fetchedProduct = await getProductById(productID);
-  //       setProduct(fetchedProduct);
-  //     } catch (error) {
-  //       console.error("Error fetching product:", error);
-  //     }
-  //   };
 
-  //   if (productID) {
-  //     fetchProduct();
-  //   }
-  // }, [productID]);
+const ProductDialog: React.FC<ProductProps> = () => {
 
-  // if (!product) {
-  //   return null; // Return null or a loading indicator while fetching
-  // }
+  // console.log(productID)
+  console.log(universalProductId)
+  const selectedProduct = getProduct(universalProductId);
+
+  // console.log(selectedProduct)
   return (
     <Dialog>
-      <DialogTrigger className="h-full w-full object-none object-center transition duration-300 ease-in-out hover:backdrop-blur-sm text-opacity-0 hover:text-opacity-80 text-white text-3xl font-bold">
+      <DialogTrigger className="h-full w-full object-none object-center transition duration-300 ease-in-out hover:backdrop-blur-sm text-opacity-0 hover:text-opacity-80 text-white text-3xl font-bold"
+      >
         Yes Please!!!
       </DialogTrigger>
       <DialogContent>
@@ -124,10 +121,10 @@ const ProductDialog: React.FC<ProductProps> = ({ productID }) => {
           <div className="flex flex-wrap items-center lg:justify-between justify-center">
             <div className="focus:outline-none mx-2 w-72 xl:mb-0 mb-8">
               <DialogHeader>
-                <div key={productID}>
+                <div key={universalProductId}>
                   <img
-                    alt={exampleProduct.name}
-                    src={exampleProduct.picture}
+                    alt={selectedProduct.name}
+                    src={selectedProduct.picture}
                     className="focus:outline-none object-cover w-full h-44 rounded-t-xl"
                   />
                 </div>
@@ -137,21 +134,21 @@ const ProductDialog: React.FC<ProductProps> = ({ productID }) => {
                     <div className="p-4">
                       <div className="flex items-center">
                         <h2 className="focus:outline-none text-lg font-extrabold text-white">
-                          {exampleProduct.name}
+                          {selectedProduct.name}
                         </h2>
                       </div>
                       <p className="focus:outline-none text-xs text-gray-200 mt-2">
-                        {exampleProduct.description}
+                        {selectedProduct.description}
                       </p>
                       <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 mb-3 mt-3 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
-                        R{exampleProduct.price}
+                        R{selectedProduct.price}
                       </span>
 
                       <p className="focus:outline-none text-xs text-gray-200 mt-2">
-                        Nutrient Info: {exampleProduct.nutrientInformation}
+                        Nutrient Info: {selectedProduct.nutrientInformation}
                       </p>
                       <p className="focus:outline-none text-xs text-gray-200 mt-2">
-                        Allergens: {exampleProduct.warnings}
+                        Allergens: {selectedProduct.warnings}
                       </p>
                       {/* <form className="pt-7 pb-2">
                 <label
@@ -173,10 +170,10 @@ const ProductDialog: React.FC<ProductProps> = ({ productID }) => {
                       <div className="flex items-center justify-center mt-4 ">
                         <div className="pt-6 pb-2">
                           <button
-                            onClick={() => handleClick(2,1,4)}
+                            onClick={() => handleClick(3, 3, 9)}
                             className="button-hover group flex items-center justify-between gap-4 rounded-lg border border-current px-5 py-3 text-white transition-colors hover:bg-secondary focus:outline-none focus:ring active:bg-secondary"
                           >
-
+                            Add to Cart
                             {/* <CartDialog link={true} /> */}
                           </button>
                         </div>

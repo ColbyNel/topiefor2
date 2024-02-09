@@ -319,3 +319,18 @@ export const deleteOrder = async (orderid:number) => {
   )
   return req.text();
 }
+
+export const checkProductAvailability = async (productId:number) => {
+  const req = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/shopping_carts/add_product/1?quantity=1`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type":"application/json",
+      },
+      body: JSON.stringify({ id: productId }),
+    }
+  )
+  const reply = req.text()
+  return reply
+}

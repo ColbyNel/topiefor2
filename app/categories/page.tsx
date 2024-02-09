@@ -6,9 +6,13 @@ import React from "react";
 const Categories = async () => {
   const categories = await getAllCategories();
   return (
-    <>
+    <> <div className="bg-gradient-to-tr from-primary via-destructive to-white">
+      <div className="bg-transparent -mt-10">
+        <div className="pt-10">
       <Header />
-      <div className="bg-white flex min-h-screen">
+      </div>
+      </div>
+      <div className="bg-transparent flex min-h-screen -mb-40">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl py-8 sm:py-24 lg:max-w-none lg:py-32">
             <h2 className="text-5xl font-bold text-slate-600 text-center pb-12">
@@ -59,8 +63,13 @@ const Categories = async () => {
             </div>
           </div>
         </div>
+        
       </div>
+      <div className="bg-slate-400 mb-28">
       <Footer />
+      </div>
+      </div>
+      
     </>
   );
 };

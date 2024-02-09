@@ -1,3 +1,4 @@
+import React from "react";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ProductDialog from "@/components/ProductDialog";
@@ -61,8 +62,8 @@ const getAllCategories = async () => {
   return await req.json();
 };
 
-const allProducts1 = await getAllProducts();
-const categories = await getAllCategories();
+let allProducts1 = await getAllProducts();
+let categories = await getAllCategories();
 
 const allProducts = async () => {
   return (

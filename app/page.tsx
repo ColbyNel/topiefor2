@@ -11,7 +11,6 @@ export default function Home() {
       {/* <Register /> */}
       <Hero />
       <About />
-      <Footer />
     </main>
   );
 }

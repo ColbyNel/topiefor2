@@ -64,14 +64,14 @@ const Popup: React.FC<PopupProps> = ({ button }) => {
           Login
         </DialogTrigger>
       ):(
-        <DialogTrigger className="btn btn-link text-white hover:text-black px-4">
+        <DialogTrigger className="btn btn-link text-white hover:text-secondary px-4">
           Login
         </DialogTrigger>
       )}
       <DialogContent className="">
         <div className="flex items-center justify-center h-52">
-          <div className="rounded-lg border border-stroke border-primary bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-            <div className="border-b border-stroke rounded-t-lg bg-primary py-4 px-6.5 dark:border-strokedark">
+          <div className="rounded-lg border border-stroke border-secondary bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="border-b border-stroke rounded-t-lg bg-secondary py-4 px-6.5 dark:border-strokedark">
               <DialogTitle className="font-medium text-white dark:text-white text-center">
                 Log In
               </DialogTitle>
@@ -108,7 +108,7 @@ const Popup: React.FC<PopupProps> = ({ button }) => {
               <div className="mt-5 mb-5.5 flex items-center justify-between pb-5">
                 <p className="">Not a member?</p>
 
-                <a href="/register" className="text-sm text-primary">
+                <a href="/register" className="text-sm text-secondary">
                   Sign Up
                 </a>
               </div>
