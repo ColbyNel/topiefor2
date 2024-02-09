@@ -19,7 +19,7 @@ public class OrderDetailsController {
     @POST
     @Path("/save")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response saveOrderDetails(OrderDetails orderDetails) {
+    public Response createOrderDetails(OrderDetails orderDetails) {
         if (orderDetailsService.saveOrderDetails(orderDetails)) {
             return Response.status(Response.Status.CREATED).entity("Order details saved successfully").build();
         } else {
@@ -30,7 +30,7 @@ public class OrderDetailsController {
     @GET
     @Path("/find/{orderId}/{productId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findOrderDetails(
+    public Response getOrderDetails(
             @PathParam("orderId") int orderId,
             @PathParam("productId") int productId) {
         OrderDetails orderDetails = orderDetailsService.findOrderDetailsById(orderId, productId);
@@ -45,7 +45,7 @@ public class OrderDetailsController {
     @GET
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findAllOrderDetails() {
+    public Response getAllOrderDetails() {
         List<OrderDetails> allOrderDetails = orderDetailsService.findAllOrderDetails();
 
         if (allOrderDetails != null && !allOrderDetails.isEmpty()) {
