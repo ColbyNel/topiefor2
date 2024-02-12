@@ -11,13 +11,10 @@ const stats = [
   { name: "Ingredients", value: "Highest Quality" },
 ];
 
-
-
 const About = () => {
-  
-
   return (
     <>
+      <span className="bg-primary blur-xl w-screen h-10" />
       <div
         id="about"
         className="relative isolate overflow-hidden bg-gradient-to-tr from-primary to-white py-24 sm:py-32"
@@ -25,11 +22,10 @@ const About = () => {
         <div className="mx-auto max-w-7xl px-6 lg:px-8 flex flex-wrap items-center">
           <div className="ml-10 mx-auto max-w-2xl lg:mx-0 w-full lg:w-auto lg:flex-1">
             <h2 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
-              Our Story... <br />
+              Our story... <br />
               so far
             </h2>
             <p className="mt-6 text-lg leading-8 text-white ">
-            
               Many years ago in a land far far away (Boksburg) a student began
               baking in her spare time and selling to friends and family. By the
               end of her studies she had more requests than she could manage.
@@ -39,10 +35,10 @@ const About = () => {
               their home. Providing high-quality baked goods that remind the
               enjoyer of grandma, of mom, of dad, of home has always been at the
               doughy center of To Pie For's mission and now you can enjoy the
-              experience from the comfort of your home! 
+              experience from the comfort of your home!
             </p>
           </div>
-          <div className="w-full lg:w-auto lg:flex-1 lg:pl-12">
+          <div className="w-full lg:w-auto lg:flex-1 lg:pl-12 drop-shadow-2xl">
             <img src="/baker.png" alt="Ms Pat" className="mx-auto lg:mx-0" />
           </div>
         </div>
@@ -71,7 +67,6 @@ const About = () => {
         </div>
         <Footer />
       </div>
-      
     </>
   );
 };

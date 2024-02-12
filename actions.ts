@@ -3,7 +3,6 @@
 import { Interface } from "readline";
 import { revalidateTag } from "next/cache";
 
-
 interface Category {
   categoryId: number;
   description: string;
@@ -25,11 +24,9 @@ interface RegisterFormData {
   password: string;
 }
 
-
 {
   /*GET CUSTOMER BY ID FROM DB*/
 }
- 
 
 export const getSingleCustomer = async (customerId: string) => {
   const req = await fetch(
@@ -39,6 +36,7 @@ export const getSingleCustomer = async (customerId: string) => {
       headers: {
         "Content-Type": "application/json",
       },
+      cache: "no-cache",
       next: {
         revalidate: 60,
         tags: ["customers" + customerId],
@@ -69,22 +67,24 @@ export const getAllCustomers = async () => {
   /*GET ALL ITEMS IN A CATEGORY BY ID FROM DB*/
 }
 
-export const getProductsByCategory = async (id:number) => {
-  const req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/get_product_catergory/${id}`,
-  {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    next: {
-      revalidate: 60,
-      tags: ["products", "getProducts"],
-    },
-  });
+export const getProductsByCategory = async (id: number) => {
+  const req = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/products/get_product_catergory/${id}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      next: {
+        revalidate: 60,
+        tags: ["products", "getProducts"],
+      },
+    }
+  );
   // console.log(req)
   // revalidateTag("getProductsByCategory")
   return await req.json();
-}
+};
 
 // setInterval(getProductsByCategory, 20000)
 
@@ -110,9 +110,9 @@ export const getCategoryById = async (
 };
 
 export const getCategoryNameById = async (categoryID: number) => {
-  const categoryObject = getCategoryById(categoryID)
+  const categoryObject = getCategoryById(categoryID);
   return (await categoryObject).description;
-}
+};
 
 export const getProductById = async (productId: any) => {
   const req = await fetch(
@@ -174,9 +174,9 @@ export const getAllIngredients = async () => {
         tags: ["ingredients", "allIngredients"],
       },
     }
-  )
+  );
   return await req.json();
-}
+};
 
 export const getAllProducts = async () => {
   const req = await fetch(
@@ -191,42 +191,40 @@ export const getAllProducts = async () => {
         tags: ["products", "allProducts"],
       },
     }
-  )
+  );
   return await req.json();
-}
+};
 
 export const validateLogin = async (formData: MyFormData) => {
-  const req:Response = await fetch(
+  const req: Response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/customers/login`,
     {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(formData)
+      body: JSON.stringify(formData),
     }
   );
 
   const responseData = await req;
   return responseData.text();
+};
 
- 
-}
-
-export const signUp = async (formData: RegisterFormData ) => {
-  const req:Response = await fetch(
+export const signUp = async (formData: RegisterFormData) => {
+  const req: Response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/customers/signup`,
     {
       method: "POST",
-      headers:{
+      headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(formData)
+      body: JSON.stringify(formData),
     }
   );
   const responseData = await req;
   return responseData.text();
-}
+};
 
 export const getAllOrders = async () => {
   const req = await fetch(
@@ -241,9 +239,9 @@ export const getAllOrders = async () => {
         tags: ["products", "allProducts"],
       },
     }
-  )
+  );
   return await req.json();
-}
+};
 
 export const getOrderById = async (orderId: any) => {
   const req = await fetch(
@@ -258,10 +256,9 @@ export const getOrderById = async (orderId: any) => {
         tags: ["orders", "orderbyid"],
       },
     }
-  )
+  );
   return await req.json();
-}
-
+};
 
 export const deleteProduct = async (productId: number) => {
   const req = await fetch(
@@ -271,12 +268,12 @@ export const deleteProduct = async (productId: number) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(this)
+      body: JSON.stringify(this),
     }
-  )
+  );
   const responseData = await req;
   return responseData.text();
-}
+};
 
 export const getProductsFromCart = async (cartId: number) => {
   const req = await fetch(
@@ -284,53 +281,53 @@ export const getProductsFromCart = async (cartId: number) => {
     {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
-      }
+        "Content-Type": "application/json",
+      },
     }
-  )
+  );
   return req.json();
-}
+};
 
-export const deleteProductFromCart = async (cartId:number,id:number) => {
+export const deleteProductFromCart = async (cartId: number, id: number) => {
   const req = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/shopping_carts/remove_product/${cartId}`,
     {
       method: "DELETE",
       headers: {
-        "Content-Type":"application/json", 
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(id),
     }
-  )
+  );
   const responseData = await req;
   return responseData.text();
-}
+};
 
-export const deleteOrder = async (orderid:number) => {
+export const deleteOrder = async (orderid: number) => {
   const req = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/orders/delete/${orderid}`,
     {
       method: "DELETE",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(orderid),
     }
-  )
+  );
   return req.text();
-}
+};
 
-export const checkProductAvailability = async (productId:number) => {
+export const checkProductAvailability = async (productId: number) => {
   const req = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/shopping_carts/add_product/1?quantity=1`,
     {
       method: "POST",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ id: productId }),
     }
-  )
-  const reply = req.text()
-  return reply
-}
+  );
+  const reply = req.text();
+  return reply;
+};

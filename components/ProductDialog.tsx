@@ -11,7 +11,8 @@ import { useEffect, useState } from "react";
 import CartDialog from "./CartDialog";
 
 interface ProductProps {
-  productID: number;
+  // productID: number;
+  prod: any;
 }
 
 // interface addToCartProps {
@@ -41,28 +42,28 @@ interface Product {
 //   picture: "/2.jpg"
 // }
 
-const getProductById = async (productId: number) => {
-  const req = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/products/get_product/${productId}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      next: {
-        revalidate: 60,
-        tags: ["get_product"],
-      },
-    }
-  );
-  return await req.json();
-};
+// const getProductById = async (productId: number) => {
+//   const req = await fetch(
+//     `${process.env.NEXT_PUBLIC_API_URL}/products/get_product/${productId}`,
+//     {
+//       method: "GET",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       next: {
+//         revalidate: 60,
+//         tags: ["get_product"],
+//       },
+//     }
+//   );
+//   return await req.json();
+// };
 
-const getProduct = async (id: any) => {
-  const product: Product = await getProductById(id);
-  // console.log(product);
-  return product;
-};
+// const getProduct = async (id: any) => {
+//   // const product: Product = await getProductById(id);
+//   // console.log(product);
+//   return product;
+// };
 
 const addItemToCart = async (cartId: any, quantity: any, id: any) => {
   // const thisproduct = getProduct(id);
@@ -97,23 +98,21 @@ const handleClick = async (cartId: number, quantity: number, id: number) => {
   return response;
 };
 
-var universalProductId:number = 1;
-export const setUniversalProductId = (value:number) => {
-  universalProductId = value
-}
+var universalProductId: number = 1;
+export const setUniversalProductId = (value: number) => {
+  universalProductId = value;
+};
 
-
-const ProductDialog: React.FC<ProductProps> = () => {
-
+const ProductDialog: React.FC<ProductProps> = ({ prod }) => {
   // console.log(productID)
-  console.log(universalProductId)
-  const selectedProduct = getProduct(universalProductId);
+  // console.log(universalProductId);
+  console.log(prod);
+  // const prod = getProduct(universalProductId);
 
-  // console.log(selectedProduct)
+  // console.log(prod)
   return (
     <Dialog>
-      <DialogTrigger className="h-full w-full object-none object-center transition duration-300 ease-in-out hover:backdrop-blur-sm text-opacity-0 hover:text-opacity-80 text-white text-3xl font-bold"
-      >
+      <DialogTrigger className="h-full w-full object-none object-center transition duration-300 ease-in-out hover:backdrop-blur-sm text-opacity-0 hover:text-opacity-80 text-white text-3xl font-bold">
         Yes Please!!!
       </DialogTrigger>
       <DialogContent>
@@ -123,8 +122,8 @@ const ProductDialog: React.FC<ProductProps> = () => {
               <DialogHeader>
                 <div key={universalProductId}>
                   <img
-                    alt={selectedProduct.name}
-                    src={selectedProduct.picture}
+                    alt={prod.name}
+                    src={prod.picture}
                     className="focus:outline-none object-cover w-full h-44 rounded-t-xl"
                   />
                 </div>
@@ -134,21 +133,21 @@ const ProductDialog: React.FC<ProductProps> = () => {
                     <div className="p-4">
                       <div className="flex items-center">
                         <h2 className="focus:outline-none text-lg font-extrabold text-white">
-                          {selectedProduct.name}
+                          {prod.name}
                         </h2>
                       </div>
                       <p className="focus:outline-none text-xs text-gray-200 mt-2">
-                        {selectedProduct.description}
+                        {prod.description}
                       </p>
                       <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 mb-3 mt-3 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
-                        R{selectedProduct.price}
+                        R{prod.price}
                       </span>
 
                       <p className="focus:outline-none text-xs text-gray-200 mt-2">
-                        Nutrient Info: {selectedProduct.nutrientInformation}
+                        Nutrient Info: {prod.nutrientInformation}
                       </p>
                       <p className="focus:outline-none text-xs text-gray-200 mt-2">
-                        Allergens: {selectedProduct.warnings}
+                        Allergens: {prod.warnings}
                       </p>
                       {/* <form className="pt-7 pb-2">
                 <label

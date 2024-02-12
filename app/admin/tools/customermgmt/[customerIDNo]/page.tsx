@@ -4,8 +4,7 @@ import { deleteCustomer, getSingleCustomer } from "@/actions";
 import AdminHead from "@/components/AdminHead";
 import AdminMenu from "@/components/AdminMenu";
 
-export default async function SinglePage({ params: { customerIDNo } }:any) {
-
+export default async function SinglePage({ params: { customerIDNo } }: any) {
   // const getSingleCustomer = async (customerId: string) => {
   //   const req = await fetch(
   //     `${process.env.NEXT_PUBLIC_API_URL}/customers/get/${customerId}`,
@@ -24,13 +23,25 @@ export default async function SinglePage({ params: { customerIDNo } }:any) {
   // };
 
   const customer = await getSingleCustomer(customerIDNo);
-  const address:String = (customer?.addressOne || '') + ' ' + (customer?.addressTwo || '') + ', ' + (customer?.city || '') + ', ' + (customer?.zip || '')
-  const date:String = (customer?.joinDate?.dayOfMonth || '') + ' ' + (customer?.joinDate?.month) + ' ' + (customer?.joinDate?.year)
+  const address: String =
+    (customer?.addressOne || "") +
+    " " +
+    (customer?.addressTwo || "") +
+    ", " +
+    (customer?.city || "") +
+    ", " +
+    (customer?.zip || "");
+  const date: String =
+    (customer?.joinDate?.dayOfMonth || "") +
+    " " +
+    customer?.joinDate?.month +
+    " " +
+    customer?.joinDate?.year;
   // const getAllOrders = async (customerIDNo) =>{
   //   const req = await fetch(
   //     `${process.env.NEXT_PUBLIC_API_URL}/`
   //   )
-  // } 
+  // }
 
   // const [editMode, setEditMode] = useState(false);
   // const [formData, setFormData] = useState({
@@ -39,7 +50,6 @@ export default async function SinglePage({ params: { customerIDNo } }:any) {
   //   customerEmail: customer?.email,
   //   customerPhoneNo: customer?.phoneNumber,
   // })
-
 
   return (
     <>
@@ -58,6 +68,18 @@ export default async function SinglePage({ params: { customerIDNo } }:any) {
                 Personal details
               </p>
             </div>
+            <form
+              action={async (data: FormData) => {
+                "use server";
+                const cusName = data.get("customerName");
+                fetch("", {
+                  method: "POST",
+                  body: JSON.stringify({ cusName }),
+                });
+              }}
+            >
+              <input type="text" name="customerName" />
+            </form>
             <div className="mt-6 border-t border-gray-100">
               <dl className="divide-y divide-gray-100">
                 <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">

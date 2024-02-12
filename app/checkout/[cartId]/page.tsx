@@ -1,4 +1,5 @@
 import { getProductsFromCart } from "@/actions";
+import { createOrder } from "@/clientactions";
 import Header from "@/components/Header";
 import { ValidatePaymentDialog } from "@/components/ValidatePaymentDialog";
 
@@ -10,39 +11,38 @@ interface Product {
   comment: string; // Assuming comment is a valid image URL
 }
 
-
 const checkout = async ({ params: { cartId } }: any) => {
   // const products = await getProductsFromCart(cartId);
   const demoProducts = {
-    "cardID": 1,
-    "products": [
-        {
-            "name": "Chocolate Cake",
-            "price": 54.99,
-            "foodCost": 8.5,
-            "timeCost": 3,
-            "picture": "/choccake.jpg",
-            "id": 2,
-            "warnings": "none",
-            "nutrientInformation": "fibre and calcium",
-            "description": "High in chocolate",
-            "categoryID": 1
-        },
-        {
-            "name": "Fresh Bread",
-            "price": 25.99,
-            "foodCost": 6.7,
-            "timeCost": 2,
-            "picture": "/loaf.jpg",
-            "id": 3,
-            "warnings": "none",
-            "nutrientInformation": "fibre",
-            "description": "HIGH IN carbo",
-            "categoryID": 2
-        }
+    cardID: 1,
+    products: [
+      {
+        name: "Chocolate Cake",
+        price: 54.99,
+        foodCost: 8.5,
+        timeCost: 3,
+        picture: "/choccake.jpg",
+        id: 2,
+        warnings: "none",
+        nutrientInformation: "fibre and calcium",
+        description: "High in chocolate",
+        categoryID: 1,
+      },
+      {
+        name: "Fresh Bread",
+        price: 25.99,
+        foodCost: 6.7,
+        timeCost: 2,
+        picture: "/loaf.jpg",
+        id: 3,
+        warnings: "none",
+        nutrientInformation: "fibre",
+        description: "HIGH IN carbo",
+        categoryID: 2,
+      },
     ],
-    "totalAmount": 119.96
-  }
+    totalAmount: 119.96,
+  };
   const allProducts = demoProducts.products;
   let totalPrice: number = 0;
   const incrementPrice = (price: number) => {
@@ -50,9 +50,12 @@ const checkout = async ({ params: { cartId } }: any) => {
     return price;
   };
 
+  const createCustomerOrder = () => {
+    const response = createOrder(1, "", totalPrice);
+    return response;
+  };
 
-
-
+  console.log(createCustomerOrder());
   return (
     <>
       <div className="h-screen bg-gray-100 pt-20">
@@ -117,7 +120,6 @@ const checkout = async ({ params: { cartId } }: any) => {
 
         <div className="flex items-center justify-center flex-col bg-slate-100 mt-8">
           {" "}
-          
           <ValidatePaymentDialog paymentType={"MasterCard"} />
           {/* <button
             type="button"

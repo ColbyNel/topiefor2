@@ -57,6 +57,8 @@ const config = {
       fontFamily: {
         feature: ["Caveat Brush"],
         chicle: ["Chicle"],
+        cedarville: ["Cedarville Cursive"],
+        grandstander: ["'Grandstander', cursive"],
       },
       borderRadius: {
         lg: "var(--radius)",
