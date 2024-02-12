@@ -23,6 +23,8 @@ export default async function SinglePage({ params: { customerIDNo } }: any) {
   // };
 
   const customer = await getSingleCustomer(customerIDNo);
+  const address:String = (customer?.addressOne || '') + ' ' + (customer?.addressTwo || '') + ', ' + (customer?.city || '') + ', ' + (customer?.zip || '')
+  const date:String = (customer?.joinDate?.dayOfMonth || '') + ' ' + (customer?.joinDate?.month) + ' ' + (customer?.joinDate?.year)
   // const getAllOrders = async (customerIDNo) =>{
   //   const req = await fetch(
   //     `${process.env.NEXT_PUBLIC_API_URL}/`
@@ -36,10 +38,7 @@ export default async function SinglePage({ params: { customerIDNo } }: any) {
   //   customerEmail: customer?.email,
   //   customerPhoneNo: customer?.phoneNumber,
   // })
-  let editMode = false
-  const setEditMode = (value:boolean) => {
-    editMode = value
-  }
+
 
   return (
     <>
@@ -58,7 +57,6 @@ export default async function SinglePage({ params: { customerIDNo } }: any) {
                 Personal details
               </p>
             </div>
-            {editMode ? (
             <div className="mt-6 border-t border-gray-100">
               <dl className="divide-y divide-gray-100">
                 

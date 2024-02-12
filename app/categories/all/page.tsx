@@ -107,21 +107,23 @@ const allProducts = async () => {
                       <div className="absolute inset-0 flex items-center justify-center transition duration-300 ease-in-out hover:scale-110">
                         <ProductDialog prod={id} />
                       </div>
-                    </div>
 
-                    <h3 className="font-chicle mt-4 mb-3 text-2xl text-black">
-                      {name}
-                    </h3>
-                    <span className=" whitespace-nowrap rounded-full bg-purple-100 px-2.5 py-0.5 text-sm text-purple-700">
-                      {getCategoryNameById(categoryID)}
-                    </span>
-                    <p className="mt-3 text-lg text-slate-500">{description}</p>
-                    <p className="mt-1 text-xl font-medium text-primary">
-                      R{price}
-                    </p>
-                  </a>
-                </>
-              )
+                      <h3 className="font-chicle mt-4 mb-3 text-2xl text-black">
+                        {name}
+                      </h3>
+                      <span className=" whitespace-nowrap rounded-full bg-purple-100 px-2.5 py-0.5 text-sm text-purple-700">
+                        {getCategoryNameById(categoryID)}
+                      </span>
+                      <p className="mt-3 text-lg text-slate-500">
+                        {description}
+                      </p>
+                      <p className="mt-1 text-xl font-medium text-primary">
+                        R{price}
+                      </p>
+                    </a>
+                  </>
+                );
+              }
             )}
           </div>
         </div>

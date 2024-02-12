@@ -63,7 +63,7 @@ const Popup: React.FC<PopupProps> = ({ button }) => {
         <DialogTrigger className="button-hover rounded-md bg-secondary px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary ">
           Login
         </DialogTrigger>
-      ):(
+      ) : (
         <DialogTrigger className="btn btn-link text-white hover:text-secondary px-4">
           Login
         </DialogTrigger>
@@ -127,6 +127,5 @@ const Popup: React.FC<PopupProps> = ({ button }) => {
       </DialogContent>
     </Dialog>
   );
-  
-}
-export default Popup
+};
+export default Popup;

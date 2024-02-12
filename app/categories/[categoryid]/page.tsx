@@ -143,7 +143,6 @@ export default function SinglePage({ params: { categoryId } }: any) {
   
 
 
-
   return (
     <>
       <Header />
@@ -161,6 +160,10 @@ export default function SinglePage({ params: { categoryId } }: any) {
                 const available = true;
                 
 
+                // // Create a URL for the Blob
+                // const pictureUrl = URL.createObjectURL(blob);
+                // console.log(pictureUrl);
+                // const prod = await getProduct(id);
 
                 return available ? (
                   <a

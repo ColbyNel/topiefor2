@@ -48,11 +48,11 @@ const exampleProduct = {
   nutrientInformation: "fibre",
 };
 
-const getProduct = async (id: any) => {
-  const product: Product = await getProductById(id);
-  // console.log(product);
-  return product;
-};
+// const getProduct = async (id: any) => {
+//   // const product: Product = await getProductById(id);
+//   // console.log(product);
+//   return product;
+// };
 
 // setInterval(getProductById,2000)
 
