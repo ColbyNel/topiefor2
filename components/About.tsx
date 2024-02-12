@@ -42,7 +42,7 @@ const About = () => {
               experience from the comfort of your home! 
             </p>
           </div>
-          <div className="w-full lg:w-auto lg:flex-1 lg:pl-12">
+          <div className="w-full lg:w-auto lg:flex-1 lg:pl-12 drop-shadow-2xl">
             <img src="/baker.png" alt="Ms Pat" className="mx-auto lg:mx-0" />
           </div>
         </div>

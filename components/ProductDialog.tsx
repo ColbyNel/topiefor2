@@ -9,9 +9,14 @@ import {
 } from "@/components/ui/dialog";
 import { useEffect, useState } from "react";
 import CartDialog from "./CartDialog";
+import { addItemToCart, getProductById } from "@/clientactions";
+import { redirect } from "next/dist/server/api-utils";
+import successful from "./login/Successful";
+import { useRouter } from "next/navigation";
 
 interface ProductProps {
-  productID: number;
+  // productID: number;
+  prod: any;
 }
 
 // interface addToCartProps {
@@ -30,32 +35,17 @@ interface Product {
   price: number;
 }
 
-// const exampleProduct = {
-//   id: 1,
-//   name: "Choc and Pecan Cookies",
-//   description: "A delicious twist on a classic combo",
-//   warnings: "Contains Nuts",
-//   categoryID: 2,
-//   nutrientInformation: "Protein 6g Fat 5g Sugar 8g",
-//   price: 23,
-//   picture: "/2.jpg"
-// }
-
-const getProductById = async (productId: number) => {
-  const req = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/products/get_product/${productId}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      next: {
-        revalidate: 60,
-        tags: ["get_product"],
-      },
-    }
-  );
-  return await req.json();
+const exampleProduct = {
+  name: "Fresh Bread",
+  price: 4.99,
+  foodCost: 6.7,
+  timeCost: 2,
+  picture: "",
+  id: 3,
+  description: "HIGH IN carbo",
+  categoryID: 2,
+  warnings: "none",
+  nutrientInformation: "fibre",
 };
 
 const getProduct = async (id: any) => {
@@ -64,56 +54,34 @@ const getProduct = async (id: any) => {
   return product;
 };
 
-const addItemToCart = async (cartId: any, quantity: any, id: any) => {
-  // const thisproduct = getProduct(id);
-  // console.log(JSON.stringify({ id: id }));
-  try {
-    const req = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/shopping_carts/add_product/${cartId}?quantity=${quantity}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id: id }),
-      }
-    );
-
-    const responseText = await req.text();
-    // console.log(responseText);
-    return responseText;
-  } catch (error) {
-    return (
-      <div>
-        <h1>Unable to add product to cart</h1>
-      </div>
-    );
-  }
-};
 // setInterval(getProductById,2000)
 
-const handleClick = async (cartId: number, quantity: number, id: number) => {
-  const response = await addItemToCart(cartId, quantity, id);
-  return response;
+var universalProductId: number = 1;
+export const setUniversalProductId = (value: number) => {
+  universalProductId = value;
 };
 
-var universalProductId:number = 1;
-export const setUniversalProductId = (value:number) => {
-  universalProductId = value
-}
-
-
-const ProductDialog: React.FC<ProductProps> = () => {
-
+const ProductDialog: React.FC<ProductProps> = ({ prod }) => {
+  prod = exampleProduct;
   // console.log(productID)
-  console.log(universalProductId)
-  const selectedProduct = getProduct(universalProductId);
+  // console.log(universalProductId)
+  // const selectedProduct = getProduct(universalProductId);
+  // console.log(prod)
 
   // console.log(selectedProduct)
+  const added:boolean = false
+  const handleClick = async (cartId: number, quantity: number, id: number) => {
+    const response = await addItemToCart(cartId, quantity, id);
+    if (response == "Product added to cart successfully") {
+      return response;
+    } else {
+      return <p>Failed to add item to cart</p>;
+    }
+  };
+
   return (
     <Dialog>
-      <DialogTrigger className="h-full w-full object-none object-center transition duration-300 ease-in-out hover:backdrop-blur-sm text-opacity-0 hover:text-opacity-80 text-white text-3xl font-bold"
-      >
+      <DialogTrigger className="h-full w-full object-none object-center transition duration-300 ease-in-out hover:backdrop-blur-sm text-opacity-0 hover:text-opacity-80 text-white text-3xl font-bold">
         Yes Please!!!
       </DialogTrigger>
       <DialogContent>
@@ -123,8 +91,8 @@ const ProductDialog: React.FC<ProductProps> = () => {
               <DialogHeader>
                 <div key={universalProductId}>
                   <img
-                    alt={selectedProduct.name}
-                    src={selectedProduct.picture}
+                    alt={prod.name}
+                    src={prod.picture}
                     className="focus:outline-none object-cover w-full h-44 rounded-t-xl"
                   />
                 </div>
@@ -134,21 +102,21 @@ const ProductDialog: React.FC<ProductProps> = () => {
                     <div className="p-4">
                       <div className="flex items-center">
                         <h2 className="focus:outline-none text-lg font-extrabold text-white">
-                          {selectedProduct.name}
+                          {prod.name}
                         </h2>
                       </div>
                       <p className="focus:outline-none text-xs text-gray-200 mt-2">
-                        {selectedProduct.description}
+                        {prod.description}
                       </p>
                       <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 mb-3 mt-3 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
-                        R{selectedProduct.price}
+                        R{prod.price}
                       </span>
 
                       <p className="focus:outline-none text-xs text-gray-200 mt-2">
-                        Nutrient Info: {selectedProduct.nutrientInformation}
+                        Nutrient Info: {prod.nutrientInformation}
                       </p>
                       <p className="focus:outline-none text-xs text-gray-200 mt-2">
-                        Allergens: {selectedProduct.warnings}
+                        Allergens: {prod.warnings}
                       </p>
                       {/* <form className="pt-7 pb-2">
                 <label
@@ -170,7 +138,7 @@ const ProductDialog: React.FC<ProductProps> = () => {
                       <div className="flex items-center justify-center mt-4 ">
                         <div className="pt-6 pb-2">
                           <button
-                            onClick={() => handleClick(3, 3, 9)}
+                            onClick={() => handleClick(4, 1, prod.id)}
                             className="button-hover group flex items-center justify-between gap-4 rounded-lg border border-current px-5 py-3 text-white transition-colors hover:bg-secondary focus:outline-none focus:ring active:bg-secondary"
                           >
                             Add to Cart

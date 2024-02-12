@@ -105,7 +105,7 @@ const allProducts = async () => {
                         style={{ maxHeight: "300px" }}
                       />
                       <div className="absolute inset-0 flex items-center justify-center transition duration-300 ease-in-out hover:scale-110">
-                        <ProductDialog productID={id} />
+                        <ProductDialog prod={id} />
                       </div>
                     </div>
 
