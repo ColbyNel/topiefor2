@@ -13,7 +13,7 @@ import EditSuccessProduct from "./EditSuccessProduct";
 
 interface FormData {
   categoryID: number;
-  comment: string;
+//   picture: ;
   description: string;
   foodCost: number;
   name: string;
@@ -26,7 +26,7 @@ interface FormData {
 const AddProductDialog = () => {
   const [formData, setFormData] = useState<FormData>({
     categoryID: 0,
-    comment: "",
+    // picture: null,
     description: "",
     foodCost: 0,
     name: "",
@@ -91,7 +91,7 @@ const AddProductDialog = () => {
                     <dt className="text-sm font-medium leading-6 text-primary">
                       Category ID
                     </dt>
-                    <dd className="mt-1 text-sm leading-6 text-black sm:col-span-2 sm:mt-0">
+                    <dd className="mt-1 text-sm leading-6 text-black sm:col-span-2 sm:mt-0  ml-7">
                       <input
                         placeholder="1"
                         type="number"
@@ -106,7 +106,7 @@ const AddProductDialog = () => {
                     </dd>
                   </div>
 
-                  <div className="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                  {/* <div className="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                     <dt className="text-sm font-medium leading-6 text-primary">
                       Comment
                     </dt>
@@ -120,13 +120,13 @@ const AddProductDialog = () => {
                         className="border border-gray-300 rounded-lg focus:border-primary focus:outline-none focus:ring-primary bg-gray-100 p-2"
                       />
                     </dd>
-                  </div>
+                  </div> */}
 
                   <div className="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                     <dt className="text-sm font-medium leading-6 text-primary">
                       Description
                     </dt>
-                    <dd className="mt-1 text-sm leading-6 text-black sm:col-span-2 sm:mt-0">
+                    <dd className="mt-1 text-sm leading-6 text-black sm:col-span-2 sm:mt-0  ml-7">
                       <input
                         placeholder="description"
                         type="text"
@@ -143,7 +143,7 @@ const AddProductDialog = () => {
                     <dt className="text-sm font-medium leading-6 text-primary">
                       Food Cost
                     </dt>
-                    <dd className="mt-1 text-sm leading-6 text-black sm:col-span-2 sm:mt-0">
+                    <dd className="mt-1 text-sm leading-6 text-black sm:col-span-2 sm:mt-0  ml-7">
                       <input
                         placeholder="10"
                         type="number"
@@ -160,7 +160,7 @@ const AddProductDialog = () => {
                     <dt className="text-sm font-medium leading-6 text-primary">
                       Name
                     </dt>
-                    <dd className="mt-1 text-sm leading-6 text-black sm:col-span-2 sm:mt-0">
+                    <dd className="mt-1 text-sm leading-6 text-black sm:col-span-2 sm:mt-0  ml-7">
                       <input
                         placeholder="Product Name"
                         type="text"
@@ -174,10 +174,10 @@ const AddProductDialog = () => {
                   </div>
 
                   <div className="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                    <dt className="text-sm font-medium leading-6 text-primary">
-                      Nutrient Information
+                    <dt className="text-sm font-medium leading-6 text-primary ">
+                      Nutrient<br/> Information
                     </dt>
-                    <dd className="mt-1 text-sm leading-6 text-black sm:col-span-2 sm:mt-0">
+                    <dd className="mt-1 text-sm leading-6 text-black sm:col-span-2 sm:mt-0 ml-7">
                       <input
                         placeholder=""
                         type="text"
@@ -194,7 +194,7 @@ const AddProductDialog = () => {
                     <dt className="text-sm font-medium leading-6 text-primary">
                       Price
                     </dt>
-                    <dd className="mt-1 text-sm leading-6 text-black sm:col-span-2 sm:mt-0">
+                    <dd className="mt-1 text-sm leading-6 text-black sm:col-span-2 sm:mt-0  ml-7">
                       <input
                         placeholder="20"
                         type="text"
@@ -211,7 +211,7 @@ const AddProductDialog = () => {
                     <dt className="text-sm font-medium leading-6 text-primary">
                       Time Cost
                     </dt>
-                    <dd className="mt-1 text-sm leading-6 text-black sm:col-span-2 sm:mt-0">
+                    <dd className="mt-1 text-sm leading-6 text-black sm:col-span-2 sm:mt-0  ml-7">
                       <input
                         placeholder="5"
                         type="text"
@@ -227,8 +227,8 @@ const AddProductDialog = () => {
                   <div className="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                     <dt className="text-sm font-medium leading-6 text-primary">
                       Warnings
-                    </dt>
-                    <dd className="mt-1 text-sm leading-6 text-black sm:col-span-2 sm:mt-0">
+                    </dt> 
+                    <dd className="mt-1 text-sm leading-6 text-black sm:col-span-2 sm:mt-0  ml-7">
                       <input
                         placeholder="Dietry restrictions"
                         type="text"
