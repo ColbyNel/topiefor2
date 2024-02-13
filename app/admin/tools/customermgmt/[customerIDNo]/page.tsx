@@ -25,8 +25,8 @@ export default async function SinglePage({ params: { customerIDNo } }: any) {
 
 
   const customer = await getSingleCustomer(customerIDNo);
-
-
+  const address:String = (customer?.addressOne || '') + ' ' + (customer?.addressTwo || '') + ', ' + (customer?.city || '') + ', ' + (customer?.zip || '')
+  const date:String = (customer?.joinDate?.dayOfMonth || '') + ' ' + (customer?.joinDate?.month) + ' ' + (customer?.joinDate?.year)
   // const getAllOrders = async (customerIDNo) =>{
   //   const req = await fetch(
   //     `${process.env.NEXT_PUBLIC_API_URL}/`
@@ -41,7 +41,6 @@ export default async function SinglePage({ params: { customerIDNo } }: any) {
   //   customerEmail: customer?.email,
   //   customerPhoneNo: customer?.phoneNumber,
   // })
-
 
   const editMode = false;
   return (
@@ -190,7 +189,6 @@ export default async function SinglePage({ params: { customerIDNo } }: any) {
                           </dd>
                         </div>
 
-
                         <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                           <dt className="text-base font-medium leading-6 text-primary">
                             Id/Passport Number
@@ -204,7 +202,6 @@ export default async function SinglePage({ params: { customerIDNo } }: any) {
                             />
                           </dd>
                         </div>
-
 
                         <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                           <dt className="text-base font-medium leading-6 text-primary">
@@ -220,7 +217,6 @@ export default async function SinglePage({ params: { customerIDNo } }: any) {
                           </dd>
                         </div>
 
-
                         <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                           <dt className="text-base font-medium leading-6 text-primary">
                             Telephone No.
@@ -234,7 +230,6 @@ export default async function SinglePage({ params: { customerIDNo } }: any) {
                             />
                           </dd>
                         </div>
-
 
                         <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                           <dt className="text-base font-medium leading-6 text-primary">
@@ -250,7 +245,6 @@ export default async function SinglePage({ params: { customerIDNo } }: any) {
                           </dd>
                         </div>
 
-
                         <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                           <dt className="text-base font-medium leading-6 text-primary">
                             Address Line 2
@@ -264,7 +258,6 @@ export default async function SinglePage({ params: { customerIDNo } }: any) {
                             />
                           </dd>
                         </div>
-
 
                         <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                           <dt className="text-base font-medium leading-6 text-primary">
@@ -280,7 +273,6 @@ export default async function SinglePage({ params: { customerIDNo } }: any) {
                           </dd>
                         </div>
 
-
                         <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                           <dt className="text-base font-medium leading-6 text-primary">
                             Zip Code
@@ -294,7 +286,6 @@ export default async function SinglePage({ params: { customerIDNo } }: any) {
                             />
                           </dd>
                         </div>
-
 
                         <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                           <dt className="text-base font-medium leading-6 text-primary">
@@ -310,7 +301,6 @@ export default async function SinglePage({ params: { customerIDNo } }: any) {
                           </dd>
                         </div>
                       </form>
-
 
                       <div className="px-4 py-6 flex justify-center space-x-4 ">
                         <a
