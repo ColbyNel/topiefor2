@@ -1,6 +1,8 @@
+import AddIngredientDialog from "@/components/AddIngredientDialog";
 import AdminHead from "@/components/AdminHead";
 import AdminMenu from "@/components/AdminMenu";
-import IngredientsList from "@/components/IngredientsList"
+import IngredientsList from "@/components/IngredientsList";
+
 
 const ingredients = () => {
   return (
@@ -8,11 +10,19 @@ const ingredients = () => {
       <AdminHead />
       <div className="admin-container">
         <div className="admin-sidebar">
-      <AdminMenu />
+          <AdminMenu />
+        </div>
+        <IngredientsList />
+       
       </div>
-      <IngredientsList />
-      </div>
+      <div className="flex justify-center -m-60 gap-4">
+      <AddIngredientDialog />
+
+        </div>
     </>
   );
 };
 export default ingredients;
+
+
+

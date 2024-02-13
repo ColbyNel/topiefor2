@@ -1,10 +1,10 @@
 import { getAllIngredients } from "@/actions";
 
 
-const allIngredients = await getAllIngredients();
 
-const ingredientlist =  () => {
-    
+
+const ingredientlist = async () => {
+  const allIngredients = await getAllIngredients();
 
   return (
     <div className="bg-white flex min-h-screen flex-1 flex-col px-6 py-12 lg:px-8">
@@ -24,7 +24,13 @@ const ingredientlist =  () => {
                 Price Per Kilogram
               </th>
               <th scope="col" className="px-6 py-3">
+                Quantity
+              </th>
+              <th scope="col" className="px-6 py-3">
                 Notes
+              </th>
+              <th scope="col" className="px-6 py-3">
+                unitID
               </th>
             </tr>
           </thead>
@@ -34,8 +40,10 @@ const ingredientlist =  () => {
                 id,
                 name,
                 pricePerKG,
-                note
-              }) => (
+                note,
+                quantity,
+                unitID
+              }:any) => (
                 <tr
                   key={id}
                   className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
@@ -47,8 +55,9 @@ const ingredientlist =  () => {
                       {name}
                     </th>
                   <td className="px-6 py-4">{pricePerKG}</td>
-
+                  <td className="px-6 py-4">{quantity}</td>
                   <td className="px-6 py-4">{note}</td>
+                  <td className="px-6 py-4">{unitID}</td>
                 </tr>
               )
             )}
