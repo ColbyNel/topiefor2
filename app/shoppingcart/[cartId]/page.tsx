@@ -14,15 +14,66 @@ interface Product {
   comment: string;
 }
 
+const demoitems = [
+  {
+    name: 'Fresh Bread',
+    price: 4.99,
+    foodCost: 6.7,
+    timeCost: 2,
+    picture: '',
+    id: 3,
+    categoryID: 2,
+    warnings: 'none',
+    description: 'HIGH IN carbo',
+    nutrientInformation: 'fibre'
+  },
+  {
+    name: 'Freshhh',
+    price: 4.99,
+    foodCost: 6.7,
+    timeCost: 2,
+    picture: '',
+    id: 5,
+    categoryID: 3,
+    warnings: 'none',
+    description: 'HIGH IN carbo',
+    nutrientInformation: 'fibre'
+  },
+  {
+    name: 'Updated Bread',
+    price: 4.99,
+    foodCost: 6.7,
+    timeCost: 2,
+    picture: '',
+    id: 8,
+    categoryID: 2,
+    warnings: 'none',
+    description: 'HIGH IN carbo',
+    nutrientInformation: 'fibre'
+  },
+  {
+    name: 'Bread',
+    price: 7.99,
+    foodCost: 2,
+    timeCost: 5,
+    picture: '',
+    id: 10,
+    categoryID: 1,
+    warnings: 'No warnings',
+    description: 'High in fiber',
+    nutrientInformation: 'Nutrient info'
+  }
+]
+
 const cart = async({ params: { cartId } }: any) => {
-  const cartProducts = await getProductsFromCart(cartId);
+  // const cartProducts = await getProductsFromCart(cartId);
   
   // const products = getAllProducts()
   // console.log(cartProducts)
 
   // const allProducts =cartProducts.products;
 
-  const allProducts = cartProducts.products;
+  // const allProducts = cartProducts.products;
 
   const newValue: number = 1;
   // console.log(allProducts)
@@ -51,7 +102,7 @@ const cart = async({ params: { cartId } }: any) => {
     <div className="h-screen bg-gray-100 pt-20">
       <h1 className="mb-10 text-center text-8xl font-chicle">Cart Items</h1>
       <div className="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0">
-        <CartItems items={allProducts} cartId="2" />
+        <CartItems items={demoitems} cartId="2" />
         {/* <div className="rounded-lg md:w-2/3">
           {cartItems.map(
             (

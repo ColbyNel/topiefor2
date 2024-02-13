@@ -1,24 +1,24 @@
+// "use server"
 // import {  getAllOrders } from "@/actions";
 import Link from "next/link";
 
-
-const handleDeleteClick = async (id:number) => {
+const handleDeleteClick = async (id: number) => {
   try {
     const req = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/orders/delete/${id}`,
       {
         method: "DELETE",
         headers: {
-          "Content-Type":"application/json",
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(id),
       }
-    )
+    );
     return req.text();
-  } catch (error){
-    console.log(error)
+  } catch (error) {
+    console.log(error);
   }
-} ;
+};
 
 const getAllOrders = async () => {
   const req = await fetch(
@@ -29,17 +29,16 @@ const getAllOrders = async () => {
         "Content-Type": "application/json",
       },
       next: {
-        revalidate: 10,
+        revalidate: 60,
         tags: ["products", "allProducts"],
       },
     }
-  )
+  );
   return await req.json();
-}
+};
 
-const allOrders = await getAllOrders();
-
-const orderlist = () => {
+const orderlist = async () => {
+  const allOrders = await getAllOrders();
   return (
     <div className="bg-white flex min-h-screen flex-1 flex-col px-6 py-12 lg:px-8">
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -106,13 +105,6 @@ const orderlist = () => {
                       className="mr-5 px-3 py-2 rounded border border-secondary bg-secondary text-sm font-medium text-white hover:bg-transparent hover:text-secondary focus:outline-none active:text-green-600"
                     >
                       Edit
-                    </a>
-                    <a
-                      className="px-3 py-2 rounded border border-primary bg-primary text-sm font-medium text-white hover:bg-transparent hover:text-primary focus:outline-none active:text-red-700"
-                      href="/admin/tools/orders"
-                      // onClick={handleDeleteClick(id)}
-                    >
-                      Delete
                     </a>
                   </td>
                 </tr>

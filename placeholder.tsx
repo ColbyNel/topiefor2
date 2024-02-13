@@ -63,30 +63,35 @@
   </div>
 
   <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-    <dt className="text-base font-medium leading-6 text-secondary">
-      City
-    </dt>
+    <dt className="text-base font-medium leading-6 text-secondary">City</dt>
     <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
       <input type="text" name="city" />
     </dd>
   </div>
 
   <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-    <dt className="text-base font-medium leading-6 text-secondary">
-      Zip Code
-    </dt>
+    <dt className="text-base font-medium leading-6 text-secondary">Zip Code</dt>
     <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
       <input type="text" name="zip" />
     </dd>
   </div>
 
   <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-    <dt className="text-base font-medium leading-6 text-secondary">
-      Comment
-    </dt>
+    <dt className="text-base font-medium leading-6 text-secondary">Comment</dt>
     <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-  <input type="text" name="comment" />
-  </dd>
+      <input type="text" name="comment" />
+    </dd>
   </div>
-
 </form>;
+
+const myitem = {
+  categoryID: 1,
+  comment: "Cake baked by our own chefs.",
+  description: "Cake that chase hunger",
+  foodCost: 8.5,
+  name: "Strawberry Cake",
+  nutrientInformation: "fibre and calcium",
+  price: 40.99,
+  timeCost: 3,
+  warnings: "none",
+};

@@ -1,5 +1,7 @@
 import { deleteProduct, getAllProducts, getCategoryById, getCategoryNameById } from "@/actions"
 import Link from "next/link";
+import AddIngredientDialog from "./AddProductDialog";
+import AddProductDialog from "./AddProductDialog";
 
 const allProducts = await getAllProducts();
 
@@ -9,9 +11,13 @@ const productlist = () => {
         <div className="bg-white flex min-h-screen flex-1 flex-col px-6 py-12 lg:px-8">
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <div className="flex items-baseline justify-between border-b border-gray-200 pb-10 pt-24 ">
+        
           <h1 className="text-4xl font-bold tracking-tight text-gray-900 pl-10 ">
             All Products
           </h1>
+          <div className="mr-10">
+            <AddProductDialog />
+          </div>
         </div>
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -66,10 +72,6 @@ const productlist = () => {
                   <td className="px-6 py-4">
                     <a href={`/admin/tools/products/${id}`} className="mr-5 px-3 py-2 rounded border border-secondary bg-secondary text-sm font-medium text-white hover:bg-transparent hover:text-secondary focus:outline-none active:text-green-600" >
                         Edit
-                    </a>
-                    <a 
-                    className="px-3 py-2 rounded border border-primary bg-primary text-sm font-medium text-white hover:bg-transparent hover:text-primary focus:outline-none active:text-red-700" href="/admin/tools/orders">
-                        Delete
                     </a>
                   </td>
 

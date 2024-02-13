@@ -132,7 +132,7 @@ const AddIngredientDialog = () => {
 
                   <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                     <dt className="text-base font-medium leading-6 text-primary">
-                      Quantity (KG)
+                      Quantity (Grams)
                     </dt>
                     <dd className="mt-1 text-sm leading-6 text-black sm:col-span-2 sm:mt-0">
                       <input
