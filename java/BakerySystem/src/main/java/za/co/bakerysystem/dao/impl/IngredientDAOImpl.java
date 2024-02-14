@@ -2,7 +2,9 @@ package za.co.bakerysystem.dao.impl;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import za.co.bakerysystem.dao.IngredientDAO;
 import za.co.bakerysystem.dbmanager.DbManager;
 import za.co.bakerysystem.exception.ingredient.IngredientNotFoundException;
@@ -15,6 +17,9 @@ public class IngredientDAOImpl implements IngredientDAO {
     private static DbManager db;
     private PreparedStatement ps;
     private ResultSet rs;
+    public static Map<Integer, Integer> ingredientMap = new HashMap<>();
+
+    private static final String CHECK_INGREDIENT_STOCK = "SELECT quantity FROM ingredient WHERE id = ?";
 
     public IngredientDAOImpl(Connection connection) {
         this.connection = connection;
@@ -69,6 +74,38 @@ public class IngredientDAOImpl implements IngredientDAO {
         }
         return retVal;
 
+    }
+
+    @Override
+    public boolean hasEnoughIngredientStock(int ingredientID, int requiredQuantity) {
+        try {
+            // If the ingredient is not in the map, fetch it from the database and add to the map
+            if (!ingredientMap.containsKey(ingredientID)) {
+                connection = db.getConnection();
+                ps = connection.prepareStatement(CHECK_INGREDIENT_STOCK);
+                ps.setInt(1, ingredientID);
+                rs = ps.executeQuery();
+
+                if (rs.next()) {
+                    int availableQuantity = rs.getInt("quantity");
+                    ingredientMap.put(ingredientID, availableQuantity);
+                } else {
+                    return false; // Ingredient not found in the database
+                }
+            }
+            int availableQuantity = ingredientMap.get(ingredientID);
+            if (requiredQuantity > availableQuantity) {
+                throw new IllegalStateException("Product is out of stock. Ingredient ID: " + ingredientID);
+            }
+
+            // Check if there is enough stock in the map
+//            int availableQuantity = ingredientMap.get(ingredientID);
+            return requiredQuantity <= availableQuantity;
+
+        } catch (SQLException e) {
+            System.err.println("SQL Exception: " + e.getMessage());
+            return false; // Error occurred during database access
+        }
     }
 
     @Override
@@ -286,7 +323,7 @@ public class IngredientDAOImpl implements IngredientDAO {
 //        
 //                }
         //Test for getIngredient 
-       // System.out.println(ingredientDAO.getIngredient(1));
+        // System.out.println(ingredientDAO.getIngredient(1));
         //Test for getIngredientsByKeyWord
 //        List<Ingredient> listOfIngredientByKeyWord = ingredientDAO.getIngredientsByKeyWord("powder");
 //

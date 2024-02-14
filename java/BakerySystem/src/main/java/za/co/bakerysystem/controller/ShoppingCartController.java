@@ -3,9 +3,13 @@ package za.co.bakerysystem.controller;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import za.co.bakerysystem.dao.IngredientDAO;
 import za.co.bakerysystem.dao.ProductDAO;
+import za.co.bakerysystem.dao.RecipeIngredientDAO;
 import za.co.bakerysystem.dao.ShoppingCartDAO;
+import za.co.bakerysystem.dao.impl.IngredientDAOImpl;
 import za.co.bakerysystem.dao.impl.ProductDAOImpl;
+import za.co.bakerysystem.dao.impl.RecipeIngredientDAOImpl;
 import za.co.bakerysystem.dao.impl.ShoppingCartDAOImpl;
 import za.co.bakerysystem.exception.shoppingcart.ShoppingCartNotFoundException;
 import za.co.bakerysystem.model.Product;
@@ -18,7 +22,10 @@ public class ShoppingCartController {
 
     private final ShoppingCartDAO shoppingCartDAO = new ShoppingCartDAOImpl();
     private final ProductDAO productDAO = new ProductDAOImpl();
-    private final ShoppingCartService shoppingCartService = new ShoppingCartServiceImpl(shoppingCartDAO, productDAO);
+    private final RecipeIngredientDAO recipeIngredientDAO = new RecipeIngredientDAOImpl();
+    private final IngredientDAO IngredientDAO = new IngredientDAOImpl();
+
+    private final ShoppingCartService shoppingCartService = new ShoppingCartServiceImpl(shoppingCartDAO, productDAO, recipeIngredientDAO, IngredientDAO);
 
     @GET
     @Path("/get_shoppingcart/{cartID}")

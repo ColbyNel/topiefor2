@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import za.co.bakerysystem.dao.RecipeIngredientDAO;
 import za.co.bakerysystem.dbmanager.DbManager;
 import za.co.bakerysystem.exception.recipeingredients.RecipeIngredientsNotFoundException;
@@ -18,6 +20,9 @@ public class RecipeIngredientDAOImpl implements RecipeIngredientDAO {
     private static DbManager db;
     private PreparedStatement ps;
     private ResultSet rs;
+    public static Map<Integer, Map<Integer, Integer>> recipeIngredientMap = new HashMap<>();
+
+    private static final String GET_RECIPE_INGREDIENTS = "SELECT * FROM recipe_ingredient WHERE recipe_id = ?";
 
     public RecipeIngredientDAOImpl(Connection connection) {
         this.connection = connection;
@@ -46,6 +51,37 @@ public class RecipeIngredientDAOImpl implements RecipeIngredientDAO {
 
         }
         return false;
+    }
+
+    @Override
+    public Map<Integer, Integer> getRecipeIngredientsMap(Product product) {
+        try {
+            // If the recipe ingredients for the product are not in the map, fetch them from the database and add to the map
+            if (!recipeIngredientMap.containsKey(product.getID())) {
+                connection = db.getConnection();
+                ps = connection.prepareStatement(GET_RECIPE_INGREDIENTS);
+                ps.setInt(1, product.getID());
+                rs = ps.executeQuery();
+
+                Map<Integer, Integer> ingredientQuantityMap = new HashMap<>();
+
+                while (rs.next()) {
+                    int ingredientID = rs.getInt("Ingredient_ID");
+                    int quantity = rs.getInt("Quantity");
+                    ingredientQuantityMap.put(ingredientID, quantity);
+                }
+
+                // Store the ingredient quantity map in the map
+                recipeIngredientMap.put(product.getID(), ingredientQuantityMap);
+            }
+
+            // Return the ingredient quantity map from the map
+            return recipeIngredientMap.get(product.getID());
+
+        } catch (SQLException e) {
+            System.err.println("SQL Exception: " + e.getMessage());
+            return null;
+        }
     }
 
     @Override

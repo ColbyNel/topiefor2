@@ -1,6 +1,5 @@
 package za.co.bakerysystem.dao.impl;
 
-import java.io.File;
 import java.sql.*;
 import java.util.List;
 import za.co.bakerysystem.dao.ProductDAO;
@@ -82,7 +81,6 @@ public class ShoppingCartDAOImpl implements ShoppingCartDAO {
                 return false;
             }
         } catch (SQLException e) {
-            System.out.println("Error :" + e.getMessage());
             System.err.println("SQL Exception: " + e.getMessage());
             return false;  // Operation failed
         }

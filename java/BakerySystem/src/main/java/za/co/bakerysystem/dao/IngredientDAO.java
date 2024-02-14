@@ -10,16 +10,18 @@ public interface IngredientDAO {
 
     boolean updateIngredient(Ingredient ingredient);
 
+    boolean hasEnoughIngredientStock(int ingredientID, int requiredQuantity);
+
     List<Ingredient> getIngredients();
 
     List<Ingredient> getIngredientsByKeyWord(String keyWord);
 
-    Ingredient getIngredient(int ingredientID) throws IngredientNotFoundException ;
+    Ingredient getIngredient(int ingredientID) throws IngredientNotFoundException;
 
     int getIngredientQuantity();
 
     List<Ingredient> getIngredientsInStock();
-    
+
     List<Ingredient> getIngredientsToBeOrdered();
 
     boolean deleteIngredient(int ingredientID);
