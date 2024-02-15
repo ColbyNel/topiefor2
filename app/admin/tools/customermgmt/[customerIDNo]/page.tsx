@@ -3,7 +3,20 @@ import React from "react";
 import { deleteCustomer, getSingleCustomer } from "@/actions";
 import AdminHead from "@/components/AdminHead";
 import AdminMenu from "@/components/AdminMenu";
+import SubmitCustomerDialog from "@/components/SubmitCustomerDialog";
 
+interface customerForm {
+  id: number;
+  customerName: string;
+  customerIDNo: number;
+  phoneNumber: string;
+  addressOne: string;
+  addressTwo: string;
+  city: string;
+  zip: string;
+  comment: string;
+  email: string;
+}
 
 export default async function SinglePage({ params: { customerIDNo } }: any) {
   // const getSingleCustomer = async (customerId: string) => {
@@ -23,16 +36,26 @@ export default async function SinglePage({ params: { customerIDNo } }: any) {
   //   return await req.json();
   // };
 
-
   const customer = await getSingleCustomer(customerIDNo);
-  const address:String = (customer?.addressOne || '') + ' ' + (customer?.addressTwo || '') + ', ' + (customer?.city || '') + ', ' + (customer?.zip || '')
-  const date:String = (customer?.joinDate?.dayOfMonth || '') + ' ' + (customer?.joinDate?.month) + ' ' + (customer?.joinDate?.year)
+  const address: String =
+    (customer?.addressOne || "") +
+    " " +
+    (customer?.addressTwo || "") +
+    ", " +
+    (customer?.city || "") +
+    ", " +
+    (customer?.zip || "");
+  const date: String =
+    (customer?.joinDate?.dayOfMonth || "") +
+    " " +
+    customer?.joinDate?.month +
+    " " +
+    customer?.joinDate?.year;
   // const getAllOrders = async (customerIDNo) =>{
   //   const req = await fetch(
   //     `${process.env.NEXT_PUBLIC_API_URL}/`
   //   )
   // }
-
 
   // const [editMode, setEditMode] = useState(false);
   // const [formData, setFormData] = useState({
@@ -166,14 +189,14 @@ export default async function SinglePage({ params: { customerIDNo } }: any) {
                   <div className="mt-6 border-t border-gray-100">
                     <dl className="divide-y divide-gray-100">
                       <form
-                        action={async (data: FormData) => {
-                          "use server";
-                          const cusName = data.get("customerName");
-                          fetch("", {
-                            method: "UPDATE",
-                            body: JSON.stringify({ data }),
-                          });
-                        }}
+                        // action={async (data: FormData) => {
+                        //   "use server";
+                        //   const cusName = data.get("customerName");
+                        //   fetch("", {
+                        //     method: "UPDATE",
+                        //     body: JSON.stringify({ data }),
+                        //   });
+                        // }}
                       >
                         <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                           <dt className="text-base font-medium leading-6 text-primary">
@@ -303,19 +326,15 @@ export default async function SinglePage({ params: { customerIDNo } }: any) {
                       </form>
 
                       <div className="px-4 py-6 flex justify-center space-x-4 ">
+                      <SubmitCustomerDialog />
                         <a
-                          className="inline-block rounded bg-secondary px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none active:bg-green-900"
+                          
+                          className="inline-block rounded border border-primary px-8 py-3 text-sm font-medium text-primary transition hover:scale-110 hover:shadow-xl focus:outline-none active:text-white active:border-red-700 active:bg-red-700"
                           // onClick={() => setEditMode(!editMode)}
                         >
-                          Submit
+                          Delete
                         </a>
-                        <a
-                          className="inline-block rounded border border-primary px-8 py-3 text-sm font-medium text-primary transition hover:scale-110 hover:shadow-xl focus:outline-none active:text-white active:border-red-700 active:bg-red-700"
-                          href="/admin/tools/customermgmt"
-                          // onClick={deleteCustomer(customer.customerIDNo)}
-                        >
-                          Delete Customer
-                        </a>
+                        
                         <a
                           className="inline-block rounded border bg-slate-600 px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none active:text-white  active:bg-slate-800"
                           href="/admin/tools/customermgmt"
@@ -335,6 +354,3 @@ export default async function SinglePage({ params: { customerIDNo } }: any) {
     </>
   );
 }
-
-
-

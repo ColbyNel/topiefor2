@@ -37,10 +37,6 @@ export const getSingleCustomer = async (customerId: string) => {
         "Content-Type": "application/json",
       },
       cache: "no-cache",
-      next: {
-        revalidate: 60,
-        tags: ["customers" + customerId],
-      },
     }
   );
   return await req.json();
