@@ -4,12 +4,15 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import za.co.bakerysystem.dao.CustomerDAO;
 import za.co.bakerysystem.dao.ProductDAO;
 import za.co.bakerysystem.dbmanager.DbManager;
 import za.co.bakerysystem.exception.customer.CustomerDeletionException;
 import za.co.bakerysystem.exception.customer.CustomerLoginException;
 import za.co.bakerysystem.exception.customer.CustomerNotFoundException;
+import za.co.bakerysystem.exception.customer.EmailNotFoundException;
 import za.co.bakerysystem.model.Customer;
 import za.co.bakerysystem.model.Product;
 
@@ -289,6 +292,31 @@ public class CustomerDAOImpl implements CustomerDAO {
         return topCustomers;
     }
 
+    @Override
+    public String getHashedPassword(String emailAddress) throws EmailNotFoundException {
+        String query = "SELECT password FROM customer WHERE email = ?";
+        db = DbManager.getInstance();
+        connection = db.getConnection();
+
+        try {
+            connection = DbManager.getInstance().getConnection();
+            ps = connection.prepareStatement(query);
+            ps.setString(1, emailAddress);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("password");
+            } else {
+                // Throw EmailNotFoundException if no customer found with the given email address
+                throw new EmailNotFoundException("Email address not found: " + emailAddress);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+            throw new EmailNotFoundException("Error retrieving hashed password for email: " + emailAddress);
+        }
+
+    }
+
     private Customer extractCustomerFromResultSet(ResultSet rs) throws SQLException {
         Customer customer = new Customer();
         customer.setID(rs.getInt("ID"));
@@ -326,6 +354,14 @@ public class CustomerDAOImpl implements CustomerDAO {
 //        newCustomer.setComment("A new customer");
 //        newCustomer.setEmail("john@example.com");
 //        newCustomer.setPassword("password34");
+        try {
+            //Test
+            String password = customerDAO.getHashedPassword("supeer@gmaill.com");
+            System.out.println(password);
+        } catch (EmailNotFoundException ex) {
+            Logger.getLogger(CustomerDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
 //
 //        //   Adding customer
 //        System.out.println(customerDAO.createCustomer(newCustomer));;
@@ -373,8 +409,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 //        System.out.println("Retrieved customer by ID " + ": " + retrievedCustomer);
 //
         // Test getFavoriteProducts method
-        List<Product> favoriteProducts = productDAO.getFavoriteProducts(2);
-        System.out.println("Favorite products for customer ID " + 1 + ": " + favoriteProducts);
+//        List<Product> favoriteProducts = productDAO.getFavoriteProducts(2);
+//        System.out.println("Favorite products for customer ID " + 1 + ": " + favoriteProducts);
         // Test getCustomerPoints method
 //        int customerPoints = customerDAO.getCustomerPoints(1);
 //        System.out.println("Customer points for customer ID " + 1 + ": " + customerPoints);

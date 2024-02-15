@@ -6,6 +6,7 @@ import java.util.List;
 import za.co.bakerysystem.exception.customer.CustomerDeletionException;
 import za.co.bakerysystem.exception.customer.CustomerLoginException;
 import za.co.bakerysystem.exception.customer.CustomerNotFoundException;
+import za.co.bakerysystem.exception.customer.EmailNotFoundException;
 
 public interface CustomerDAO {
 
@@ -28,6 +29,8 @@ public interface CustomerDAO {
     Customer getCustomerByEmail(String email) throws CustomerNotFoundException;
 
     int getCustomerPoints(int customerID);
+
+    String getHashedPassword(String emailAddress) throws EmailNotFoundException;
 
     boolean deleteCustomer(int customerID) throws CustomerNotFoundException, CustomerDeletionException;
 }

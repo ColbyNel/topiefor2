@@ -13,6 +13,7 @@ import za.co.bakerysystem.exception.customer.CustomerLoginException;
 import za.co.bakerysystem.exception.customer.CustomerNotFoundException;
 import za.co.bakerysystem.exception.customer.DuplicateEmailException;
 import za.co.bakerysystem.exception.customer.DuplicateIdException;
+import za.co.bakerysystem.exception.customer.EmailNotFoundException;
 import za.co.bakerysystem.model.Customer;
 import za.co.bakerysystem.service.CustomerService;
 
@@ -34,8 +35,32 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer login(String emailAddress, String password) throws CustomerLoginException{
-        return customerDAO.login(emailAddress, password);
+    public Customer login(String emailAddress, String password) throws CustomerLoginException {
+        try {
+            // Retrieve the hashed password from the database
+            String storedHashedPassword = customerDAO.getHashedPassword(emailAddress);
+            System.out.println(storedHashedPassword);
+
+            if (storedHashedPassword == null) {
+                throw new CustomerLoginException("Customer not found with the provided email address");
+            }
+
+            // Hash the provided password
+            String hashedPassword = hashPasswordSHA256(password);
+
+            System.out.println(hashedPassword);
+
+            // Compare the hashed password with the stored hashed password
+            if (!storedHashedPassword.equals(hashedPassword)) {
+                throw new CustomerLoginException("Incorrect password");
+            }
+
+            // If passwords match, return the customer
+            return customerDAO.getCustomerByEmail(emailAddress);
+        } catch (EmailNotFoundException | CustomerNotFoundException ex) {
+            // Log or handle the exception appropriately
+            throw new CustomerLoginException("Error logging in: " + ex.getMessage());
+        }
     }
 
     @Override
@@ -60,7 +85,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer getCustomer(int customerID) throws CustomerNotFoundException {
-            return customerDAO.getCustomer(customerID);
+        return customerDAO.getCustomer(customerID);
     }
 
     @Override
@@ -69,7 +94,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer getCustomerByEmail(String email) throws CustomerNotFoundException{
+    public Customer getCustomerByEmail(String email) throws CustomerNotFoundException {
         return customerDAO.getCustomerByEmail(email);
     }
 
@@ -129,10 +154,15 @@ public class CustomerServiceImpl implements CustomerService {
 //        System.out.println("Customer created: " + customerCreated);
 //        
 //         Testing login
-//        String emailAddress = "i123@gmail.com";
-//        String password = "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8";
-//        Customer loggedInCustomer = customerService.login(emailAddress, password);
-//        System.out.println("Logged in customer: " + customerService.getCustomerByEmail(emailAddress));
+        String emailAddress = "eeeee@gmail.com";
+        String password = "1234";
+        try {
+            Customer loggedInCustomer = customerService.login(emailAddress, password);
+            System.out.println("Logged in customer: " + customerService.getCustomerByEmail(emailAddress));
+        } catch (CustomerLoginException | CustomerNotFoundException ex) {
+            Logger.getLogger(CustomerServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
 //        // Testing updateCustomer
 //        int customerIdToUpdate = loggedInCustomer.getID(); // Assuming customer with ID exists
 //      Customer updatedCustomer = new Customer(" updated John","84884","09833","add1","add2","city","zip","com","john@example.com", "password");
@@ -174,15 +204,14 @@ public class CustomerServiceImpl implements CustomerService {
 //        System.out.println("Orders fulfilled between " + startDate + " and " + endDate + ": " + ordersByRange);
 ////
         // Testing deleteCustomer
-        int customerIdToDelete = 1; // Assuming customer with ID exists
-        boolean customerDeleted;
-        try {
-            customerDeleted = customerService.deleteCustomer(customerIdToDelete);
-            System.out.println("success");
-        } catch (CustomerNotFoundException | CustomerDeletionException ex) {
-            Logger.getLogger(CustomerServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+//        int customerIdToDelete = 1; // Assuming customer with ID exists
+//        boolean customerDeleted;
+//        try {
+//            customerDeleted = customerService.deleteCustomer(customerIdToDelete);
+//            System.out.println("success");
+//        } catch (CustomerNotFoundException | CustomerDeletionException ex) {
+//            Logger.getLogger(CustomerServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 
 }

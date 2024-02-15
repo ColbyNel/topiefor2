@@ -49,9 +49,9 @@ public class CustomerController {
     public Response login(Customer customer) {
         try {
             Customer loggedInCustomer = customerService.login(customer.getEmail(), customer.getPassword());
-            return Response.ok(customerService.getCustomerByEmail(customer.getEmail())).build();
-        } catch (CustomerLoginException | CustomerNotFoundException e) {
-            return Response.status(Response.Status.UNAUTHORIZED).entity("Login failed. Invalid credentials.").build();
+            return Response.ok(loggedInCustomer).build();
+        } catch (CustomerLoginException e) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Login failed. " + e.getMessage()).build();
         }
     }
 

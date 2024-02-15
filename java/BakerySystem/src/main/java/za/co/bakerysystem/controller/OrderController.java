@@ -24,6 +24,7 @@ public class OrderController {
     @POST
     @Path("/add_order")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response addOrder(Order order) {
         if (orderService.createOrder(order)) {
             return Response.status(Response.Status.CREATED).entity("Order added successfully").build();
