@@ -4,6 +4,7 @@ import { deleteCustomer, getSingleCustomer } from "@/actions";
 import AdminHead from "@/components/AdminHead";
 import AdminMenu from "@/components/AdminMenu";
 import SubmitCustomerDialog from "@/components/SubmitCustomerDialog";
+import DeleteCustomerDialog from "@/components/DeleteCustomerDialog";
 
 interface customerForm {
   id: number;
@@ -327,13 +328,7 @@ export default async function SinglePage({ params: { customerIDNo } }: any) {
 
                       <div className="px-4 py-6 flex justify-center space-x-4 ">
                       <SubmitCustomerDialog />
-                        <a
-                          
-                          className="inline-block rounded border border-primary px-8 py-3 text-sm font-medium text-primary transition hover:scale-110 hover:shadow-xl focus:outline-none active:text-white active:border-red-700 active:bg-red-700"
-                          // onClick={() => setEditMode(!editMode)}
-                        >
-                          Delete
-                        </a>
+                        <DeleteCustomerDialog />
                         
                         <a
                           className="inline-block rounded border bg-slate-600 px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none active:text-white  active:bg-slate-800"
