@@ -39,6 +39,47 @@ const getAllOrders = async () => {
 
 const orderlist = async () => {
   const allOrders = await getAllOrders();
+
+  const sortByStatus = () => {
+    return allOrders.sort((a: { status: any; }, b: { status: any; }) => a.status.localeCompare(b.status));
+  };
+
+  const renderSortedOrders = (sortingFunction:any) => {
+    const sortedOrders = sortingFunction();
+    return sortedOrders.map(({ id, customerID, amount, status, datePlaced, pickupTime }: any) => (
+      <tr
+        key={id}
+        className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+      >
+        <th
+          scope="row"
+          className="px-6 py-4 font-medium text-gray-900 hover:to-blue-500 whitespace-nowrap dark:text-white"
+        >
+          {id}
+        </th>
+
+        <td className="px-6 py-4">{customerID}</td>
+        <td className="px-6 py-4">R{amount}</td>
+        <td className="px-6 py-4">
+          {datePlaced?.dayOfMonth} {datePlaced?.month} {datePlaced?.year} - {datePlaced?.hour}:{pickupTime?.minute}{" "}
+        </td>
+        <td className="px-6 py-4">
+          {pickupTime?.dayOfMonth} {pickupTime?.month} {pickupTime?.year} - {pickupTime?.hour}:{pickupTime?.minute}{" "}
+        </td>
+        <td className="px-6 py-4">{status}</td>
+        <td className="px-6 py-4">
+          <a
+            href={`/admin/tools/orders/${id}`}
+            className="mr-5 px-3 py-2 rounded border border-secondary bg-secondary text-sm font-medium text-white hover:bg-transparent hover:text-secondary focus:outline-none active:text-green-600"
+          >
+            Edit
+          </a>
+        </td>
+      </tr>
+    ));
+  };
+
+
   return (
     <div className="bg-white flex min-h-screen flex-1 flex-col px-6 py-12 lg:px-8">
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -71,7 +112,7 @@ const orderlist = async () => {
             </tr>
           </thead>
           <tbody>
-            {allOrders.map(
+            {/* {allOrders.map(
               ({
                 id,
                 customerID,
@@ -109,7 +150,9 @@ const orderlist = async () => {
                   </td>
                 </tr>
               )
-            )}
+            )} */}
+
+            {renderSortedOrders(sortByStatus)}
           </tbody>
         </table>
       </div>

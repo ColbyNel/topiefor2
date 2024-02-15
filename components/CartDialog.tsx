@@ -30,8 +30,11 @@ const CartDialog: React.FC<PopupProps> = ({ link }) => {
       }
       <DialogContent className="flex flex-row justify-center p-16 border rounded-lg">
         <DialogHeader className="flex flex-col justify-center" >
-          <DialogTitle className="justify-center text-4xl font-bold text-primary mb-6">Uh oh!</DialogTitle>
-          <DialogDescription className="mb-6 text-lg">
+          <DialogTitle className="flex justify-center text-4xl font-bold text-primary mb-6">Uh oh!</DialogTitle>
+          <div className="flex justify-center mb-6">
+            <img src="sad-face.png" alt="Sad Face" className="h-36 w-36" />
+          </div>
+          <DialogDescription className="mb-6 text-lg text-center font-bold">
             It looks like you're not logged in yet. 
             <br />
             You're one step away!

@@ -53,6 +53,9 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        footer: {
+          DEFAULT: "#D96725"
+        }
       },
       fontFamily: {
         feature: ["Caveat Brush"],

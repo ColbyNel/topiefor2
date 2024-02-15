@@ -36,16 +36,16 @@ interface Product {
 }
 
 const exampleProduct = {
-  name: "Fresh Bread",
-  price: 4.99,
-  foodCost: 6.7,
-  timeCost: 2,
-  picture: "",
-  id: 3,
-  description: "HIGH IN carbo",
+  ID: 3,
   categoryID: 2,
-  warnings: "none",
+  description: "A taste of Paris",
+  foodCost: 6.7,
+  name: "Croissant",
   nutrientInformation: "fibre",
+  picture: "/croissant.jpg",
+  price: 12.0,
+  timeCost: 2,
+  warnings: "none",
 };
 
 // const getProduct = async (id: any) => {
@@ -63,13 +63,14 @@ export const setUniversalProductId = (value: number) => {
 
 const ProductDialog: React.FC<ProductProps> = ({ prod }) => {
   prod = exampleProduct;
+  const selectedProductsId = prod.ID
   // console.log(productID)
   // console.log(universalProductId)
   // const selectedProduct = getProduct(universalProductId);
   // console.log(prod)
 
   // console.log(selectedProduct)
-  const added:boolean = false
+  const added: boolean = false;
   const handleClick = async (cartId: number, quantity: number, id: number) => {
     const response = await addItemToCart(cartId, quantity, id);
     if (response == "Product added to cart successfully") {
@@ -138,7 +139,7 @@ const ProductDialog: React.FC<ProductProps> = ({ prod }) => {
                       <div className="flex items-center justify-center mt-4 ">
                         <div className="pt-6 pb-2">
                           <button
-                            onClick={() => handleClick(4, 1, prod.id)}
+                            onClick={() => handleClick(1, 1, selectedProductsId)}
                             className="button-hover group flex items-center justify-between gap-4 rounded-lg border border-current px-5 py-3 text-white transition-colors hover:bg-secondary focus:outline-none focus:ring active:bg-secondary"
                           >
                             Add to Cart

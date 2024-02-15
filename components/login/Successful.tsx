@@ -29,7 +29,11 @@ const successful = () => {
             Login Succesful{" "}
           </strong>
         </div>
+        
       </div>
+      <div className="flex justify-center mt-5 font-bold text-sm">
+          <a href="/admin/tools" className="border rounded-lg bg-primary p-4 text-white button-hover">Let's get going</a>
+        </div>
     </div>
   );
 };

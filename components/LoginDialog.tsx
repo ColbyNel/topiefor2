@@ -13,6 +13,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import SignUpDialog from "./SignUpDialog";
 
 interface MyFormData {
   email: string;
@@ -60,7 +61,7 @@ const Popup: React.FC<PopupProps> = ({ button }) => {
   return (
     <Dialog>
       {button ? (
-        <DialogTrigger className="button-hover rounded-md bg-secondary px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary ">
+        <DialogTrigger className="button-hover rounded-md bg-footer px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-secondary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary ">
           Login
         </DialogTrigger>
       ) : (
@@ -70,7 +71,7 @@ const Popup: React.FC<PopupProps> = ({ button }) => {
       )}
       <DialogContent className="">
         <div className="flex items-center justify-center h-52">
-          <div className="rounded-lg border border-stroke border-secondary bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+          <div className="rounded-lg border border-stroke border-footer bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke rounded-t-lg bg-secondary py-4 px-6.5 dark:border-strokedark">
               <DialogTitle className="font-medium text-white dark:text-white text-center">
                 Log In
@@ -107,15 +108,14 @@ const Popup: React.FC<PopupProps> = ({ button }) => {
 
               <div className="mt-5 mb-5.5 flex items-center justify-between pb-5">
                 <p className="">Not a member?</p>
-
-                <a href="/register" className="text-sm text-secondary">
-                  Sign Up
-                </a>
+                <div className="text-secondary">
+                <SignUpDialog button={false} />
+                </div>
               </div>
 
               <button
                 type="submit"
-                className="button-hover flex w-full justify-center rounded bg-primary p-3 -mb-3 font-medium text-white"
+                className="button-hover flex w-full justify-center rounded-lg bg-secondary p-3 -mb-3 font-medium text-white"
               >
                 Log In
               </button>

@@ -14,6 +14,11 @@ interface payment {
   amount: number;
 }
 
+interface MyFormData {
+  email: string;
+  password: string;
+}
+
 export const createOrder = async (
   customerID: number,
   comment: string,
@@ -129,8 +134,10 @@ export const getProductById = async (productId: number) => {
 
 export const addItemToCart = async (cartId: any, quantity: any, id: any) => {
   // const thisproduct = getProduct(id);
-  // console.log(JSON.stringify({ id: id }));
-  try {
+  console.log(JSON.stringify({ cartId: cartId }));
+  console.log(JSON.stringify({ quanitity: quantity }));
+  console.log(JSON.stringify({ id: id }));
+
     const req = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/shopping_carts/add_product/${cartId}?quantity=${quantity}`,
       {
@@ -142,10 +149,9 @@ export const addItemToCart = async (cartId: any, quantity: any, id: any) => {
       }
     );
 
-    const responseText = await req.text();
+     
     // console.log(responseText);
-    return responseText;
-  } catch (error) {}
+    return await req.text();
 };
 
 export const assessAvailability = async (productId: number) => {
@@ -160,3 +166,18 @@ export const assessAvailability = async (productId: number) => {
     return returnValue;
   }
 };
+
+export const adminLogin = async (formData: MyFormData) => {
+  const req: Response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/admin/login`,
+    {
+      method:"POST",
+      headers: {
+        "Content-Type":"application/json",
+      },
+      body: JSON.stringify(formData),
+    }
+  );
+
+  return await req.text();
+}

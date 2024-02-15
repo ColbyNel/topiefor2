@@ -1,4 +1,4 @@
-"use client"
+// "use client"
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import {
@@ -134,12 +134,12 @@ const getCategory = async(categoryId:number) => {
   return category;
 }
 
-export default function SinglePage({ params: { categoryId } }: any) {
-    // const category = await getCategoryById(categoryId);
-  // const items = await getProductsByCategory(categoryId);
+export default async function SinglePage({ params: { categoryId } }: any) {
+    const categoryObj = await getCategoryById(categoryId);
+  const items = await getProductsByCategory(categoryId);
   // const category = getCategory(categoryId);
 
-  const [selectedId, setSelectedId] = useState(null);
+  // const [selectedId, setSelectedId] = useState(null);
   
 
 
@@ -150,11 +150,10 @@ export default function SinglePage({ params: { categoryId } }: any) {
       <div className="bg-white flex min-h-screen">
         <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
           <h2 className="text-8xl font-chicle font-bold text-black text-center pb-32">
-            {/* {category.description} */}
-            Sweet
+            {categoryObj.description}
           </h2>
           <div className="grid grid-cols-3 gap-x-10 gap-y-10 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-            {demoProducts.map(
+            {items.map(
                ({ id, name, price, description, picture }: any) => {
                 // const available = await assessAvailability(id);
                 const available = true;
@@ -170,7 +169,7 @@ export default function SinglePage({ params: { categoryId } }: any) {
                     key={id}
                     href="#"
                     className="item-hover border-black group"
-                    onClick={() => setSelectedId(id)}
+                    // onClick={() => setSelectedId(id)}
                   >
                     <><div className="relative aspect-square w-100 overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7 ">
                     <img
@@ -179,7 +178,7 @@ export default function SinglePage({ params: { categoryId } }: any) {
                       className="h-full w-full object-cover object-center transition duration-300 ease-in-out hover:scale-110"
                       style={{ maxHeight: "300px" }} />
                     <div className="absolute inset-0 flex items-center justify-center transition duration-300 ease-in-out hover:scale-110">
-                      <ProductDialog prod={selectedId} />
+                      <ProductDialog prod={1} />
                     </div>
                   </div><h3 className="mt-4 text-2xl font-bold text-black">
                       {name}

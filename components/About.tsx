@@ -17,7 +17,7 @@ const About = () => {
       <span className="bg-primary blur-xl w-screen h-10" />
       <div
         id="about"
-        className="relative isolate overflow-hidden bg-gradient-to-tr from-primary to-white py-24 sm:py-32"
+        className="relative isolate overflow-hidden bg-gradient-to-tr from-primary to-white py-24 sm:py-32 -mb-36"
       >
         <div className="mx-auto max-w-7xl px-6 lg:px-8 flex flex-wrap items-center">
           <div className="ml-10 mx-auto max-w-2xl lg:mx-0 w-full lg:w-auto lg:flex-1">
@@ -42,7 +42,8 @@ const About = () => {
             <img src="/baker.png" alt="Ms Pat" className="mx-auto lg:mx-0" />
           </div>
         </div>
-        <div className="mx-16 mt-5 max-w-2xl lg:mx-0 lg:max-w-none">
+        <div className="-ml-8">
+        <div className="mx-16 mt-5 max-w-2xl lg:mx-0 lg:max-w-none ">
           <div className="ml-96 grid grid-cols-1 gap-x-8 gap-y-6 text-base font-semibold leading-7 text-white sm:grid-cols-2 md:flex lg:gap-x-10">
             <LoginDialog button={true} />
             <SignUpDialog button={false} />
@@ -65,8 +66,10 @@ const About = () => {
             ))}
           </dl>
         </div>
-        <Footer />
+        </div>
+        
       </div>
+      <Footer />
     </>
   );
 };

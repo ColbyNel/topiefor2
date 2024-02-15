@@ -14,7 +14,7 @@ const products = () => {
           <AdminMenu />
         </div>
         <div className="admin-content">
-          <ProductList />
+          <ProductList  />
           
         </div>
       </div>

@@ -8,6 +8,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useState } from "react";
+import EditSuccess from "./EditSuccess";
 
 interface ProductInfo {
   customerID: number;
@@ -15,12 +16,13 @@ interface ProductInfo {
   comment: string;
   amount: number;
   status: string;
-  ID: number;
+  id: number;
 }
 
 const EditOrderDialog = ({ id }: any) => {
   const [comment, setComment] = useState("");
   const [status, setStatus] = useState("Pending");
+  const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -47,7 +49,7 @@ const EditOrderDialog = ({ id }: any) => {
         comment: comment,
         amount: convertResponse.amount,
         status: status,
-        ID: id
+        id: convertResponse.id,
     }
 
     const req = await fetch(
@@ -60,6 +62,10 @@ const EditOrderDialog = ({ id }: any) => {
             body: JSON.stringify(editedProduct)
         }
     )
+
+     if (req.ok){
+      setSuccess(true)
+    }
         // console.log(req.text())
         return req.text()
     
@@ -118,7 +124,9 @@ const EditOrderDialog = ({ id }: any) => {
                   <option value="In transit">In transit</option>
                 </select>
               </div>
-
+              {success ? (
+                <EditSuccess />
+              ):(
               <div className="flex justify-center mt-5">
                 <button
                   type="submit"
@@ -127,6 +135,7 @@ const EditOrderDialog = ({ id }: any) => {
                   Submit
                 </button>
               </div>
+              )}
             </form>
           </DialogDescription>
         </DialogHeader>
