@@ -19,6 +19,13 @@ interface MyFormData {
   password: string;
 }
 
+interface Category {
+  categoryId: number;
+  description: string;
+}
+
+export let loggedIn = false;
+
 export const createOrder = async (
   customerID: number,
   comment: string,
@@ -138,20 +145,19 @@ export const addItemToCart = async (cartId: any, quantity: any, id: any) => {
   console.log(JSON.stringify({ quanitity: quantity }));
   console.log(JSON.stringify({ id: id }));
 
-    const req = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/shopping_carts/add_product/${cartId}?quantity=${quantity}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id: id }),
-      }
-    );
+  const req = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/shopping_carts/add_product/${cartId}?quantity=${quantity}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: id }),
+    }
+  );
 
-     
-    // console.log(responseText);
-    return await req.text();
+  // console.log(responseText);
+  return await req.text();
 };
 
 export const assessAvailability = async (productId: number) => {
@@ -171,13 +177,66 @@ export const adminLogin = async (formData: MyFormData) => {
   const req: Response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/admin/login`,
     {
-      method:"POST",
+      method: "POST",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(formData),
     }
   );
 
   return await req.text();
-}
+};
+
+const getCategoryById = async (categoryId: number): Promise<Category> => {
+  const req = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/categories/get_category/${categoryId}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (!req.ok) {
+    throw new Error(`Failed to fetch category. Status: ${req.status}`);
+  }
+
+  const data: Category = await req.json();
+  return data;
+};
+
+const getAllCategories = async () => {
+  const req = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/categories/all_categories`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      next: {
+        revalidate: 10,
+        tags: ["categories", "searchCategories"],
+      },
+    }
+  );
+  return await req.json();
+};
+
+export const deleteIngredient = async (ingredientId: number) => {
+  const req = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/ingredients/delete_ingredient/${ingredientId}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      next: {
+        revalidate: 60,
+        tags: ["ingredients", "deleteIngredients"],
+      },
+    }
+  );
+  return await req.json();
+};

@@ -6,7 +6,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { validateLogin } from "@/actions";
+import { getCustomerByEmail, validateLogin } from "@/actions";
 import Failed from "@/components/login/Failed";
 import Successful from "@/components/login/Successful";
 import Link from "next/link";
@@ -14,7 +14,8 @@ import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import SignUpDialog from "./SignUpDialog";
-
+import { loggedIn } from "@/clientactions";
+import loginStatus, { utiliseCustomerID } from "@/LogIn";
 interface MyFormData {
   email: string;
   password: string;
@@ -44,6 +45,7 @@ const Popup: React.FC<PopupProps> = ({ button }) => {
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const customerId = await getCustomerByEmail(formData.email);
     e.preventDefault();
     try {
       const response = await validateLogin(formData);
@@ -51,6 +53,8 @@ const Popup: React.FC<PopupProps> = ({ button }) => {
         console.log(response);
       } else {
         setLoginSuccess(true);
+        loginStatus("true");
+        utiliseCustomerID("setId", customerId);
         customerInfo = response;
       }
     } catch (error) {
@@ -73,7 +77,7 @@ const Popup: React.FC<PopupProps> = ({ button }) => {
         <div className="flex items-center justify-center h-52">
           <div className="rounded-lg border border-stroke border-footer bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke rounded-t-lg bg-secondary py-4 px-6.5 dark:border-strokedark">
-              <DialogTitle className="font-medium text-white dark:text-white text-center">
+              <DialogTitle className="font-chicle text-3xl text-white dark:text-white text-center">
                 Log In
               </DialogTitle>
             </div>
@@ -109,7 +113,7 @@ const Popup: React.FC<PopupProps> = ({ button }) => {
               <div className="mt-5 mb-5.5 flex items-center justify-between pb-5">
                 <p className="">Not a member?</p>
                 <div className="text-secondary">
-                <SignUpDialog button={false} />
+                  <SignUpDialog button={false} />
                 </div>
               </div>
 

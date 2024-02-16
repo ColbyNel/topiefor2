@@ -13,6 +13,8 @@ import { addItemToCart, getProductById } from "@/clientactions";
 import { redirect } from "next/dist/server/api-utils";
 import successful from "./login/Successful";
 import { useRouter } from "next/navigation";
+import loginStatus from "@/LogIn";
+import LoginDialog from "./LoginDialog";
 
 interface ProductProps {
   // productID: number;
@@ -63,7 +65,7 @@ export const setUniversalProductId = (value: number) => {
 
 const ProductDialog: React.FC<ProductProps> = ({ prod }) => {
   prod = exampleProduct;
-  const selectedProductsId = prod.ID
+  const selectedProductsId = prod.ID;
   // console.log(productID)
   // console.log(universalProductId)
   // const selectedProduct = getProduct(universalProductId);
@@ -79,6 +81,7 @@ const ProductDialog: React.FC<ProductProps> = ({ prod }) => {
       return <p>Failed to add item to cart</p>;
     }
   };
+  const currentLoginStatus = loginStatus("get status");
 
   return (
     <Dialog>
@@ -135,18 +138,24 @@ const ProductDialog: React.FC<ProductProps> = ({ prod }) => {
                   required
                 />
               </form> */}
-
-                      <div className="flex items-center justify-center mt-4 ">
-                        <div className="pt-6 pb-2">
-                          <button
-                            onClick={() => handleClick(1, 1, selectedProductsId)}
-                            className="button-hover group flex items-center justify-between gap-4 rounded-lg border border-current px-5 py-3 text-white transition-colors hover:bg-secondary focus:outline-none focus:ring active:bg-secondary"
-                          >
-                            Add to Cart
-                            {/* <CartDialog link={true} /> */}
-                          </button>
+                      {currentLoginStatus ? (
+                        <div className="flex items-center justify-center mt-4 ">
+                          <div className="pt-6 pb-2">
+                            <button
+                              onClick={() =>
+                                handleClick(1, 1, selectedProductsId)
+                              }
+                              className="button-hover group flex items-center justify-between gap-4 rounded-lg border border-current px-5 py-3 text-white transition-colors hover:bg-secondary focus:outline-none focus:ring active:bg-secondary"
+                            >
+                              Add to Cart
+                              {/* <CartDialog link={true} /> */}
+                            </button>
+                          </div>
                         </div>
-                      </div>
+                      ) : (
+                        <LoginDialog button={true} />
+                      )}
+
                       <div className="flex items-center justify-between py-4"></div>
                     </div>
                   </div>

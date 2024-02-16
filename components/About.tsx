@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import SignUpDialog from "./SignUpDialog";
 import LoginDialog from "./LoginDialog";
 import Footer from "./Footer";
+import loginStatus from "@/LogIn";
 
 const links = [{ name: "Menu", href: "/categories" }];
 const stats = [
@@ -12,6 +13,7 @@ const stats = [
 ];
 
 const About = () => {
+  const currentLoginStatus = loginStatus("getStatus");
   return (
     <>
       <span className="bg-primary blur-xl w-screen h-10" />
@@ -43,31 +45,39 @@ const About = () => {
           </div>
         </div>
         <div className="-ml-8">
-        <div className="mx-16 mt-5 max-w-2xl lg:mx-0 lg:max-w-none ">
-          <div className="ml-96 grid grid-cols-1 gap-x-8 gap-y-6 text-base font-semibold leading-7 text-white sm:grid-cols-2 md:flex lg:gap-x-10">
-            <LoginDialog button={true} />
-            <SignUpDialog button={false} />
-            {links.map((link) => (
-              <a key={link.name} href={link.href} className="button-hover mt-2">
-                {link.name} <span aria-hidden="true">&rarr;</span>
-              </a>
-            ))}
+          <div className="mx-16 mt-5 max-w-2xl lg:mx-0 lg:max-w-none ">
+            <div className="ml-96 grid grid-cols-1 gap-x-8 gap-y-6 text-base font-semibold leading-7 text-white sm:grid-cols-2 md:flex lg:gap-x-10">
+              {!currentLoginStatus && (
+                <>
+                  <LoginDialog button={true} />
+                  <SignUpDialog button={false} />
+                </>
+              )}
+
+              {links.map((link) => (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className="button-hover mt-2"
+                >
+                  {link.name} <span aria-hidden="true">&rarr;</span>
+                </a>
+              ))}
+            </div>
+            <dl className="mt-16 ml-96 pr-10 grid grid-cols-1 gap-8 sm:mt-20 sm:grid-cols-2 lg:grid-cols-4">
+              {stats.map((stat) => (
+                <div key={stat.name} className="flex flex-col-reverse">
+                  <dt className="text-lg leading-7 text-secondary">
+                    {stat.name}
+                  </dt>
+                  <dd className="text-2xl font-bold leading-9 tracking-tight text-white">
+                    {stat.value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </div>
-          <dl className="mt-16 ml-96 pr-10 grid grid-cols-1 gap-8 sm:mt-20 sm:grid-cols-2 lg:grid-cols-4">
-            {stats.map((stat) => (
-              <div key={stat.name} className="flex flex-col-reverse">
-                <dt className="text-lg leading-7 text-secondary">
-                  {stat.name}
-                </dt>
-                <dd className="text-2xl font-bold leading-9 tracking-tight text-white">
-                  {stat.value}
-                </dd>
-              </div>
-            ))}
-          </dl>
         </div>
-        </div>
-        
       </div>
       <Footer />
     </>

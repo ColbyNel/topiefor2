@@ -1,7 +1,5 @@
 import { getAllIngredients } from "@/actions";
-
-
-
+import DeleteIngredientDialog from "./DeleteIngredientsDialog";
 
 const ingredientlist = async () => {
   const allIngredients = await getAllIngredients();
@@ -36,29 +34,27 @@ const ingredientlist = async () => {
           </thead>
           <tbody>
             {allIngredients.map(
-              ({
-                id,
-                name,
-                pricePerKG,
-                note,
-                quantity,
-                unitID
-              }:any) => (
-                <tr
-                  key={id}
-                  className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
-                >
+              ({ id, name, pricePerKG, note, quantity, unitID }: any) => (
+                <>
+                  <tr
+                    key={id}
+                    className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                  >
                     <th
                       scope="row"
                       className="px-6 py-4 font-medium text-gray-900 hover:to-blue-500 whitespace-nowrap dark:text-white"
                     >
                       {name}
                     </th>
-                  <td className="px-6 py-4">{pricePerKG}</td>
-                  <td className="px-6 py-4">{quantity}</td>
-                  <td className="px-6 py-4">{note}</td>
-                  <td className="px-6 py-4">{unitID}</td>
-                </tr>
+                    <td className="px-6 py-4">{pricePerKG}</td>
+                    <td className="px-6 py-4">{quantity}</td>
+                    <td className="px-6 py-4">{note}</td>
+                    <td className="px-6 py-4">{unitID}</td>
+                    <td>
+                      <DeleteIngredientDialog />
+                    </td>
+                  </tr>
+                </>
               )
             )}
           </tbody>

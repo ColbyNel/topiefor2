@@ -2,69 +2,17 @@ import React from "react";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ProductDialog from "@/components/ProductDialog";
+import { getAllCategories, getCategoryById } from "@/actions";
+import { getAllProducts } from "@/clientactions";
 
 interface Category {
   categoryId: number;
   description: string;
 }
 
-const getCategoryById = async (categoryId: number): Promise<Category> => {
-  const req = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/categories/get_category/${categoryId}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
-
-  if (!req.ok) {
-    throw new Error(`Failed to fetch category. Status: ${req.status}`);
-  }
-
-  const data: Category = await req.json();
-  return data;
-};
-
 const getCategoryNameById = async (categoryID: number) => {
   const categoryObject = getCategoryById(categoryID);
   return (await categoryObject).description;
-};
-
-const getAllProducts = async () => {
-  const req = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/products/all_products`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      next:{
-        revalidate: 60,
-        tags: ["products","getAllProducts"]
-      },
-    }
-  );
-  // console.log(req.json())
-  return await req.json();
-};
-
-const getAllCategories = async () => {
-  const req = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/categories/all_categories`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      next: {
-        revalidate: 10,
-        tags: ["categories", "searchCategories"],
-      },
-    }
-  );
-  return await req.json();
 };
 
 const allProducts = async () => {

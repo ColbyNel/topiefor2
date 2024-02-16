@@ -101,7 +101,7 @@ export const getCategoryById = async (
     throw new Error(`Failed to fetch category. Status: ${req.status}`);
   }
 
-  const data: Category = await req.json();
+  const data = await req.json();
   return data;
 };
 
@@ -326,4 +326,17 @@ export const checkProductAvailability = async (productId: number) => {
   );
   const reply = req.text();
   return reply;
+};
+
+export const getCustomerByEmail = async (customerEmail: string) => {
+  const req = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/customers/get_by_email/${customerEmail}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return req.json();
 };

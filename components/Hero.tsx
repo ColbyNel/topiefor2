@@ -9,8 +9,10 @@ import Popup from "./LoginDialog";
 import ProductDialog from "./ProductDialog";
 import SignUpDialog from "./SignUpDialog";
 import Header from "./Header";
+import loginStatus from "@/LogIn";
 
 const Hero = () => {
+  const currentLoginStatus = loginStatus("get status");
   return (
     <>
       <div className="relative isolate overflow-hidden bg-gray-900 py-24 sm:py-32">
@@ -33,16 +35,19 @@ const Hero = () => {
                 <span className=" inline-flex flex-col h-[calc(theme(fontSize.3xl)*theme(lineHeight.tight))] md:h-[calc(theme(fontSize.4xl)*theme(lineHeight.tight))] overflow-hidden">
                   <ul className="block animate-text-slide text-left leading-tight [&_li]:block">
                     <li className="text-primary">Pies</li>
-                    <li  className="text-secondary">Croissants</li>
-                    <li  className="text-footer">Cakes</li>
-                    <li  className="text-destructive">Bread</li>
-                    <li  className="text-gray-400 ">Cookies</li>
-                    <li aria-hidden="true"  className="text-primary">Pies</li>
+                    <li className="text-secondary">Croissants</li>
+                    <li className="text-footer">Cakes</li>
+                    <li className="text-destructive">Bread</li>
+                    <li className="text-gray-400 ">Cookies</li>
+                    <li aria-hidden="true" className="text-primary">
+                      Pies
+                    </li>
                   </ul>
                 </span>
               </div>
               <div className="mt-10 flex items-center justify-center gap-x-6">
-                <Popup button={true} />
+                {!currentLoginStatus && <Popup button={true} />}
+
                 <a
                   href="/categories"
                   className="button-hover text-sm font-semibold leading-6 text-white"

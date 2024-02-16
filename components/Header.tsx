@@ -12,11 +12,12 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 import LoginDialog from "./LoginDialog";
 import Popup from "./LoginDialog";
 import SignUpDialog from "./SignUpDialog";
 import CartDialog from "./CartDialog";
+import loginStatus from "@/LogIn";
 
 const navigation = [
   { name: "Home", href: "/", current: true },
@@ -29,8 +30,12 @@ function classNames(...classes: string[]) {
 }
 
 const Header = () => {
+  const currentLoginStatus = loginStatus("get status");
   return (
-    <Disclosure as="nav" className="bg-destructive bg-opacity-70 shadow-sm rounded-3xl mx-72 mt-10">
+    <Disclosure
+      as="nav"
+      className="bg-destructive bg-opacity-70 shadow-sm rounded-3xl mx-72 mt-10"
+    >
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -54,9 +59,12 @@ const Header = () => {
                         {item.name}
                       </a>
                     ))}
-                    
-                      <Popup button={true} />
-                      <SignUpDialog button={true} />
+                    {!currentLoginStatus && (
+                      <>
+                        <Popup button={true} />
+                        <SignUpDialog button={true} />
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
@@ -64,17 +72,20 @@ const Header = () => {
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
                   <div>
-                    {/* <div className="relative flex text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-
-                      <a href="/shoppingcart" className="button-hover">
-                        <img
-                          className=" h-8 w-8 "
-                          src="/shoppingcart.png"
-                          alt="Cart"
-                        />
-                      </a>
-                    </div> */}
-                    <CartDialog link={false}  />
+                    {currentLoginStatus ? (
+                      <div className="relative flex text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                        <a href="/shoppingcart/1" className="button-hover">
+                          <img
+                            className=" h-8 w-8 "
+                            src="/shoppingcart.png"
+                            alt="Cart"
+                          />
+                        </a>
+                      </div>
+                    ) : (
+                      <CartDialog link={false} />
+                    )}
+                    {/*  */}
                   </div>
                 </Menu>
               </div>
